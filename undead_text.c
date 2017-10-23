@@ -268,26 +268,20 @@ int main(){
 	generate(g);
 	display(g);
 	
-/*
 	while(is_game_over(g) != true){
-		debug(g); //TEMPORAIRE
-*/
-
-	if(is_game_over(g)){
-		couleur("44");
-		printf("\n\nVOUS AVEZ GAGNE\n\n");
-		couleur("0");
-	}
+		if(is_game_over(g)){
+			couleur("44");
+			printf("\n\nVOUS AVEZ GAGNE\n\n");
+			couleur("0");
+		}
 //Entrée utilisateur
 		printf("\n\nLe format est le suivant : <x> <y> <G|V|Z|E>,\navec <x> et <y> allant de 0 à 3.\n\n		Commande : ");
 		r = scanf("%d %d %c",&x,&y,&mstr);
 		printf("\n\n");
-
 //Verification de l'entree utilisateur
 		if(!usage(g, r, x, y, mstr)){ //qu'en cas d'erreur importante (ie r == EOF)
 			break; 
 		}
-
 		display(g);
 	}
 //fin while
