@@ -40,7 +40,6 @@ Pour l'affichage, vous devez respecter la convention suivante :
 #define COLONNE 4
 #define LINE 4
 
-#define couleur(param) printf("\033[%sm",param)
 #define clear() printf("\033[H\033[y")
 
 int nbVampire = 2;
@@ -260,7 +259,6 @@ bool usage (game g, int r, int x, int y, char mstr){
 }
 
 int main(){
-	clear();
 	int r, x, y;
 	char mstr;
 	//Génération du jeu 
@@ -270,9 +268,7 @@ int main(){
 	
 	while(is_game_over(g) != true){
 		if(is_game_over(g)){
-			couleur("44");
 			printf("\n\nVOUS AVEZ GAGNE\n\n");
-			couleur("0");
 		}
 //Entrée utilisateur
 		printf("\n\nLe format est le suivant : <x> <y> <G|V|Z|E>,\navec <x> et <y> allant de 0 à 3.\n\n		Commande : ");
@@ -288,9 +284,7 @@ int main(){
 	//clear();
 
 	if(is_game_over(g)){
-		couleur("44");
 		printf("\n\nVOUS AVEZ GAGNE\n\n");
-		couleur("0");
 	}
   	delete_game(g);
   	return EXIT_SUCCESS;
