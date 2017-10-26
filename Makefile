@@ -1,8 +1,6 @@
 CC=gcc
 AR=ar r
-LIBDIR =./include/
-INCLUDES=-I $(LIBDIR)
-CFLAGS=-Wall -std=c99 -g $(INCLUDES)
+CFLAGS=-Wall -std=c99 -g
 LDFLAGS=-L. -lgame
 TEST_EXEC=test0 test1 test2 test3
 
@@ -20,16 +18,16 @@ undead_text.o: undead_text.c
 	$(CC) $(CFLAGS) -c undead_text.c
 
 test0: test.o game.o
-	$(CC) -o test0 test.o $(LDFLAGS)
+	$(CC) $(CFLAGS) -o test0 test.o game.o 
 
 test1: test.o game10.o
-	$(CC) -o test1 test.o $(LDFLAGS)
+	$(CC) $(CFLAGS) -o test1 test.o game10.o 
 
 test2: test.o game11.o
-	$(CC) -o test2 test.o $(LDFLAGS)
+	$(CC) $(CFLAGS) -o test2 test.o game11.o 
 
 test3: test.o game12.o
-	$(CC) -o test3 test.o $(LDFLAGS)
+	$(CC) $(CFLAGS) -o test3 test.o game12.o 
 
 test.o: test.c
 	$(CC) $(CFLAGS) -c test.c
