@@ -1,0 +1,9 @@
+to do: 
+
+Amir : test sur add_monster, test set_required_nb_seen(),
+
+Athman : test sur set_required_nb_monsters(), test_current_nb_seen()
+
+Jordan : Makefile, test_restart_game(), clean le depot
+
+Sarah : Makefile, test new_game()
