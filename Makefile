@@ -36,9 +36,16 @@ test: $(TEST_EXEC)
 	sh script.sh
 
 .PHONY : clean
+clean_test:
+	rm test*.o
+	rm test0
+	rm test1
+	rm test2
+	rm test3
 clean:
 	rm undead_text
 	rm *.a
 	rm undead_text.o
 	rm test.o
+
 # /!\ NE PAS CLEAR LES .O DE /OBJ (ie pas de rm *.o)
