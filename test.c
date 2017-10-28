@@ -69,20 +69,19 @@ bool test_add_monster_ghost(){
   add_monster(g,GHOST,2,2);
   if(get_content(g,2,2) != GHOST){
     delete_game(g);
-    return false;    
+    res=false;    
   }
   for(unsigned int x = 0; x < COLONNE; x++){
     for(unsigned int y = 0; y < LINE; y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           delete_game(g);
-          return false;    
+          res=false;    
         }
       }
     }
   }
-  printf("INFO: test_add_monster_ghost : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_add_monster_ghost : success\n" : "ERROR: Basic test on test_add_ghost failed\n");
   delete_game(g);
   return res;
 }
@@ -104,8 +103,7 @@ bool test_add_monster_zombie(){
       }
     }
   }
-  printf("INFO: test_add_monster_zombie : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_add_monster_zombie : success\n" : "ERROR: Basic test on test_add_monster_zombie failed\n");
   delete_game(g);
   return res;
 }
@@ -127,8 +125,8 @@ bool test_add_monster_vampire(){
       }
     }
   }
-  printf("INFO: test_add_monster_vampire : ");
-  printf(res ? "true\n" : "false\n");
+  //printf("INFO: test_add_monster_vampire : ");
+  printf(res ? "INFO: test_add_monster_vampire : success\n" : "ERROR: Basic test on test_add_monster_vampire failed\n");
   delete_game(g);
   return res;
 }
@@ -141,17 +139,15 @@ bool test_add_monster(){
   res = test_add_monster_ghost() && res;
   game g =new_game();
   if(res == false){
-    fprintf(stderr,("ERROR: Basic test on test_add_monster failed\n"));
     delete_game(g);
-    return false;
+    res=false;
   }
 
   assert(g);
   add_monster(g,VAMPIRE,1,2);
   if(get_content(g, 1, 2) != VAMPIRE){
-    fprintf(stderr,("ERROR: Basic test on test_add_monster failed\n"));
     delete_game(g);
-    return false;
+    res=false;
   }
   assert(g);
   int sum = current_nb_monsters(g, VAMPIRE);
@@ -161,14 +157,12 @@ bool test_add_monster(){
     for(unsigned int y = 0; y < LINE; y++){
       if(x != 1 || y != 2)
       if(get_content(g,x,y) != EMPTY){
-        fprintf(stderr,("ERROR: Basic test on test_add_monster failed\n"));
         delete_game(g);
-        return false;
+        res=false;
       }
     }
   }
-  printf("INFO: test_add_monster : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_add_monster : success\n" : "ERROR: Basic test on test_add_monster failed\n");
   delete_game(g);
   return res;
 }
@@ -185,36 +179,31 @@ bool test_current_nb_monster(){
   add_monster(g, GHOST, 0, 3);
   assert(g);
   if(current_nb_monsters(g,GHOST)!=1 || current_nb_monsters(g,ZOMBIE)!=1 || current_nb_monsters(g,VAMPIRE)!=1){
-    fprintf(stderr, "ERROR: Basic test on current_nb_monster failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
 
   restart_game(g);
   add_monster(g, GHOST, 1, 1);
   if(current_nb_monsters(g, GHOST) != 1){
-    fprintf(stderr, "Basic test on current_nb_monster failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
 
   restart_game(g);
   add_monster(g, ZOMBIE, 1, 1);
   if(current_nb_monsters(g,ZOMBIE) != 1){
-    fprintf(stderr, "Basic test on current_nb_monster failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
 
   add_monster(g, VAMPIRE, 1, 1);
   if(current_nb_monsters(g,VAMPIRE) != 1){
-    fprintf(stderr, "Basic test on current_nb_monster failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
 
-  printf("INFO: test_current_nb_monster: ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_current_nb_monster : success\n" : "ERROR: Basic test on test_current_nb_monster failed\n");
   delete_game(g);
   return res;
 
@@ -230,46 +219,38 @@ bool test_current_nb_seen(){
   add_monster(g, ZOMBIE, 2, 0);
   add_monster(g, GHOST, 3, 0);
   if(current_nb_seen(g,S,1)!=1){
-    fprintf(stderr, "ERROR: Basic test on test_current_nb_seen failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
   if(current_nb_seen(g,S,2)!=1){
-    fprintf(stderr, "ERROR: Basic test on test_current_nb_seen failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
   if(current_nb_seen(g,S,3)!=0){
-    fprintf(stderr, "ERROR: Basic test on test_current_nb_seen failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
   restart_game(g);
   add_mirror(g,1,0,0);
   if(current_nb_seen(g,S,0)!=0){
-    fprintf(stderr, "ERROR: Basic test on test_current_nb_seen failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
   restart_game(g);
   add_mirror(g,0,0,0);
   if(current_nb_seen(g,S,0)!=0){
-    fprintf(stderr, "ERROR: Basic test on test_current_nb_seen failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
   add_monster(g, VAMPIRE, 1, 0);
   add_monster(g, ZOMBIE, 2, 0);
   add_monster(g, GHOST, 3, 0);
   if(current_nb_seen(g,S,0)!=2){
-    fprintf(stderr, "ERROR: Basic test on test_current_nb_seen failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
-  printf("INFO: test_current_nb_seen : ");
-  printf(res ? "true\n" : "false\n");
-  delete_game(g);
-  return true;
+  printf(res ? "INFO: test_current_nb_seen : success\n" : "ERROR: Basic test on test_current_nb_seen failed\n");
+  return res;
 
 }
 
@@ -279,17 +260,15 @@ bool test_new_game(){
   game g= new_game();
   assert(g);
   if(g == NULL){
-    fprintf(stderr,("ERROR: Basic test on test_new_game failed\n"));
     delete_game(g);
-    return false;       
+    res=false;       
   }
   //assert(get_content(g, 5, 5));
   for(unsigned int i = 0; i < COLONNE; i++){
     for(unsigned int j = 0; j < LINE; j++){
       if(get_content(g, i, j) != EMPTY){
-        fprintf(stderr,("ERROR: Basic test on test_new_game failed\n"));
         delete_game(g);
-        return false;            
+        res=false;            
       }
     }
   }
@@ -297,17 +276,15 @@ bool test_new_game(){
   for(unsigned int i = 0; i < 4; i++){
     for(unsigned int j = 0; j < 4; j++){
       if(required_nb_seen( g , j , i ) != 0){
-        fprintf(stderr,("ERROR: Basic test on test_new_game failed\n"));
         delete_game(g);
-        return false;     
+        res=false;     
       }
     }
   }
 
-  printf("INFO: test_new_game : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_new_game : success\n" : "ERROR: Basic test on test_new_game failed\n");
   delete_game(g);
-  return true;
+  return res;
 }
 
 //void delete_game (game g);
@@ -326,9 +303,8 @@ bool test_delete_game(){
   sum += current_nb_monsters(g, ZOMBIE);
 
   if(sum != 0){
-    fprintf(stderr,("ERROR: Basic test on test_delete_game failed\n"));
     delete_game(g);
-    return false;    
+    res=false;    
   }
 
   delete_game(g);
@@ -339,12 +315,10 @@ bool test_delete_game(){
   add_monster(g,VAMPIRE,0,2);
   sum = current_nb_seen(g,S,0)+current_nb_seen(g,S,1)+current_nb_seen(g,S,2);
   if(sum != 2){
-    fprintf(stderr,("ERROR: Basic test on test_delete_game failed\n"));
     delete_game(g);
-    return false;  
+    res=false;  
   }
-  printf("INFO: test_delete_game : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_delete_game : success\n" : "ERROR: Basic test on test_delete_game failed\n");
   delete_game(g);
   assert(g);  
   return res;
@@ -360,36 +334,30 @@ bool test_get_content(){
   add_monster(g, ZOMBIE, 0, 3);
   assert(g);
   if(get_content(g, 0, 1) != GHOST){
-      fprintf(stderr,("ERROR: Basic test on get_content failed\n"));
         delete_game(g);
-        return false; 
+        res=false; 
   }
   if(get_content(g, 0, 2) != VAMPIRE){
-      fprintf(stderr,("ERROR: Basic test on get_content failed\n"));
         delete_game(g);
-        return false; 
+        res=false; 
   }
   if(get_content(g, 0, 3) != ZOMBIE ) {
-      fprintf(stderr,("ERROR: Basic test on get_content failed\n"));
         delete_game(g);
-        return false; 
+        res=false; 
   }
   if(get_content(g, 1, 0) != EMPTY || get_content(g, 2, 0) != EMPTY || get_content(g, 3, 0) != EMPTY ) {
-      fprintf(stderr,("ERROR: Basic test on get_content failed\n"));
         delete_game(g);
-        return false; 
+        res=false; 
   }
   int sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
   sum += current_nb_monsters(g, ZOMBIE);
   assert(g);
   if(sum != 3){
-    fprintf(stderr,("ERROR: Basic test on test_get_content failed\n"));
     delete_game(g);
-    return false;
+    res=false;
   }
-  printf("INFO: test_get_content : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_get_content : success\n" : "ERROR: Basic test on test_get_content failed\n");
   delete_game(g);
   return res;
 }
@@ -401,19 +369,17 @@ bool test_add_mirror(){
   assert(g);
   add_mirror(g, 0, 1, 2);
   if(get_content(g, 1, 2) != MIRROR) {
-    fprintf(stderr,"ERROR: Basic test on add_mirror failed\n");
     delete_game(g);
     assert(g);
-    return false;    
+    res=false;    
   }
   for(unsigned int x = 0; x < COLONNE; x++){
     for(unsigned int y = 0; y < LINE; y++){
       if(x != 1 && y != 2){
         if(get_content(g,x,y) != EMPTY){
-          fprintf(stderr,("ERROR: Basic test on test_add_mirror failed\n"));
           delete_game(g);
           assert(g);
-          return false;    
+          res=false;    
         }
       }
     }
@@ -424,25 +390,22 @@ bool test_add_mirror(){
   assert(g);
   add_mirror(g, 1, 1, 2);
   if(get_content(g, 1, 2) != ANTIMIRROR) {
-    fprintf(stderr,"ERROR: Basic test on add_mirror failed\n");
     delete_game(g);
     assert(g);
-    return false;    
+    res=false;    
   }
   for(unsigned int x = 0; x < COLONNE; x++){
     for(unsigned int y = 0; y < LINE; y++){
       if(x != 1 && y != 2){
         if(get_content(g,x,y) != EMPTY){
-          fprintf(stderr,("ERROR: Basic test on test_add_mirror failed\n"));
           delete_game(g);
           assert(g);
-          return false;    
+          res=false;    
         }
       }
     }
   }
-  printf("INFO: test_add_mirror : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_add_mirror : success\n" : "ERROR: Basic test on test_add_mirror failed\n");
   delete_game(g);
   assert(g);
   return res;
@@ -456,10 +419,9 @@ bool test_set_required_nb_seen(){
   assert(g);
   set_required_nb_seen( g , N , 0 , 1);
   if(required_nb_seen(g,N,0) != 1){
-    fprintf(stderr,("ERROR: Basic test on test_current_nb_seen failed\n"));
     delete_game(g);
     assert(g);
-    return false; 
+    res=false; 
   }
   for(unsigned int i = 0; i < 4; i++){
     for(unsigned int j = 0; j < 4; j++){
@@ -467,7 +429,7 @@ bool test_set_required_nb_seen(){
         if(required_nb_seen(g ,j , i) != 0){
           delete_game(g); 
           assert(g);  
-          return false;
+          res=false;
         }
       }
     }
@@ -486,13 +448,13 @@ bool test_set_required_nb_seen(){
     for(unsigned int j = 0; j < 4; j++){
       int tmp = required_nb_seen( g , j , i );
       if(tmp != i){
-        fprintf(stderr,("ERROR: Basic test on test_current_nb_seen failed\n"));
         delete_game(g);
         assert(g);  
-        return false;         
+        res=false;         
       }
     }
   }
+  printf(res ? "INFO: test_set_required_nb_seen : success\n" : "ERROR: Basic test on test_set_required_nb_seen failed\n");
   delete_game(g);
   assert(g);  
   return res;
@@ -506,12 +468,10 @@ bool test_set_required_nb_monsters(){
   assert(g);
   set_required_nb_monsters(g, ZOMBIE, 2);
   if(required_nb_monsters(g, ZOMBIE) != 2){
-    fprintf(stderr,"ERROR: Basic test on set_required_nb_monsters failed\n");
     delete_game(g);
-    return false;    
+    res=false;    
   }
-  printf("INFO: test_set_required_nb_monsters : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_set_required_nb_monsters : success\n" : "ERROR: Basic test on test_set_required_nb_monsters failed\n");
   delete_game(g);
   assert(g);  
   return res;
@@ -520,7 +480,7 @@ bool test_set_required_nb_monsters(){
 //bool add_monster(game game, content monster, int col, int line);
 
 //void restart_game(game g);
-//on genere une game et on place un mob+miroir -> si mob a disparu && miroir resté -> ok
+//on genere une game et on place un mob+miroir -> si mob a disparu && miroir restÃƒÂ© -> ok
 //miroir pas ok car on le fait etape par etape
 bool test_restart_game(){
   bool res = true;
@@ -531,9 +491,8 @@ bool test_restart_game(){
   for(unsigned int x = 1; x < COLONNE; x++){
     for(unsigned int y = 0; y < LINE; y++){
       if(get_content(g,x,y) != EMPTY){
-        fprintf(stderr,("ERROR: Basic test on test_restart_game failed\n"));
         delete_game(g);
-        return false;
+        res=false;
       }
     }
   }
@@ -543,17 +502,14 @@ bool test_restart_game(){
   restart_game(g);
   assert(g);  
   if(g == NULL){
-    fprintf(stderr, "Basic test on test_restart_game failed\n");
     delete_game(g);
-    return false; 
+    res=false; 
   }
   if(sum != 0){
-    fprintf(stderr,("ERROR: Basic test on test_restart_game failed\n"));
     delete_game(g);
-    return false; 
+    res=false; 
   }
-  printf("INFO: test_restart_game : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_restart_game : success\n" : "ERROR: Basic test on test_restart_game failed\n");
   delete_game(g);
   return res;
 }
@@ -566,14 +522,12 @@ bool test_is_game_over(){
   generate(g);
 
   if(is_game_over(g) == false){ 
-    fprintf(stderr,("ERROR: Basic test on test_is_game_over failed\n"));
     delete_game(g);
-    return false;    
+    res=false;    
   }
-    printf("INFO: test_is_game_over : ");
-    printf(res ? "true\n" : "false\n");
+    printf(res ? "INFO: test_is_game_over : success\n" : "ERROR: Basic test on test_is_game_over failed\n");
     delete_game(g);
-    return true;    
+    return res;    
 }
 
 bool test_copy_game(){
@@ -584,9 +538,8 @@ bool test_copy_game(){
   for(unsigned int x = 1; x < COLONNE; x++){
     for(unsigned int y = 0; y < LINE; y++){
       if(get_content(g1,x,y) != EMPTY){
-        fprintf(stderr,("ERROR: Basic test on test_copy failed\n"));
         delete_game(g1);
-        return false;
+        res=false;
       }
     }
   }
@@ -595,16 +548,14 @@ bool test_copy_game(){
   for(unsigned int x = 1; x < COLONNE; x++){
     for(unsigned int y = 0; y < LINE; y++){
       if(get_content(g1,x,y) == EMPTY){
-        fprintf(stderr,("ERROR: Basic test on test_copy failed\n"));
         delete_game(g1);
-        return false;
+        res=false;
       }
     }
   }
-    printf("INFO: test_copy : ");
-    printf(res ? "true\n" : "false\n");
+    printf(res ? "INFO: test_copy_game : success\n" : "ERROR: Basic test on test_copy_game failed\n");
     delete_game(g1);
-    return true;    
+    return res;    
 }
 
 
@@ -616,16 +567,14 @@ bool test_current_nb_seen_advanced(){
   for(unsigned int i = 0; i < 4; i++){
     for(unsigned int j = 0; j < 4; j++){
       if(required_nb_seen(g,i,j) != current_nb_seen(g,i,j)){
-        fprintf(stderr,("ERROR: Basic test on test_current_nb_seen_advanced failed\n"));
         delete_game(g);
-        return false;
+        res=false;
       }
     }
   }
-  printf("INFO: test_current_nb_seen_advanced : ");
-  printf(res ? "true\n" : "false\n");
+  printf(res ? "INFO: test_current_nb_seen_advanced : success\n" : "ERROR: Basic test on test_current_nb_seen_advanced failed\n");
   delete_game(g);
-  return true;
+  return res;
 }
 
 int main(void){
