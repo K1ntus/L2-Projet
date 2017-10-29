@@ -1,3 +1,4 @@
+i="0"
 valgrind --tool=memcheck --log-file=log0.txt --leak-check=full --show-reachable=yes --error-exitcode=2 ./test0
 VAL="$?"
 valgrind --tool=memcheck --log-file=log1.txt --leak-check=full --show-reachable=yes --error-exitcode=2 ./test1
@@ -8,21 +9,21 @@ valgrind --tool=memcheck --log-file=log3.txt --leak-check=full --show-reachable=
 VAL="${VAL} $?"
 
 
-i="0"
 
+printf "Recap :"
 for VAL in $VAL
 do
 	i=$((i+1))
 
     if [ $VAL -eq 0 ];then
        printf "\n 	Test number $i :\n"
-       printf "	No memory leak nor error with code test !\n"
+       printf "	\033[32mNo memory leak nor error with code test !\033[0m\n"
     elif [ $VAL -eq 1 ];then
        printf "\n 	Test number $i :\n"
-       printf "	No memory leak but code test failure !\n"
+       printf "\033[31m	No memory leak but code test failure !\033[0m\n"
     else
        printf "\n 	Test number $i :\n"
-       printf "	Memory leak on this program\n"
+       printf "\033[31;1;4;5m	Memory leak on this program\033[0m\n"
     fi
 done
 printf "\n"
