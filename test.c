@@ -77,7 +77,7 @@ bool test_add_monster_ghost(){
       }
     }
   }
-  printf(res ? "INFO: test_add_monster_ghost : success\n" : "ERROR: Basic test on test_add_ghost failed\n");
+  printf(res ? "INFO:  test_add_monster_ghost : ✓\n" : "INFO:  test_add_monster_ghost ✕\n");
   delete_game(g);
   return res;
 }
@@ -99,7 +99,7 @@ bool test_add_monster_zombie(){
       }
     }
   }
-  printf(res ? "INFO: test_add_monster_zombie : success\n" : "ERROR: Basic test on test_add_monster_zombie failed\n");
+  printf(res ? "INFO:  test_add_monster_zombie : ✓\n" : "INFO:  test_add_monster_zombie ✕\n");
   delete_game(g);
   return res;
 }
@@ -121,8 +121,8 @@ bool test_add_monster_vampire(){
       }
     }
   }
-  //printf("INFO: test_add_monster_vampire : ");
-  printf(res ? "INFO: test_add_monster_vampire : success\n" : "ERROR: Basic test on test_add_monster_vampire failed\n");
+  //printf("INFO:  test_add_monster_vampire : ");
+  printf(res ? "INFO:  test_add_monster_vampire : ✓\n" : "INFO:  test_add_monster_vampire ✕\n");
   delete_game(g);
   return res;
 }
@@ -155,7 +155,7 @@ bool test_add_monster(){
       }
     }
   }
-  printf(res ? "INFO: test_add_monster : success\n" : "ERROR: Basic test on test_add_monster failed\n");
+  printf(res ? "INFO:  test_add_monster : success\n" : "ERROR: test_add_monster failed\n");
   delete_game(g);
   return res;
 }
@@ -191,7 +191,7 @@ bool test_current_nb_monster(){
   if(current_nb_monsters(g,VAMPIRE) != 1){
     res=false; 
   }
-  printf(res ? "INFO: test_current_nb_monster : success\n" : "ERROR: Basic test on test_current_nb_monster failed\n");
+  printf(res ? "INFO:  test_current_nb_monster : success\n" : "ERROR: test_current_nb_monster failed\n");
   delete_game(g);
   return res;
 }
@@ -230,7 +230,58 @@ bool test_current_nb_seen(){
   if(current_nb_seen(g,S,0)!=2){
     res=false; 
   }
-  printf(res ? "INFO: test_current_nb_seen : success\n" : "ERROR: Basic test on test_current_nb_seen failed\n");
+  delete_game(g);
+  g = new_game();
+
+  add_mirror(g,1,0,0);
+  add_mirror(g,0,3,0);
+  add_monster(g,VAMPIRE,1,0);
+  add_monster(g,GHOST,2,0);
+
+  if(current_nb_seen(g,N,0)!=1 || current_nb_seen(g,N,1)!=1 || current_nb_seen(g,N,2)!=0 || current_nb_seen(g,N,3)!=1){
+    res=false;
+  }
+  if(current_nb_seen(g,S,0)!=0 || current_nb_seen(g,S,1)!=1 || current_nb_seen(g,S,2)!=0 || current_nb_seen(g,S,3)!=0){
+    res=false;
+  }
+  if(current_nb_seen(g,W,0)!= 0 || current_nb_seen(g,E,0)!=0){
+    res=false;
+  }
+  delete_game(g);
+  g = new_game();
+
+  add_mirror(g,1,0,0);
+  add_mirror(g,0,3,0);
+  add_monster(g,ZOMBIE,1,0);
+  if(current_nb_seen(g,N,0)!=1 || current_nb_seen(g,N,1)!=1 || current_nb_seen(g,N,2)!=0 || current_nb_seen(g,N,3)!=1){
+    res=false;
+  }
+  if(current_nb_seen(g,S,0)!=0 || current_nb_seen(g,S,1)!=1 || current_nb_seen(g,S,2)!=0 || current_nb_seen(g,S,3)!=0){
+    res=false;
+  }
+  if(current_nb_seen(g,W,0)!= 0 || current_nb_seen(g,E,0)!=0){
+    res=false;
+  }
+
+  printf(res ? "INFO:  test_current_nb_seen : success\n" : "ERROR: test_current_nb_seen failed\n");
+  delete_game(g);
+  return res;
+}
+
+bool test_current_nb_seen_advanced(){
+  bool res = true;
+  game g = new_game();
+  assert(g);
+  generate(g);
+  for(unsigned int i = 0; i < 4; i++){
+    for(unsigned int j = 0; j < 4; j++){
+      if(required_nb_seen(g,i,j) != current_nb_seen(g,i,j)){
+        
+        res=false;
+      }
+    }
+  }
+  printf(res ? "INFO:  test_current_nb_seen_advanced : ✓\n" : "INFO:  test_current_nb_seen_advanced ✕\n");
   delete_game(g);
   return res;
 }
@@ -259,6 +310,7 @@ bool test_new_game_advanced(){
     
     res=false;    
   }
+  printf(res ? "INFO:  test_new_game_advanced : ✓\n" : "INFO:  test_new_game_advanced ✕\n");
   delete_game(g);
   return res;
 }
@@ -299,7 +351,7 @@ bool test_new_game(){
     }
   }
 
-  printf(res ? "INFO: test_new_game : success\n" : "ERROR: Basic test on test_new_game failed\n");
+  printf(res ? "INFO:  test_new_game : success\n" : "ERROR: test_new_game failed\n");
   delete_game(g);
   //printf("Address: %p\n", &g);
   //printf("Address: %p\n", (void *)g);
@@ -317,9 +369,9 @@ bool test_delete_game_advanced(){
   if(current_nb_monsters(g,VAMPIRE) != 1){
     res = false;
   }
-  printf(res ? "INFO: test_delete_game_advanced : success\n" : "ERROR: Basic test on test_delete_game_advanced failed\n");
   delete_game(g);
   assert(g);  
+  printf(res ? "INFO:  test_delete_game_advanced : ✓\n" : "INFO:  test_delete_game_advanced ✕\n");
   return res;
 }
 
@@ -352,7 +404,7 @@ bool test_delete_game(){
   if(sum != 2){
     res=false;  
   }
-  printf(res ? "INFO: test_delete_game : success\n" : "ERROR: Basic test on test_delete_game failed\n");
+  printf(res ? "INFO:  test_delete_game : success\n" : "ERROR: test_delete_game failed\n");
   assert(g);
   delete_game(g);
   assert(g);  
@@ -387,7 +439,7 @@ bool test_get_content(){
   if(sum != 3){
     res=false;
   }
-  printf(res ? "INFO: test_get_content : success\n" : "ERROR: Basic test on test_get_content failed\n");
+  printf(res ? "INFO:  test_get_content : success\n" : "ERROR: test_get_content failed\n");
   delete_game(g);
   return res;
 }
@@ -431,7 +483,7 @@ bool test_add_mirror(){
       }
     }
   }
-  printf(res ? "INFO: test_add_mirror : success\n" : "ERROR: Basic test on test_add_mirror failed\n");
+  printf(res ? "INFO:  test_add_mirror : success\n" : "ERROR: test_add_mirror failed\n");
   delete_game(g);
   assert(g);
   return res;
@@ -477,7 +529,7 @@ bool test_set_required_nb_seen(){
       }
     }
   }
-  printf(res ? "INFO: test_set_required_nb_seen : success\n" : "ERROR: Basic test on test_set_required_nb_seen failed\n");
+  printf(res ? "INFO:  test_set_required_nb_seen : success\n" : "ERROR: test_set_required_nb_seen failed\n");
   delete_game(g);
   assert(g);  
   return res;
@@ -493,7 +545,7 @@ bool test_set_required_nb_monsters(){
   if(required_nb_monsters(g, ZOMBIE) != 2){
     res=false;    
   }
-  printf(res ? "INFO: test_set_required_nb_monsters : success\n" : "ERROR: Basic test on test_set_required_nb_monsters failed\n");
+  printf(res ? "INFO:  test_set_required_nb_monsters : success\n" : "ERROR: test_set_required_nb_monsters failed\n");
   delete_game(g);
   assert(g);  
   return res;
@@ -554,11 +606,10 @@ bool test_restart_game(){
   }
   
   
-  printf(res ? "INFO: test_restart_game : success\n" : "ERROR: Basic test on test_restart_game failed\n");
+  printf(res ? "INFO:  test_restart_game : success\n" : "ERROR: test_restart_game failed\n");
   delete_game(g);
   return res;
 }
-
 
 bool test_is_game_over(){
   bool res = true;
@@ -569,7 +620,7 @@ bool test_is_game_over(){
   if(is_game_over(g) == false){ 
     res=false;    
   }
-  printf(res ? "INFO: test_is_game_over : success\n" : "ERROR: Basic test on test_is_game_over failed\n");
+  printf(res ? "INFO:  test_is_game_over : success\n" : "ERROR: test_is_game_over failed\n");
   delete_game(g);
   return res;    
 }
@@ -597,27 +648,39 @@ bool test_copy_game(){
       }
     }
   }
-  printf(res ? "INFO: test_copy_game : success\n" : "ERROR: Basic test on test_copy_game failed\n");
+  printf(res ? "INFO:  test_copy_game : success\n" : "ERROR: test_copy_game failed\n");
   delete_game(g);
   delete_game(g1);
   return res;    
 }
 
 
-bool test_current_nb_seen_advanced(){
+bool test_setup_new_game(){
   bool res = true;
-  game g = new_game();
+  int nb_ghosts = 2;
+  int nb_vampires = 2;
+  int nb_zombies = 5;
+  int valueNorth[] = {0, 3, 3, 0};
+  int valueSouth[] = {0, 3, 2, 3};
+  int valueEast[] = {0, 0, 3, 2};
+  int valueWest[] = {0, 2, 3, 3};
+  int *values [] = {valueNorth, valueSouth, valueEast, valueWest};
+  content gameBoard[]={ANTIMIRROR, EMPTY, EMPTY, ANTIMIRROR, EMPTY, EMPTY, ANTIMIRROR, MIRROR, ANTIMIRROR, EMPTY, EMPTY, EMPTY, ANTIMIRROR, EMPTY, EMPTY, MIRROR};
+  game g = setup_new_game(values, gameBoard, nb_ghosts, nb_vampires ,nb_zombies);
   assert(g);
-  generate(g);
-  for(unsigned int i = 0; i < 4; i++){
-    for(unsigned int j = 0; j < 4; j++){
-      if(required_nb_seen(g,i,j) != current_nb_seen(g,i,j)){
-        
-        res=false;
-      }
-    }
+  add_monster(g,GHOST, 1, 1);
+  add_monster(g,GHOST, 2, 0);
+  add_monster(g,VAMPIRE,1,3);
+  add_monster(g,VAMPIRE,2,3);
+  add_monster(g,ZOMBIE, 0,1);
+  add_monster(g,ZOMBIE, 1,0);
+  add_monster(g,ZOMBIE, 1,2);
+  add_monster(g,ZOMBIE, 2,2);
+  add_monster(g,ZOMBIE, 3,2);
+  if(!is_game_over(g)){
+    res = false;
   }
-  printf(res ? "INFO: test_current_nb_seen_advanced : success\n" : "ERROR: Basic test on test_current_nb_seen_advanced failed\n");
+  printf(res ? "INFO:  test_setup_new_game : success\n" : "ERROR: test_setup_new_game failed\n");
   delete_game(g);
   return res;
 }
@@ -637,12 +700,13 @@ int main(void){
   result = test_current_nb_seen_advanced() && result;
   result = test_is_game_over() && result;
   result = test_copy_game() && result;
+  result = test_setup_new_game() && result;
   if(result){
-      printf("\nINFO: All tests successfull\n\n");
+      printf("\nINFO:  All tests successsfull\n\n");
       return EXIT_SUCCESS;
   }
   else{
-      printf("\nINFO: A test failed\n\n");
+      printf("\nINFO:  A test failed\n\n");
       return EXIT_FAILURE;
   }
 }
