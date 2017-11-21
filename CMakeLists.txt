@@ -24,11 +24,11 @@ target_link_libraries(undead_text libgame)
 
 
 #creation executable test
-add_executable(check test.c)
+add_executable(test test.c)
 
 
 #lien entre executable test et librairie
-target_link_libraries(check libgame)
+target_link_libraries(test libgame)
 
 
 
