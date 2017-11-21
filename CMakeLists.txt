@@ -2,16 +2,18 @@
 cmake_minimum_required(VERSION 2.8)
 
 #nom projet
-project(undead_text)
+project(undead_game_text)
 
+#activation des tests
+enable_testing()
 
 #initialisation variable -> parametre de compilation
 set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
-#ajout de la librairie
+#ajout de la librairie et indique qu on utilise des fichiers .o
 add_library(libgame game.o game_io.o)
-
+SET_TARGET_PROPERTIES(libgame PROPERTIES LINKER_LANGUAGE C)
 
 #creation de l executable nom + fichiers dependants
 add_executable(undead_text undead_text.c)
@@ -21,19 +23,16 @@ add_executable(undead_text undead_text.c)
 target_link_libraries(undead_text libgame)
 
 
-#activation des tests
-enable_testing()
+#creation executable test
+add_executable(check test.c)
 
 
-#ajout des tests
-add_test(test test.c)
+#lien entre executable test et librairie
+target_link_libraries(check libgame)
 
 
-#permet de lancer la commande ctest -> realise les tests
-add_custom_target(check COMMAND ${CMAKE_CTEST_COMMAND})
 
+#ajout des test memoire avec valgrind depuis le fichier script
+add_custom_target(memory_test COMMAND ${CMAKE_CTEST_COMMAND} script.sh)
 
-#definit le succes du test : le test reussi si test affiche "INFO:  All tests successsfull"
-set_tests_properties (test
-	PROPERTIES PASS_REGULAR_EXPRESSION "INFO:  All tests successsfull")
 
