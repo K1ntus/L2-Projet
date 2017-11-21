@@ -33,6 +33,9 @@ target_link_libraries(test libgame)
 
 
 #ajout des test memoire avec valgrind depuis le fichier script
-add_custom_target(memory_test COMMAND ${CMAKE_CTEST_COMMAND} script.sh)
+#add_custom_target(memory_test COMMAND ${CMAKE_CTEST_COMMAND} script.sh)
 
 
+add_test(NAME test0 COMMAND valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2 ./test0)
+
+add_test(NAME test1 COMMAND  valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2 ./test)
