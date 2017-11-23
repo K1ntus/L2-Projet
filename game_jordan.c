@@ -11,6 +11,55 @@ jordan :
 	required_nb_monsters
 */
 
+#define COLONNE 4
+#define LINE 4
+
+
+ struct game_s{
+ int ** matrice;
+ int vampires;
+ int ghosts;
+ int zombies;
+ int valuesNorth[4];
+ int valuesSouth[4];
+ int valuesEast[4];
+ int valuesWest[4];
+};
+
+/** 
+ * @brief possible contents of a square on the board.
+ * MIRROR stands for a mirror at +45 degrees (/), ANTIMIRROR at -45 degrees (\\) (mnemonic is slash and antislash).
+ **/
+typedef enum content_e {EMPTY, MIRROR, ANTIMIRROR, VAMPIRE, GHOST, ZOMBIE} content;
+
+#define NB_POSSIBLE_FILLINGS 6
+
+/** 
+ * @brief the fourth cardinal directions
+ **/
+
+typedef enum direction_e {N,S,E,W} direction;
+
+#define NB_DIR 4
+
+
+/**
+ * @brief The structure pointer that stores the game
+ **/
+
+typedef struct game_s* game;
+
+/**
+ * @brief The structure constant pointer that stores the game
+ * That means that it is not possible to modify the game using this pointer.
+ * See also: http://www.geeksforgeeks.org/const-qualifier-in-c/
+ * See also this more technical discussion: http://stackoverflow.com/questions/8504411/typedef-pointer-const-weirdness
+ **/
+
+typedef const struct game_s* cgame;
+
+
+
 /**
  * @brief sets the label of a game
  * @param game the game to modify
@@ -37,7 +86,7 @@ void set_required_nb_seen(game g, direction side, int pos, int value){
 	else if(side == W){
 		g->valuesWest[pos] = value;
 	} else {
-		fprintf(stderr, "Wrong side given in fct set_required_nb_seen for side :%s\n", side);
+		fprintf(stderr, "Wrong side given in fct set_required_nb_seen for side :%c\n", side);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -64,7 +113,7 @@ void set_required_nb_monsters(game g, content monster, int value){
 	else if (monster == GHOST){
 		g->ghosts = value;
 	} else {
-		fprintf(stderr, "Wrong monster type in fct set_required_nb_monsters for type : %s\n", monster);
+		fprintf(stderr, "Wrong monster type in fct set_required_nb_monsters for type : %c\n", monster);
 		exit(EXIT_FAILURE);		
 	}
 }
@@ -95,7 +144,7 @@ int required_nb_seen(cgame g, direction side, int pos){
 	else if(side == W){
 		return g->valuesWest[pos];
 	} else {
-		fprintf(stderr, "Wrong side given in fct required_nb_seen for side :%s\n", side);
+		fprintf(stderr, "Wrong side given in fct required_nb_seen for side :%c\n", side);
 		exit(EXIT_FAILURE);
 	}
 }
@@ -118,7 +167,7 @@ int required_nb_monsters(cgame g, content monster){
 	else if (monster == GHOST){
 		return g->ghosts;
 	} else {
-		fprintf(stderr, "Wrong monster type in fct required_nb_monsters for type : %s\n", monster);
+		fprintf(stderr, "Wrong monster type in fct required_nb_monsters for type : %c\n", monster);
 		exit(EXIT_FAILURE);		
 	}
 }

@@ -12,7 +12,7 @@ const NB_DIR 4;
 
 
 struct game_s{
- int ** matricc;
+ int ** matrice;
  int vampires;
  int ghosts;
  int zombies;
@@ -41,9 +41,9 @@ game new_game(){
 		game g = malloc(sizeof(struct game_s));
     if(g==NULL){
       fprintf(stderr,"Not enough memory!\n");
-      return EXIT_FAILUR;
+      return EXIT_FAILURE;
     }
-		g->matrice = initmatricc(COLONNE,LINE);
+		g->matrice = initmatrice(COLONNE,LINE);
 		g->vampires = 0;
 		g->ghosts = 0;
 		g->zombies = 0;
@@ -64,7 +64,7 @@ game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts
   }
   for(int i=0 ; i<LINE ; i++){
     for (int j=0 ; j<COLONNE ; j++){
-      g->matricc
+      g->matrice
     }
   }
 
