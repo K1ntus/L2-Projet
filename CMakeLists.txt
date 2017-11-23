@@ -12,15 +12,15 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(libgame game.o game_io.o)
-SET_TARGET_PROPERTIES(libgame PROPERTIES LINKER_LANGUAGE C)
+add_library(game game.o game_io.o)
+SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 #creation de l executable nom + fichiers dependants
 add_executable(undead_text undead_text.c)
 
 
 #lien entre executable et la bibliotheque
-target_link_libraries(undead_text libgame)
+target_link_libraries(undead_text game)
 
 
 #creation executable test
@@ -28,7 +28,7 @@ add_executable(test test.c)
 
 
 #lien entre executable test et librairie
-target_link_libraries(test libgame)
+target_link_libraries(test game)
 
 
 
