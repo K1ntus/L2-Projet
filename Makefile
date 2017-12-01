@@ -8,27 +8,31 @@ OBJ_TEST= $(.c=.o)
 
 all: $(TEST_EXEC)
 
-libgame.a: game.o game_io.o
-	$(AR) libgame.a game_io.o game.o
+libgame.a: game_lib.o game_io.o
+	$(AR) libgame.a game_io.o game_lib.o
 	
-undead_text: undead_text.o libgame.a
-	$(CC) $(CFLAGS) -o undead_text undead_text.o $(LDFLAGS)
+undead_text: undead_text.o game_lib.o game_io.o
+	$(CC) $(CFLAGS) -o undead_text undead_text.o game_lib.o game_io.o $(LDFLAGS)
 
 undead_text.o: undead_text.c
 	$(CC) $(CFLAGS) -c undead_text.c
 
-game_jordan.o: game_jordan.c
-	$(CC) $(CFLAGS) -c game_jordan.c
+game_lib.o: game_lib.c
+	$(CC) $(CFLAGS) -c game_lib.c
 
 test.o: test.c
 	$(CC) $(CFLAGS) -c test.c
 
-test: test.o game_jordan.o game.o
-	$(CC) $(CFLAGS) -o test test.o $(LDFLAGS)
+test: test.o game_lib.o
+	$(CC) $(CFLAGS) -o test test.o game_lib.o
 
 .PHONY : clean
 clean:
-	ls | grep -v Makefile | xargs rm
+	rm test
+	rm test.o
+	rm undead_text
+	rm undead_text.o
+	rm game_jordan.o
 	rm *.a
 	rm *.txt
 

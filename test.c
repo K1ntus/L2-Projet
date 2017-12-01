@@ -2,7 +2,6 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <stdio.h>
-#include "game.h"
 #include "game_io.h"
 #include <time.h>   // pour rand 
 
