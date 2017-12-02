@@ -34,6 +34,17 @@ typedef enum direction_e {N,S,E,W} direction;
 #define NB_DIR 4
 
 
+
+
+/**
+*
+*
+*	Functions
+*
+*
+**/
+
+
 void init_matrice(game g){  
     g->matrice  = (int **)malloc(sizeof(int *) * COLONNE);
     g->matrice[0] = (int *)malloc(sizeof(int) * LINE * COLONNE); 
@@ -88,20 +99,6 @@ game new_game(void){
 
 /* sample : 
 bool res = true;
-  int nb_ghosts = 2;
-  int nb_vampires = 2;
-  int nb_zombies = 5;
-  int valueNorth[] = {0, 3, 3, 0};
-  int valueSouth[] = {0, 3, 2, 3};
-  int valueEast[] = {0, 0, 3, 2};
-  int valueWest[] = {0, 2, 3, 3};
-  int *values [] = {valueNorth, valueSouth, valueEast, valueWest};
-  content gameBoard[]={ANTIMIRROR, EMPTY, EMPTY, ANTIMIRROR, EMPTY, EMPTY, ANTIMIRROR, MIRROR, ANTIMIRROR, EMPTY, EMPTY, EMPTY, ANTIMIRROR, EMPTY, EMPTY, MIRROR};
-  game g = setup_new_game(values, gameBoard, nb_ghosts, nb_vampires ,nb_zombies);
-*/
-
-/*
-  bool res = true;
   int nb_ghosts = 2;
   int nb_vampires = 2;
   int nb_zombies = 5;
@@ -176,13 +173,7 @@ void delete_game (game g){
 
 
 
-/*
-jordan :
-	set_required_nb_seen
-	set_required_nb_monsters
-	required_nb_seen
-	required_nb_monsters
-*/
+
 
 /**
  * @brief sets the label of a game
@@ -215,6 +206,9 @@ void set_required_nb_seen(game g, direction side, int pos, int value){
 }
 
 
+
+
+
 /**
  * @brief modifies the aimed number of a given monster on the board
  * @param game the game that you want to modify the information about
@@ -240,6 +234,9 @@ void set_required_nb_monsters(game g, content monster, int value){
 		//exit(EXIT_FAILURE);		
 	}
 }
+
+
+
 
 
 /**
@@ -273,6 +270,9 @@ int required_nb_seen(cgame g, direction side, int pos){
 }
 
 
+
+
+
 /**
  * @brief indicates the aimed number of a given monster on the board
  * @param game the game that you want to collect the information about
@@ -295,13 +295,17 @@ int required_nb_monsters(cgame g, content monster){
 	}
 }
 
+
+
+
+
 /**
  * @brief Clone the game g_src
  * @param g_src the game to clone
  * @return the clone of g_src
  **/
 game copy_game (cgame g_src){
-	if(!g_src || ! g_src -> matrice){
+	if(!g_src || !g_src -> matrice){
 		fprintf(stderr, "Error in Function copy_game : Invalid parameters");
 		//exit(EXIT_FAILURE);
 	}
@@ -326,6 +330,9 @@ game copy_game (cgame g_src){
 }
 
 
+
+
+
 /**
  * @brief get the content of a square in the board
  * @param game the game we consider
@@ -335,9 +342,9 @@ game copy_game (cgame g_src){
  **/
 
 int get_content(cgame game, int x, int y){
-	if (x < 0 || x >COLONNE){
+	if (x < 0 || x >= COLONNE){
 		fprintf(stderr, "Wrong x parameter on get_content call\n");
-	} else if (y < 0 || y > LINE){
+	} else if (y < 0 || y >= LINE){
 		fprintf(stderr, "Wrong y parameter on get_content call\n");
 	} else {
 		int tick_content = game->matrice[x][y];
@@ -346,6 +353,10 @@ int get_content(cgame game, int x, int y){
 	return EXIT_FAILURE;
 }
 
+
+
+
+
 /**
  * @brief says how many monsters can be seen on the current game board
  * @param game the game board to look at
@@ -353,62 +364,64 @@ int get_content(cgame game, int x, int y){
  * @param pos the coordinate on that side (from S to N or from W to E)
  * @return the number of monsters that can be seen through all the mirrors from a given side at position x 
  **/
-void debug_current_nb_seen(game g,int posX,int posY){
-	printf("|      Z:%d V:%d G:%d      |\n",
-		required_nb_monsters (g, ZOMBIE), 
-		required_nb_monsters (g, VAMPIRE), 
-		required_nb_monsters (g, GHOST));
-	printf("|                       |\n");
 
-//affichage des nombres cote nord
-	printf("|                       |\n");
-	int tick_content;
+/**
+*
+*
+*	current_nb_seen_util
+*
+*
+**/
 
-	for(int x = COLONNE-1; x >= 0; x--){
-		//Bordures cote gauche && nombres
-		printf("|     ", required_nb_seen(g, W, x));
-		for(int y = 0; y < LINE ; y++){
-			tick_content = get_content(g,y,x);
-			if(x==posX && y == posY){
-				printf("+");
-			}else{
-				printf(" ");
-			}
-			//affichage graphique du contenu des cases
-			if(tick_content == EMPTY){
-				printf("_ ");
-			}
-			if(tick_content == MIRROR){
-				printf("/ ");
-			}
-			if(tick_content == ANTIMIRROR){
-				printf("\\ ");
-			}
-			if(tick_content == ZOMBIE){
-				printf("Z ");
-			}
-			if(tick_content == GHOST){
-				printf("G ");
-			}
-			if(tick_content == VAMPIRE){
-				printf("V ");
-			}
-		}
-		//Bordures cote droit && nombres
-		printf("      |\n",required_nb_seen (g, E, x));
+
+
+direction direction_after_antimirror(direction side) {
+	switch(side){
+		case N:
+			return W;
+		case S:
+			return E;
+		case E:
+			return S;
+		case W:
+			return N;
 	}
-
-	//nombres en bas
-	printf("|                       |\n");
-	printf("|                       |\n");
-	printf("|         start         |\n\n\n");
 }
-int current_nb_seen(cgame g, direction side, int pos){
-	bool mirror_seen = false;
-	bool isEnd = false;
-	int posX, posY, sum=0;
-	//printf("\n\nCurrent_nb_seen : \n\n");
-	//printf("Side : %d, pos: %d\n",side,pos);
+
+direction direction_after_mirror(direction side) {
+	switch(side){
+		case N:
+			return E;
+		case S:
+			return W;
+		case E:
+			return N;
+		case W:
+			return S;
+	}
+}
+
+int *next_pos(int * pos, direction side){
+		if(side == N){
+			pos[1]--;
+		}else if(side == S){
+			pos[1]++;
+		}else if(side == E){
+			pos[0]--;
+		}else if(side == W){
+			pos[0]++;
+		}
+		return pos;
+}
+
+/**
+*
+*	current_nb_seen
+*
+**/
+
+int *current_nb_seen_init(int pos, int *posTab, direction side){
+	int posX=0, posY=0;
 	if(side == N){
 			posX=pos;
 			posY=COLONNE-1;
@@ -424,112 +437,82 @@ int current_nb_seen(cgame g, direction side, int pos){
 	}else if (side == W){
 			posX=0;
 			posY=pos;
+	}	
+	posTab[0]=posX;
+	posTab[1]=posY;
+	return posTab;
+}
 
+void current_nb_seen_debug(direction side, int*pos, int sum){
+	switch(side){
+		case N:
+			printf("Side: North\n");
+			break;
+		case S:
+			printf("Side: South\n");
+			break;
+		case E:
+			printf("Side: East\n");
+			break;
+		case W:
+			printf("Side: West\n");
+			break;
 	}
-	/**
-	 * On this line of sight, Ghosts are only visible when reflected in
-	 * at least one mirror, vampires are visible unless they are reflected in a
-	 * mirror, while Zombies are always visible.
-	 **/
-	while(!isEnd){
-		//printf("x:%d, y:%d, side:%d\n\n",posX, posY, side);
-		//printf("Side:%d\n",side);
-		//printf("posX:%d, posY:%d\n",posX,posY);
+		printf("Sum: %d\n",sum);
+		printf("posX:%d, posY:%d\n",pos[0],pos[1]);
+		printf("\n");
 		//sleep(1);
-		if (posX ==-1 || posX == 4 || posY==-1 ||posY==4){
-			isEnd = true;
+}
+
+int current_nb_seen(game g, direction side, int pos){
+	/**
+	*
+	*	Initialisation
+	*
+	**/
+	bool mirror_seen = false;
+	bool isEnd = false;
+	int sum=0;
+	int *posTab = malloc(sizeof(int)*2);
+	posTab= current_nb_seen_init(pos, posTab, side);
+	while(!isEnd){
+		if (posTab[0] <0 || posTab[0] > COLONNE-1 || posTab[1]<0 ||posTab[1]>LINE-1)
 			return sum;
-		}
-		if(side == N){
-			if(posY<=0){
-				isEnd = true;
-				return sum;
-			}
-			posY--;
-			if(g->matrice[posX][posY] == MIRROR){
-				mirror_seen=true;
-				side = W;
-			}else if(g->matrice[posX][posY] == ANTIMIRROR){
-				mirror_seen=true;
-				side = W;
-			}else if(g->matrice[posX][posY] == ZOMBIE){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == GHOST && mirror_seen){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == VAMPIRE && !mirror_seen){
-				sum+=1;
-			}
 
-		}
-		else if(side == S){
-			if(posY>=LINE-1){
-				isEnd = true;
-				return sum;
-			}
-			posY++;
-			if(g->matrice[posX][posY] == MIRROR){
-				mirror_seen=true;
-				side = W;
-			}else if(g->matrice[posX][posY] == ANTIMIRROR){
-				mirror_seen=true;
-				side = E;
-			}else if(g->matrice[posX][posY] == ZOMBIE){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == GHOST && mirror_seen){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == VAMPIRE && !mirror_seen){
-				sum+=1;
-			}
 
-		}
-		else if(side == E){
-			if(posX<=0){
-				isEnd = true;
-				return sum;
-			}
-			posX--;
-			if(g->matrice[posX][posY] == MIRROR){
-				mirror_seen=true;
-				side = N;
-			}else if(g->matrice[posX][posY] == ANTIMIRROR){
-				mirror_seen=true;
-				side = S;
-			}else if(g->matrice[posX][posY] == ZOMBIE){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == GHOST && mirror_seen){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == VAMPIRE && !mirror_seen){
-				sum+=1;
-			}
+		/**
+		*
+		*	Debug Purpose :
+		*	
+		*
+		**/
+		//current_nb_seen_debug(side, posTab, sum);
 
-		}
-		else if(side == W){
-			if(posX>=COLONNE-1){
-				isEnd = true;
-				return sum;
-			}
-			posX++;
 
-			if(g->matrice[posX][posY] == MIRROR){
-				mirror_seen=true;
-				side = N;
-			}else if(g->matrice[posX][posY] == ANTIMIRROR){
-				mirror_seen=true;
-				side = S;
-			}else if(g->matrice[posX][posY] == ZOMBIE){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == GHOST && mirror_seen){
-				sum+=1;
-			}else if(g->matrice[posX][posY] == VAMPIRE && !mirror_seen){
-				sum+=1;
-			}
+		if(g->matrice[posTab[0]][posTab[1]] == ZOMBIE){
+			sum+=1;
+		}else if(g->matrice[posTab[0]][posTab[1]] == GHOST && mirror_seen){
+			sum+=1;
+		}else if(g->matrice[posTab[0]][posTab[1]] == VAMPIRE && !mirror_seen){
+			sum+=1;
 		}
+		if(g->matrice[posTab[0]][posTab[1]] == MIRROR){
+			side = direction_after_mirror(side);
+			if(!mirror_seen)
+				mirror_seen=true;
+		}else if(g->matrice[posTab[0]][posTab[1]] == ANTIMIRROR){
+			side = direction_after_antimirror(side);
+			if(!mirror_seen)
+				mirror_seen=true;
+		}
+		posTab=next_pos(posTab, side);
 
-		//debug_current_nb_seen(g,posX,posY);
 	}
-	return 0;
+
+	return sum;
 
 }
+
 /**
  * @brief counts the current number of monsters of a given type
  * @param game the game board
@@ -537,34 +520,22 @@ int current_nb_seen(cgame g, direction side, int pos){
  * @return the total number of monsters of the given type on the board.
  **/
 
-int current_nb_monsters(cgame game, content monster){	
-	int sum = 0, tick_content=EMPTY;
-
-	for(int x = 0; x < COLONNE; x++){
-		for(int y = 0; y < LINE ; y++){
-			tick_content = game->matrice[x][y];
-
-			if(tick_content == monster){
-				sum = sum+1;
+int current_nb_monsters(cgame game, content monster){		
+	int sum = 0;
+	//We go through all the board	
+	for (int x = 0 ; x < COLONNE; x++){
+		for(int y = 0; y < LINE; y++){
+		//Everytime we find a monster that matches the wanted monster type, count is increased
+			if (game->matrice[x][y] == monster){
+				sum=sum+1;
 			}
 		}
 	}
-	//printf("SOMME = %d\n",sum );
-	//printf("\nSUM:%d\n", sum);
 	return sum;
 }
 
 
 
-/**
-
-Sarah :
-	restart_game
-	add_monster
-	current_nb_seen
-	current_nb_monsters
-
-**/
 
 
 /**
@@ -589,6 +560,10 @@ void restart_game(game g){
 		}
 	}
 }
+
+
+
+
 
 /**
  * @brief Test if the game is over (that is the grid is filled according to the requirements).
@@ -619,6 +594,9 @@ bool is_game_over (cgame g){
 }
 
 
+
+
+
 /**
  * @brief adds a monster on the game board.
  * Can also be used to remove any monster by adding EMPTY. 
@@ -633,29 +611,10 @@ bool is_game_over (cgame g){
 bool add_monster(game g, content monster, int x, int y){
 	if(g->matrice[x][y] == MIRROR || g->matrice[x][y] == ANTIMIRROR){
 		return false;
-	} else if(x >COLONNE || x < 0 || y < 0 || y > LINE){	
+	} else if(x >=COLONNE || x < 0 || y < 0 || y >= LINE){	
 		return false;
 	} else {
-		switch(monster){
-			case ZOMBIE:
-				g->matrice[x][y] = ZOMBIE;
-				return true;	
-
-			case GHOST:
-				g->matrice[x][y] = GHOST;
-				return true;	
-
-			case VAMPIRE:
-				g->matrice[x][y] = VAMPIRE;
-				return true;	
-
-			case EMPTY:
-				g->matrice[x][y] = EMPTY;
-				return true;
-
-			default:
-				return false;
-		}
+		g->matrice[x][y] = monster;
 	}
 	return false;
 }
