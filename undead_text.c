@@ -34,7 +34,6 @@ Pour l'affichage, vous devez respecter la convention suivante :
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "game.h"
 #include "game_io.h"
 
 #define COLONNE 4
@@ -279,6 +278,7 @@ int main(){
 			break; 
 		}
 		display(g);
+		//debug(g);
 	}
 //fin while
 	//clear();
