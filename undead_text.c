@@ -44,6 +44,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 int nbVampire = 2;
 int nbGhost = 2;
 int nbZombie = 5;
+int spirit = 5; //dépend de la taille de matrice
 
 
 void generate(game g){
@@ -51,6 +52,8 @@ void generate(game g){
 	set_required_nb_monsters (g, ZOMBIE,  nbZombie);
 	set_required_nb_monsters (g, GHOST,  nbGhost);
 	set_required_nb_monsters (g, VAMPIRE,  nbVampire);
+	set_required_nb_monsters (g, SPIRIT,  nbSpirit);
+
 
 //AntiMirror
 	add_mirror(g,1,0,0);
@@ -58,12 +61,15 @@ void generate(game g){
 	add_mirror(g,1,0,3);
 	add_mirror(g,1,3,0);
 	add_mirror(g,1,2,1);
+	//va dépendre de la taille de la matrice 
 
 //Mirror
 	add_mirror(g,0,3,3);
 	add_mirror(g,0,3,1);
+	//va dépendre de la taille de la matrice 
 
 
+	//Tant qu'on sait pas si ça doit etre aléatoire ou non ou change pas
 	set_required_nb_seen (g, N, 0, 0);
 	set_required_nb_seen (g, N, 1, 3);
 	set_required_nb_seen (g, N, 2, 3);
@@ -90,9 +96,12 @@ void generate(game g){
 void display(game g){
 //affichage du nombre de mobs a placer
 	printf("|   Z:%d V:%d G:%d   |\n",
-		required_nb_monsters (g, ZOMBIE), 
+		required_nb_monif(tick_content == VMIRROR){
+				printf("| ");11
+			}sters (g, ZOMBIE), 
 		required_nb_monsters (g, VAMPIRE), 
 		required_nb_monsters (g, GHOST));
+		required_nb_monsters (g, SPIRIT));
 	printf("|                 |\n");
 
 //affichage des nombres cote nord
@@ -115,6 +124,12 @@ void display(game g){
 			}
 			if(tick_content == ANTIMIRROR){
 				printf("\\ ");
+			}
+			if(tick_content == VMIRROR){
+				printf("| ");
+			}
+			if(tick_content == HMIRROR){
+				printf("_ ");
 			}
 			if(tick_content == ZOMBIE){
 				printf("Z ");
@@ -156,8 +171,12 @@ void entry(game g, int x, int y, char mstr){
 					nbGhost++;
 	  				set_required_nb_monsters (g, GHOST,  nbGhost);
 				}
-					add_monster(g, EMPTY, x, y);
-					printf("\n");
+				if(mstr == SPIRIT){
+					nbSpirit++;
+	  				set_required_nb_monsters (g, SPIRIT,  nbSpirit);
+				}
+				add_monster(g, EMPTY, x, y);
+				printf("\n");	
 			}
 
 		//Cas ou l'on veut placer un monstre
@@ -197,6 +216,19 @@ void entry(game g, int x, int y, char mstr){
 					printf("\n");
   				}
 			}
+			
+			if(mstr == 'S' || mstr == 's'){//Si l'utilisateur a entré V (ou v)
+				if(nbSpirit == 0){//S'il ne reste plus de vampires a placer
+					printf("Vous avez déjà placé tous les Spirits\n");
+				}else{
+					nbSpirit--;
+					mstr = SPIRIT;
+	  				//set_required_nb_monsters (g, VAMPIRE,  nbVampire);
+					add_monster(g, mstr, x, y);
+					printf("\n");
+  				}
+			}
+			
 		} else {			
 			printf("\n\nCase non vide, veuillez réessayer\n");
 		}
@@ -270,7 +302,7 @@ int main(){
 			printf("\n\nVOUS AVEZ GAGNE\n\n");
 		}
 //Entrée utilisateur
-		printf("\n\nLe format est le suivant : <x> <y> <G|V|Z|E>,\navec <x> et <y> allant de 0 à 3.\n\n		Commande : ");
+		printf("\n\nLe format est le suivant : <x> <y> <G|V|Z|S|E>,\navec <x> et <y> allant de 0 à 3.\n\n		Commande : ");//le 0 à 3 changera selon la taille de la matrice
 		r = scanf("%d %d %c",&x,&y,&mstr);
 		printf("\n\n");
 //Verification de l'entree utilisateur
