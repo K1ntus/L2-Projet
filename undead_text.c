@@ -97,7 +97,7 @@ void display(game g){
 //affichage du nombre de mobs a placer
 	printf("|   Z:%d V:%d G:%d   |\n",
 		required_nb_monif(tick_content == VMIRROR){
-				printf("| ");11
+				printf("| ");
 			}sters (g, ZOMBIE), 
 		required_nb_monsters (g, VAMPIRE), 
 		required_nb_monsters (g, GHOST));
@@ -105,8 +105,19 @@ void display(game g){
 	printf("|                 |\n");
 
 //affichage des nombres cote nord
-	printf("|     %d %d %d %d     |\n", required_nb_seen(g, N, 0), required_nb_seen(g, N, 1), required_nb_seen(g, N, 2), required_nb_seen (g, N, 3));
-	printf("|                 |\n");
+	//affichage 1re ligne
+	printf("|     ");
+	for(int i=0; i<g->width ; i++){
+		printf("%d ",required_nb_seen(g, N, i));
+	}
+	printf("    |\n");	
+	//affichage 2eme ligne
+	printf("|     ");
+	for(int i=0; i<g->width ; i++){
+		printf(" ");
+	}
+	printf("     |\n");
+	
 	int tick_content;
 
 	for(int x = COLONNE-1; x >= 0; x--){
@@ -146,15 +157,40 @@ void display(game g){
 	}
 
 	//nombres en bas
-	printf("|                 |\n");
-	printf("|     %d %d %d %d     |\n",required_nb_seen (g, S, 0),required_nb_seen (g, S, 1),required_nb_seen (g, S, 2),required_nb_seen (g, S, 3));
-	printf("|                 |\n");
-	printf("|      start      |\n");
+	
+	//affichage ligne vide
+	printf("|     ");
+	for(int i=0; i<g->width ; i++){
+		printf(" ");
+	}
+	printf("     |\n");
+	//affichage 1re ligne
+	printf("|     ");
+	for(int i=0; i<g->width ; i++){
+		printf("%d ",required_nb_seen(g, S, i));
+	}
+	printf("    |\n");	
+	//affichage ligne vide
+	printf("|     ");
+	for(int i=0; i<g->width ; i++){
+		printf(" ");
+	}
+	printf("     |\n");
+	
+	//affichage ligne start (a modifier si la taille est inférieure à 3 
+	printf("|     start");
+	int nbr_space = g->width + g->width-1  // donne la taille en espaces de required nbr seen + leurs espaces 
+	for(int i=0; i<(nbr_space - 5) ; i++){ //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start    
+		printf(" ");
+	}
+	printf("     |\n");
+
+		
 }
 
 
 void entry(game g, int x, int y, char mstr){
-	if (x >= 0 && x <= 3 && y >= 0 && y <= 3 ){ //Verification de la position
+	if (x >= 0 && x <= g->width && y >= 0 && y <= g->height ){ //Verification de la position
 
 			//Cas ou l'on veut supprimer un monstre
 			if(mstr == 'E' || mstr == 'e'){//Si l'utilisateur a entré E (ou e) ie Empty
@@ -293,7 +329,7 @@ int main(){
 	int r, x, y;
 	char mstr;
 	//Génération du jeu 
-  	game g = new_game();
+  	game g = new_game_ext(4, 5);
 	generate(g);
 	display(g);
 	
