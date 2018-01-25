@@ -7,16 +7,12 @@
 //Structure containing the game
 struct game_s{
 	int **matrice;
-	int vampires;
-	int ghosts;
-	int zombies;
-  int spirit;
-  int width;
-  int height;
-	int valuesNorth[4];
-	int valuesSouth[4];
-	int valuesEast[4];
-	int valuesWest[4];
+	int vampires, ghosts, zombies, spirit;
+  int width, height;
+	int *valuesNorth;
+	int *valuesSouth;
+	int *valuesEast;
+	int *valuesWest;
 };
 
 typedef struct game_s* game;
@@ -67,7 +63,7 @@ void memory_test(game g){
 }
 
 game new_game_ext(int width, int height){
-	game g = malloc(sizeof(game)+(3*sizeof(int))+(16*sizeof(int)));
+	game g = malloc(sizeof(game)+(3*sizeof(int))+(16*sizeof(int))+4*sizeof(int));
 
 	//Game board creation (dimension : width/height) and required mallocs.
 	init_matrice(g, width, height);
@@ -85,12 +81,15 @@ game new_game_ext(int width, int height){
   g->spirit    = 0;
 
 	//Initialisation of each required_nb_seen value
-	for(unsigned int i = 0;  i < width;i++){
+	g->valuesNorth = malloc(g->height * sizeof(int));
+	g->valuesSouth = malloc(g->height * sizeof(int));
+	for(unsigned int i = 0;  i < g->height;i++){
 		g->valuesNorth[i] = 0;
 		g->valuesSouth[i] = 0;
 	}
-
-	for(unsigned int i = 0; i < height; i++){
+	g->valuesEast = malloc(g->height * sizeof(int));
+	g->valuesWest = malloc(g->height * sizeof(int));
+	for(unsigned int i = 0; i < g->width; i++){
 		g->valuesEast[i] = 0;
 		g->valuesWest[i] = 0;
 	}
@@ -98,10 +97,41 @@ game new_game_ext(int width, int height){
 	return g;
 }
 
-game setup_new_game_ext(int width, int height, int *labels[NB_DIR], content * board,
-                        int required_nb_ghosts,  int required_nb_vampires,
-                        int required_nb_zombies, int required_nb_spirits);
 
+//TODO
+game setup_new_game_ext(int width, int height,
+												int *labels[NB_DIR], content * board,
+												int required_nb_ghosts, int required_nb_vampires,
+												int required_nb_zombies, int required_nb_spirits){
+	game g = new_game_ext(width, height);
+	memory_test(g);
+
+	g->vampires = required_nb_vampires;
+	g->ghosts = required_nb_ghosts;
+	g->spirit = required_nb_spirits;
+	g->zombies = required_nb_zombies;
+
+	for(int i=0 ; i<g->width ; i++){
+		g->valuesNorth[i] = labels[0][i]; // on supose que 0 equivalent a valueNorth
+		g->valuesSouth[i] = labels[1][i]; // ..	..   .. 1	  ..	. valueSouth
+	}
+
+	for(unsigned int i = 0; i < g->height; i++){
+		g->valuesEast[i] = labels[2][i]; //  ..	..   .. 2	  ..	. valueEast
+		g->valuesWest[i] = labels[3][i]; //  ..	..   .. 3	  ..	. valueWest
+	}
+
+	int i = 0; // caze parce que case c'est un reserver au switch case
+	for(int x=0 ; x<g->height ; x++){
+		for (int y=0; y<g->width ; y++){
+			g->matrice[y][x] = board[i];
+			i++;
+		}
+	}
+	//g->matrice[LINE-1][COLONNE-1] = board[LINE*COLONNE-1];
+
+  return g;
+}
 
 
 
@@ -138,7 +168,7 @@ void add_mirror_ext(game game, content mirror_type, int col, int line){
 	  		game->matrice[col][line] = HMIRROR;
 				break;
 			default:
-	  		fprintf(stderr,"Error while placing mirror");
+	  		fprintf(stderr,"Error while placing mirror\n");
 		}
 
 }
@@ -394,9 +424,9 @@ direction direction_after_mirror(direction side) {
 direction direction_after_vmirror(direction side) {
 	switch(side){
 		case N:
-			return S;
-		case S:
 			return N;
+		case S:
+			return S;
 		case E:
 			return W;
 		case W:
@@ -414,9 +444,9 @@ direction direction_after_hmirror(direction side) {
 		case S:
 			return N;
 		case E:
-			return W;
-		case W:
 			return E;
+		case W:
+			return W;
 		default:
 			fprintf(stderr, "Error while switching side after a horizontal mirror\n");
 			return EXIT_FAILURE;
@@ -440,7 +470,7 @@ int *next_pos(int * pos, direction side){
 			pos[0]++;
 			return pos;
 		default:
-			fprintf(stderr, "Unable to calculate next position for\ncurrent_nb_seen.\n");
+			fprintf(stderr, "Unable to calculate next position for\nNext_pos.\n");
 			exit(EXIT_FAILURE);
 	}
 }
@@ -489,9 +519,9 @@ int current_nb_seen(cgame game, direction side, int pos){
 	while(!isEnd){
 		//If x OR y is invalid
 		if (posTab[0] <0
-          || posTab[0] > game->width -1
+          || posTab[0] > game->width-1
           || posTab[1] < 0
-          || posTab[1] > game->height -1) {
+          || posTab[1] > game->height-1) {
   		free(posTab);
   		return sum;
 		}
@@ -507,6 +537,8 @@ int current_nb_seen(cgame game, direction side, int pos){
 			sum+=1;
 		}else if(game->matrice[posTab[0]][posTab[1]] == GHOST && mirror_seen){
 			sum+=1;
+		}else if(game->matrice[posTab[0]][posTab[1]] == SPIRIT){
+			//ON FAIT QUE DALLE
 		}else if(game->matrice[posTab[0]][posTab[1]] == VAMPIRE && !mirror_seen){
 			sum+=1;
 		}else if(game->matrice[posTab[0]][posTab[1]] == MIRROR){
@@ -570,10 +602,4 @@ bool is_game_over (cgame g){
 		}
 	}
 	return true;
-}
-
-
-int main(){
-	game g = new_game_ext(5,5);
-	return 1;
 }

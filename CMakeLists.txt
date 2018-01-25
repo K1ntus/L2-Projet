@@ -38,7 +38,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(game game_lib.c game_io.o)
+add_library(game game_lib_v2.c game_io.o)
 SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 #creation de l executable nom + fichiers dependants
@@ -65,4 +65,3 @@ add_test(test_output test_exec COMMAND valgrind --tool=memcheck --log-file=log.t
 #add_custom_target(memory_test COMMAND ${CMAKE_CTEST_COMMAND} script.sh)
 
 #add_test(NAME test_output COMMAND valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2 ./test0)
-

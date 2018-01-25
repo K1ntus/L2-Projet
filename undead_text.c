@@ -1,19 +1,19 @@
 /*
-- un fichier undead_text.c qui maintenant permet de jouer à undead. 
+- un fichier undead_text.c qui maintenant permet de jouer à undead.
 L'instance qui sera chargée sera exactement celle contenue comme exemple dans game.h.
 Le fonctionnement du jeu doit être le suivant :
 
 tant que la solution n'est pas trouvée :
    afficher la grille
    lire un coup sur l'entrée standard : (le format est le suivant : <x> <y> <G|V|Z>\n )
-   si le coup est valide alors 
+   si le coup est valide alors
 	   jouer ce coup
    sinon
 	   ignorer ce coup
 fin tant que
 afficher la grille
 
-Pour l'affichage, vous devez respecter la convention suivante : 
+Pour l'affichage, vous devez respecter la convention suivante :
 
  @verbatim
  |   Z:5 V:2 G:2   |   Z:5 V:2 G:2   |
@@ -22,7 +22,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
  |                 |                 |
  |  3  \     /  2  |  3  \ V V /  2  |
  |  3  \        3  |  3  \ Z Z Z  3  |
- |  2      \ /  0  |  2  Z G \ /  0  | 
+ |  2      \ /  0  |  2  Z G \ /  0  |
  |  0  \     \  0  |  0  \ Z G \  0  |
  |                 |                 |
  |     0 3 2 3     |     0 3 2 3     |
@@ -44,7 +44,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 int nbVampire = 2;
 int nbGhost = 2;
 int nbZombie = 5;
-int spirit = 5; //dépend de la taille de matrice
+int nbSpirit = 5; //dépend de la taille de matrice
 
 
 void generate(game g){
@@ -56,17 +56,17 @@ void generate(game g){
 
 
 //AntiMirror
-	add_mirror(g,1,0,0);
-	add_mirror(g,1,0,2);
-	add_mirror(g,1,0,3);
-	add_mirror(g,1,3,0);
-	add_mirror(g,1,2,1);
-	//va dépendre de la taille de la matrice 
+	add_mirror_ext(g,ANTIMIRROR,0,0);
+	add_mirror_ext(g,ANTIMIRROR,0,2);
+	add_mirror_ext(g,ANTIMIRROR,0,3);
+	add_mirror_ext(g,ANTIMIRROR,3,0);
+	add_mirror_ext(g,ANTIMIRROR,2,1);
+	//va dépendre de la taille de la matrice
 
 //Mirror
-	add_mirror(g,0,3,3);
-	add_mirror(g,0,3,1);
-	//va dépendre de la taille de la matrice 
+	add_mirror_ext(g,MIRROR,3,3);
+	add_mirror_ext(g,MIRROR,3,1);
+	//va dépendre de la taille de la matrice
 
 
 	//Tant qu'on sait pas si ça doit etre aléatoire ou non ou change pas
@@ -95,35 +95,34 @@ void generate(game g){
 
 void display(game g){
 //affichage du nombre de mobs a placer
-	printf("|   Z:%d V:%d G:%d   |\n",
-		required_nb_monif(tick_content == VMIRROR){
-				printf("| ");
-			}sters (g, ZOMBIE), 
-		required_nb_monsters (g, VAMPIRE), 
-		required_nb_monsters (g, GHOST));
-		required_nb_monsters (g, SPIRIT));
-	printf("|                 |\n");
+	printf("|   Z:%d V:%d G:%d S:%d   |\n",
+		required_nb_monsters(g, ZOMBIE),
+		required_nb_monsters(g, VAMPIRE),
+		required_nb_monsters(g, GHOST),
+		required_nb_monsters(g, SPIRIT));
+
+	printf("|                     |\n");
 
 //affichage des nombres cote nord
 	//affichage 1re ligne
 	printf("|     ");
-	for(int i=0; i<g->width ; i++){
+	for(int i=0; i<game_width(g) ; i++){
 		printf("%d ",required_nb_seen(g, N, i));
 	}
-	printf("    |\n");	
+	printf("    |\n");
 	//affichage 2eme ligne
 	printf("|     ");
-	for(int i=0; i<g->width ; i++){
+	for(int i=0; i<game_width(g) ; i++){
 		printf(" ");
 	}
 	printf("     |\n");
-	
+
 	int tick_content;
 
-	for(int x = COLONNE-1; x >= 0; x--){
+	for(int x = game_height(g)-1; x >= 0; x--){
 		//Bordures cote gauche && nombres
 		printf("|  %d  ", required_nb_seen(g, W, x));
-		for(int y = 0; y < LINE ; y++){
+		for(int y = 0; y < game_width(g) ; y++){
 			tick_content = get_content(g,y,x);
 
 			//affichage graphique du contenu des cases
@@ -151,46 +150,49 @@ void display(game g){
 			if(tick_content == VAMPIRE){
 				printf("V ");
 			}
+			if(tick_content == SPIRIT){
+				printf("S ");
+			}
 		}
 		//Bordures cote droit && nombres
 		printf(" %d  |\n",required_nb_seen (g, E, x));
 	}
 
 	//nombres en bas
-	
+
 	//affichage ligne vide
 	printf("|     ");
-	for(int i=0; i<g->width ; i++){
+	for(int i=0; i<game_width(g) ; i++){
 		printf(" ");
 	}
 	printf("     |\n");
 	//affichage 1re ligne
 	printf("|     ");
-	for(int i=0; i<g->width ; i++){
+	for(int i=0; i<game_width(g) ; i++){
 		printf("%d ",required_nb_seen(g, S, i));
 	}
-	printf("    |\n");	
+	printf("    |\n");
 	//affichage ligne vide
 	printf("|     ");
-	for(int i=0; i<g->width ; i++){
-		printf(" ");
-	}
-	printf("     |\n");
-	
-	//affichage ligne start (a modifier si la taille est inférieure à 3 
-	printf("|     start");
-	int nbr_space = g->width + g->width-1  // donne la taille en espaces de required nbr seen + leurs espaces 
-	for(int i=0; i<(nbr_space - 5) ; i++){ //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start    
+	for(int i=0; i<game_width(g) ; i++){
 		printf(" ");
 	}
 	printf("     |\n");
 
-		
+	//affichage ligne start (a modifier si la taille est inférieure à 3
+	printf("|     start");
+	int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
+	for(int i=0; i<(nbr_space - 5) ; i++){ //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start
+		printf(" ");
+	}
+	printf("     |\n");
+
+
 }
 
 
 void entry(game g, int x, int y, char mstr){
-	if (x >= 0 && x <= g->width && y >= 0 && y <= g->height ){ //Verification de la position
+	if (x >= 0 && x <= game_width(g) && y >= 0 && y <= game_height(g) ){ //Verification de la position
 
 			//Cas ou l'on veut supprimer un monstre
 			if(mstr == 'E' || mstr == 'e'){//Si l'utilisateur a entré E (ou e) ie Empty
@@ -212,7 +214,7 @@ void entry(game g, int x, int y, char mstr){
 	  				set_required_nb_monsters (g, SPIRIT,  nbSpirit);
 				}
 				add_monster(g, EMPTY, x, y);
-				printf("\n");	
+				printf("\n");
 			}
 
 		//Cas ou l'on veut placer un monstre
@@ -252,7 +254,7 @@ void entry(game g, int x, int y, char mstr){
 					printf("\n");
   				}
 			}
-			
+
 			if(mstr == 'S' || mstr == 's'){//Si l'utilisateur a entré V (ou v)
 				if(nbSpirit == 0){//S'il ne reste plus de vampires a placer
 					printf("Vous avez déjà placé tous les Spirits\n");
@@ -264,8 +266,8 @@ void entry(game g, int x, int y, char mstr){
 					printf("\n");
   				}
 			}
-			
-		} else {			
+
+		} else {
 			printf("\n\nCase non vide, veuillez réessayer\n");
 		}
 	} else {
@@ -328,11 +330,11 @@ bool usage (game g, int r, int x, int y, char mstr){
 int main(){
 	int r, x, y;
 	char mstr;
-	//Génération du jeu 
-  	game g = new_game_ext(4, 5);
+	//Génération du jeu
+  	game g = new_game_ext(5, 5);
 	generate(g);
 	display(g);
-	
+
 	while(is_game_over(g) != true){
 		if(is_game_over(g)){
 			printf("\n\nVOUS AVEZ GAGNE\n\n");
@@ -343,7 +345,7 @@ int main(){
 		printf("\n\n");
 //Verification de l'entree utilisateur
 		if(!usage(g, r, x, y, mstr)){ //qu'en cas d'erreur importante (ie r == EOF)
-			break; 
+			break;
 		}
 		display(g);
 		//debug(g);
@@ -357,4 +359,3 @@ int main(){
   	delete_game(g);
   	return EXIT_SUCCESS;
 }
-
