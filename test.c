@@ -5,8 +5,6 @@
 #include "game_lib_v2.c"
 #include <time.h>   // pour rand
 
-#define COLONNE 4
-#define LINE 4
 
 void generate(game g){
 
@@ -68,8 +66,8 @@ bool test_add_monster_ghost(){
 
     res=false;
   }
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           res=false;
@@ -90,8 +88,8 @@ bool test_add_monster_zombie(){
   if(get_content(g,2,2) != ZOMBIE){
     res = false;
   }
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           res = false;
@@ -112,8 +110,8 @@ bool test_add_monster_vampire(){
   if(get_content(g,2,2) != VAMPIRE){
     res = false;
   }
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           res = false;
@@ -147,8 +145,8 @@ bool test_add_monster(){
   int sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
   sum += current_nb_monsters(g, ZOMBIE);
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x != 1 || y != 2)
       if(get_content(g,x,y) != EMPTY){
         res=false;
@@ -272,7 +270,7 @@ bool test_current_nb_seen_advanced(){
   assert(g);
   generate(g);
   for(unsigned int i = 0; i < 4; i++){
-    for(unsigned int j = 0; j < 5; j++){
+    for(unsigned int j = 0; j < 4; j++){
       if(required_nb_seen(g,i,j) != current_nb_seen(g,i,j)){
 
         res=false;
@@ -312,21 +310,17 @@ bool test_new_game_advanced(){
   delete_game(g);
   return res;
 }
-
-//game new_game_ext(5,5);
+/*
 bool test_new_game(){
   bool res = true;
   res = test_new_game_advanced() && res;
-  game g= new_game_ext(5,5);
+  game g= new_game();
   assert(g);
   if(g == NULL){
     res=false;
   }
-  //printf("Address: %p\n", &g);
-  //printf("Address: %p\n", (void *)g+4);
-  //NOP : assert(get_content(g, 5, 5));
-  for(unsigned int i = 0; i < COLONNE; i++){
-    for(unsigned int j = 0; j < LINE; j++){
+  for(unsigned int i = 0; i < g -> width; i++){
+    for(unsigned int j = 0; j < g -> height; j++){
       if(get_content(g, i, j) != EMPTY){
         res=false;
       }
@@ -350,6 +344,49 @@ bool test_new_game(){
   }
 
   printf(res ? "INFO:  test_new_game : success\n" : "ERROR: test_new_game failed\n");
+  delete_game(g);
+  //printf("Address: %p\n", &g);
+  //printf("Address: %p\n", (void *)g);
+  return res;
+}*/
+
+//game new_game_ext(5,5);
+bool test_new_game_ext(){
+  bool res = true;
+  res = test_new_game_advanced() && res;
+  game g= new_game_ext(5,5);
+  assert(g);
+  if(g == NULL){
+    res=false;
+  }
+  //printf("Address: %p\n", &g);
+  //printf("Address: %p\n", (void *)g+4);
+  //NOP : assert(get_content(g, 5, 5));
+  for(unsigned int i = 0; i < g -> width; i++){
+    for(unsigned int j = 0; j < g -> height; j++){
+      if(get_content(g, i, j) != EMPTY){
+        res=false;
+      }
+    }
+  }
+
+  for(unsigned int i = 0; i < 4; i++){
+    for(unsigned int j = 0; j < 4; j++){
+      if(required_nb_seen(g, j, i) != 0){
+        res=false;
+      }
+    }
+  }
+
+  for(unsigned int i = 0; i < 4; i++){
+    for(unsigned int j = 0; j < 4; j++){
+      if( current_nb_seen(g,i,j) != 0){
+        res=false;
+      }
+    }
+  }
+
+  printf(res ? "INFO:  test_new_game_ext : success\n" : "ERROR: test_new_game_ext failed\n");
   delete_game(g);
   //printf("Address: %p\n", &g);
   //printf("Address: %p\n", (void *)g);
@@ -409,7 +446,7 @@ bool test_delete_game(){
   return res;
 }
 
-//content get_content(cgame game, int col, int line);
+//content get_content(cgame game, int col, int g -> height);
 bool test_get_content(){
   bool res=true;
   game g = new_game_ext(5,5);
@@ -442,7 +479,7 @@ bool test_get_content(){
   return res;
 }
 
-//void add_mirror_ext(game game, int dir, int col, int line);
+//void add_mirror_ext(game game, int dir, int col, int g -> height);
 bool test_add_mirror_ext(){
   bool res=true;
   game g = new_game_ext(5,5);
@@ -452,8 +489,8 @@ bool test_add_mirror_ext(){
     assert(g);
     res=false;
   }
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x != 1 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           assert(g);
@@ -471,8 +508,8 @@ bool test_add_mirror_ext(){
     assert(g);
     res=false;
   }
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x != 1 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           assert(g);
@@ -564,8 +601,8 @@ bool test_restart_game(){
   sum += current_nb_monsters(g, GHOST);
   sum += current_nb_monsters(g, ZOMBIE);
   restart_game(g);
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(get_content(g,x,y) != EMPTY){
         res=false;
       }
@@ -581,8 +618,8 @@ bool test_restart_game(){
 
   add_mirror_ext(g,MIRROR,2,1);
   restart_game(g);
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x !=2 && y !=1)
       if(get_content(g,x,y) != EMPTY){
         res=false;
@@ -594,8 +631,8 @@ bool test_restart_game(){
   delete_game(g);
   g=new_game_ext(5,5);
   restart_game(g);
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
       if(x !=1 && y !=2)
       if(get_content(g,x,y) != EMPTY){
         res=false;
@@ -613,7 +650,7 @@ bool test_is_game_over(){
   bool res = true;
   game g = new_game_ext(5,5);
   assert(g);
-  generate(g);
+
 
   if(is_game_over(g) == false){
     res=false;
@@ -628,20 +665,9 @@ bool test_copy_game(){
   game g = new_game_ext(5,5);
   game g1 = copy_game(g);
 
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
-      if(get_content(g1,x,y) != EMPTY){
-        res=false;
-      }
-    }
-  }
-  delete_game(g1);
-  generate(g);
-  g1 = copy_game(g);
-  assert(g);
-  for(unsigned int x = 0; x < COLONNE; x++){
-    for(unsigned int y = 0; y < LINE; y++){
-      if(get_content(g1,x,y) == EMPTY){
+  for(unsigned int x = 0; x < g -> width; x++){
+    for(unsigned int y = 0; y < g -> height; y++){
+      if(get_content(g1,x,y) != get_content(g, x, y)){
         res=false;
       }
     }
@@ -684,6 +710,21 @@ bool test_setup_new_game_ext(){
   return res;
 }
 
+bool test_game_dimensions(){
+  bool res = true;
+  game g = new_game_ext(5,6);
+  assert(g);
+  if (g -> width < 0 || g -> height < 0){
+    res = false;
+  }
+  if(g -> width != 5 || g -> height != 6){
+    res = false;
+  }
+  printf(res ? "INFO : test_game_dimensions : success\n" : "ERROR: test_game_dimensions Failed\n");
+  delete_game(g);
+  return res;
+}
+
 int main(void){
   bool result = true;
 
@@ -693,7 +734,7 @@ int main(void){
   result = test_set_required_nb_monsters() && result;
   result = test_restart_game() && result;
   result = test_delete_game() && result;
-  result = test_new_game() && result;
+  result = test_new_game_ext() && result;
   result = test_add_monster() && result;
   result = test_current_nb_monster() && result;
 
@@ -703,6 +744,7 @@ int main(void){
   result = test_is_game_over() && result;
   result = test_copy_game() && result;
   result = test_setup_new_game_ext() && result;
+  result = test_game_dimensions() && result;
 
   if(result){
       printf("\nINFO:  All tests successsfull\n\n");
