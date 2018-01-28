@@ -178,7 +178,7 @@ bool test_add_monster(){
       }
     }
   }
-  
+
   printf(res ? "INFO:  test_add_monster : success\n" : "ERROR: test_add_monster failed\n");
   delete_game(g);
   return res;
@@ -692,7 +692,7 @@ bool test_setup_new_game_ext(){
   if(!is_game_over(g)){
     res = false;
   }
-  printf(res ? "INFO:  test_setup_new_game : success\n" : "ERROR: test_setup_new_game failed\n");
+  printf(res ? "INFO:  test_setup_new_game_ext : success\n" : "ERROR: test_setup_new_game_ext failed\n");
   delete_game(g);
   return res;
 }
@@ -734,7 +734,7 @@ int main(void){
   result = test_game_dimensions() && result;
 
   if(result){
-      printf("\nINFO:  All tests successsfull\n\n");
+      printf("\nINFO:  All tests successfull\n\n");
       return EXIT_SUCCESS;
   }
   else{
