@@ -13,14 +13,14 @@ void generate(game g){
   set_required_nb_monsters (g, SPIRIT, 2);
   set_required_nb_monsters (g, VAMPIRE,  2);
 //AntiMirror
-  add_mirror_ext(g,MIRROR,0,0);
-  add_mirror_ext(g,MIRROR,0,2);
-  add_mirror_ext(g,MIRROR,0,3);
-  add_mirror_ext(g,MIRROR,3,0);
-  add_mirror_ext(g,MIRROR,2,1);
+  add_mirror_ext(g,ANTIMIRROR,0,0);
+  add_mirror_ext(g,ANTIMIRROR,0,2);
+  add_mirror_ext(g,ANTIMIRROR,0,3);
+  add_mirror_ext(g,ANTIMIRROR,3,0);
+  add_mirror_ext(g,ANTIMIRROR,2,1);
 //Mirror
-  add_mirror_ext(g,ANTIMIRROR,3,3);
-  add_mirror_ext(g,ANTIMIRROR,3,1);
+  add_mirror_ext(g,MIRROR,3,3);
+  add_mirror_ext(g,MIRROR,3,1);
 
 
   set_required_nb_seen (g, N, 0, 0);
@@ -59,7 +59,7 @@ void generate(game g){
 
 bool test_add_monster_ghost(){
   bool res = true;
-  game g =new_game_ext(5,5);
+  game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,GHOST,2,2);
   if(get_content(g,2,2) != GHOST){
@@ -82,7 +82,7 @@ bool test_add_monster_ghost(){
 
 bool test_add_monster_zombie(){
   bool res = true;
-  game g =new_game_ext(5,5);
+  game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,ZOMBIE,2,2);
   if(get_content(g,2,2) != ZOMBIE){
@@ -104,7 +104,7 @@ bool test_add_monster_zombie(){
 
 bool test_add_monster_vampire(){
   bool res = true;
-  game g =new_game_ext(5,5);
+  game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,VAMPIRE,2,2);
   if(get_content(g,2,2) != VAMPIRE){
@@ -131,7 +131,7 @@ bool test_add_monster(){
   res = test_add_monster_vampire() && res;
   res = test_add_monster_zombie() && res;
   res = test_add_monster_ghost() && res;
-  game g =new_game_ext(5,5);
+  game g =new_game_ext(4,4);
   if(res == false){
     res=false;
   }
@@ -160,7 +160,7 @@ bool test_add_monster(){
 
 bool test_current_nb_monster(){
   bool res=true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   add_monster(g, GHOST, 1, 1);
   add_monster(g, ZOMBIE, 1, 1);
@@ -199,7 +199,7 @@ bool test_current_nb_monster(){
 //void set_required_nb_seen(game game, direction side, int pos, int value);
 bool test_current_nb_seen(){
   bool res=true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   add_monster(g, VAMPIRE, 1, 0);
   add_monster(g, ZOMBIE, 2, 0);
@@ -214,12 +214,12 @@ bool test_current_nb_seen(){
     res=false;
   }
   restart_game(g);
-  add_mirror_ext(g,MIRROR,0,0);
+  add_mirror_ext(g,ANTIMIRROR,0,0);
   if(current_nb_seen(g,S,0)!=0){
     res=false;
   }
   restart_game(g);
-  add_mirror_ext(g,ANTIMIRROR,0,0);
+  add_mirror_ext(g,MIRROR,0,0);
   add_monster(g, VAMPIRE, 1, 0);
   add_monster(g, ZOMBIE, 2, 0);
   add_monster(g, GHOST, 3, 0);
@@ -227,10 +227,10 @@ bool test_current_nb_seen(){
     res=false;
   }
   delete_game(g);
-  g = new_game_ext(5,5);
+  g = new_game_ext(4,4);
 
-  add_mirror_ext(g,MIRROR,0,0);
-  add_mirror_ext(g,ANTIMIRROR,3,0);
+  add_mirror_ext(g,ANTIMIRROR,0,0);
+  add_mirror_ext(g,MIRROR,3,0);
   add_monster(g,VAMPIRE,1,0);
   add_monster(g,GHOST,2,0);
 
@@ -244,9 +244,9 @@ bool test_current_nb_seen(){
     res=false;
   }
   delete_game(g);
-  g = new_game_ext(5,5);
-  add_mirror_ext(g,MIRROR,0,0);
-  add_mirror_ext(g,ANTIMIRROR,3,0);
+  g = new_game_ext(4,4);
+  add_mirror_ext(g,ANTIMIRROR,0,0);
+  add_mirror_ext(g,MIRROR,3,0);
   add_monster(g,ZOMBIE,1,0);
 
   if(current_nb_seen(g,N,0)!=1 || current_nb_seen(g,N,1)!=1 || current_nb_seen(g,N,2)!=0 || current_nb_seen(g,N,3)!=1){
@@ -266,7 +266,7 @@ bool test_current_nb_seen(){
 
 bool test_current_nb_seen_advanced(){
   bool res = true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   generate(g);
   for(unsigned int i = 0; i < 4; i++){
@@ -284,7 +284,7 @@ bool test_current_nb_seen_advanced(){
 
 bool test_new_game_advanced(){
   bool res = true;
-  game g= new_game_ext(5,5);
+  game g= new_game_ext(4,4);
   assert(g);
   add_monster(g,GHOST,2,2);
   if(get_content(g,2,2) != GHOST){
@@ -292,7 +292,7 @@ bool test_new_game_advanced(){
     res=false;
   }
   delete_game(g);
-  g=new_game_ext(5,5);
+  g=new_game_ext(4,4);
   add_monster(g,GHOST,2,2);
   restart_game(g);
 
@@ -301,7 +301,7 @@ bool test_new_game_advanced(){
     res=false;
   }
   delete_game(g);
-  g=new_game_ext(5,5);
+  g=new_game_ext(4,4);
   if(get_content(g,2,2) != EMPTY){
 
     res=false;
@@ -350,11 +350,11 @@ bool test_new_game(){
   return res;
 }*/
 
-//game new_game_ext(5,5);
+//game new_game_ext(4,4);
 bool test_new_game_ext(){
   bool res = true;
   res = test_new_game_advanced() && res;
-  game g= new_game_ext(5,5);
+  game g= new_game_ext(4,4);
   assert(g);
   if(g == NULL){
     res=false;
@@ -395,9 +395,9 @@ bool test_new_game_ext(){
 
 bool test_delete_game_advanced(){
   bool res = true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
-  game g1 = new_game_ext(5,5);
+  game g1 = new_game_ext(4,4);
   assert(g);
   add_monster(g, VAMPIRE, 0, 1);
   delete_game(g1);
@@ -414,13 +414,13 @@ bool test_delete_game_advanced(){
 bool test_delete_game(){
   bool res=true;
   res = test_delete_game_advanced()&&res;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   add_monster(g, VAMPIRE, 0, 1);
   add_monster(g, ZOMBIE, 0, 1);
   add_monster(g, GHOST, 0, 1);
   delete_game(g);
-  g = new_game_ext(5,5);
+  g = new_game_ext(4,4);
   assert(g);
   int sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
@@ -430,7 +430,7 @@ bool test_delete_game(){
     res=false;
   }
   delete_game(g);
-  g=new_game_ext(5,5);
+  g=new_game_ext(4,4);
   //chech current nb seen etc
   add_monster(g,ZOMBIE,0,0);
   add_monster(g,GHOST,0,1);
@@ -449,7 +449,7 @@ bool test_delete_game(){
 //content get_content(cgame game, int col, int g -> height);
 bool test_get_content(){
   bool res=true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   add_monster(g, GHOST, 0, 1);
   add_monster(g, VAMPIRE, 0, 2);
@@ -482,7 +482,7 @@ bool test_get_content(){
 //void add_mirror_ext(game game, int dir, int col, int g -> height);
 bool test_add_mirror_ext(){
   bool res=true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   add_mirror_ext(g, MIRROR, 1, 2);
   if(get_content(g, 1, 2) != MIRROR) {
@@ -528,7 +528,7 @@ bool test_add_mirror_ext(){
 //int required_nb_seen(cgame game, direction side, int pos);
 bool test_set_required_nb_seen(){
   bool res = true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   set_required_nb_seen( g , N , 0 , 1);
   if(required_nb_seen(g,N,0) != 1){
@@ -574,7 +574,7 @@ bool test_set_required_nb_seen(){
 //int required_nb_monsters(cgame game, content monster);
 bool test_set_required_nb_monsters(){
   bool res = true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
   set_required_nb_monsters(g, ZOMBIE, 2);
   if(required_nb_monsters(g, ZOMBIE) != 2){
@@ -593,7 +593,7 @@ bool test_set_required_nb_monsters(){
 bool test_restart_game(){
   bool res = true;
   int sum = 0;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
 
 
@@ -629,7 +629,7 @@ bool test_restart_game(){
 
   add_mirror_ext(g, MIRROR, 1, 2);
   delete_game(g);
-  g=new_game_ext(5,5);
+  g=new_game_ext(4,4);
   restart_game(g);
   for(unsigned int x = 0; x < g -> width; x++){
     for(unsigned int y = 0; y < g -> height; y++){
@@ -648,7 +648,7 @@ bool test_restart_game(){
 
 bool test_is_game_over(){
   bool res = true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   assert(g);
 
 
@@ -662,7 +662,7 @@ bool test_is_game_over(){
 
 bool test_copy_game(){
   bool res = true;
-  game g = new_game_ext(5,5);
+  game g = new_game_ext(4,4);
   game g1 = copy_game(g);
 
   for(unsigned int x = 0; x < g -> width; x++){
@@ -683,7 +683,7 @@ bool test_setup_new_game_ext(){
   bool res = true;
   int nb_ghosts = 2;
   int nb_vampires = 2;
-  int nb_spirits = 2;
+  int nb_spirits = 0;
   int nb_zombies = 5;
   int valueNorth[] = {0, 3, 3, 0};
   int valueSouth[] = {0, 3, 2, 3};
@@ -691,7 +691,7 @@ bool test_setup_new_game_ext(){
   int valueWest[] = {0, 2, 3, 3};
   int *values [] = {valueNorth, valueSouth, valueEast, valueWest};
   content gameBoard[]={ANTIMIRROR, EMPTY, EMPTY, ANTIMIRROR, EMPTY, EMPTY, ANTIMIRROR, MIRROR, ANTIMIRROR, EMPTY, EMPTY, EMPTY, ANTIMIRROR, EMPTY, EMPTY, MIRROR};
-  game g = setup_new_game_ext(5,5, values, gameBoard, nb_ghosts, nb_vampires ,nb_zombies, nb_spirits);
+  game g = setup_new_game_ext(4,4, values, gameBoard, nb_ghosts, nb_vampires ,nb_zombies, nb_spirits);
   assert(g);
   add_monster(g,GHOST, 1, 1);
   add_monster(g,GHOST, 2, 0);
