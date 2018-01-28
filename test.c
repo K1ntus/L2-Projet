@@ -10,14 +10,16 @@ void generate(game g){
 
   set_required_nb_monsters (g, ZOMBIE,  5);
   set_required_nb_monsters (g, GHOST, 2);
-  set_required_nb_monsters (g, SPIRIT, 2);
+  set_required_nb_monsters (g, SPIRIT, 0);
   set_required_nb_monsters (g, VAMPIRE,  2);
+
 //AntiMirror
   add_mirror_ext(g,ANTIMIRROR,0,0);
   add_mirror_ext(g,ANTIMIRROR,0,2);
   add_mirror_ext(g,ANTIMIRROR,0,3);
   add_mirror_ext(g,ANTIMIRROR,3,0);
   add_mirror_ext(g,ANTIMIRROR,2,1);
+
 //Mirror
   add_mirror_ext(g,MIRROR,3,3);
   add_mirror_ext(g,MIRROR,3,1);
@@ -43,8 +45,8 @@ void generate(game g){
   set_required_nb_seen (g, W, 1, 2);
   set_required_nb_seen (g, W, 0, 0);
 
-  add_monster(g,GHOST, 1, 1);
-  add_monster(g,GHOST, 2, 0);
+  add_monster(g,GHOST,  1,1);
+  add_monster(g,GHOST,  2,0);
   add_monster(g,VAMPIRE,1,3);
   add_monster(g,VAMPIRE,2,3);
   add_monster(g,ZOMBIE, 0,1);
@@ -62,10 +64,13 @@ bool test_add_monster_ghost(){
   game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,GHOST,2,2);
-  if(get_content(g,2,2) != GHOST){
 
+  //If the pos where the ghost should be isnt good
+  if(get_content(g,2,2) != GHOST){
     res=false;
   }
+
+  //If any pos != where the ghost should be is not empty
   for(unsigned int x = 0; x < g -> width; x++){
     for(unsigned int y = 0; y < g -> height; y++){
       if(x != 2 && y != 2){
@@ -75,6 +80,7 @@ bool test_add_monster_ghost(){
       }
     }
   }
+
   printf(res ? "INFO:  test_add_monster_ghost : ✓\n" : "INFO:  test_add_monster_ghost ✕\n");
   delete_game(g);
   return res;
@@ -85,9 +91,13 @@ bool test_add_monster_zombie(){
   game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,ZOMBIE,2,2);
+
+    //If any pos != where the zombie should be is not good
   if(get_content(g,2,2) != ZOMBIE){
     res = false;
   }
+
+    //If any pos != where the zombie should be is not empty
   for(unsigned int x = 0; x < g -> width; x++){
     for(unsigned int y = 0; y < g -> height; y++){
       if(x != 2 && y != 2){
@@ -95,8 +105,10 @@ bool test_add_monster_zombie(){
           res = false;
         }
       }
+
     }
   }
+
   printf(res ? "INFO:  test_add_monster_zombie : ✓\n" : "INFO:  test_add_monster_zombie ✕\n");
   delete_game(g);
   return res;
@@ -107,9 +119,13 @@ bool test_add_monster_vampire(){
   game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,VAMPIRE,2,2);
+
+    //If any pos != where the vampire should be is not good
   if(get_content(g,2,2) != VAMPIRE){
     res = false;
   }
+
+    //If any pos != where the vampire should be is not empty
   for(unsigned int x = 0; x < g -> width; x++){
     for(unsigned int y = 0; y < g -> height; y++){
       if(x != 2 && y != 2){
@@ -117,9 +133,10 @@ bool test_add_monster_vampire(){
           res = false;
         }
       }
+
     }
   }
-  //printf("INFO:  test_add_monster_vampire : ");
+
   printf(res ? "INFO:  test_add_monster_vampire : ✓\n" : "INFO:  test_add_monster_vampire ✕\n");
   delete_game(g);
   return res;
@@ -131,13 +148,18 @@ bool test_add_monster(){
   res = test_add_monster_vampire() && res;
   res = test_add_monster_zombie() && res;
   res = test_add_monster_ghost() && res;
+
   game g =new_game_ext(4,4);
+
+  //If add_monster_zombie/ghost/vampire return false
   if(res == false){
-    res=false;
+    res=false;  //No return because wanna display text at the end of the function, na !
   }
 
   assert(g);
   add_monster(g,VAMPIRE,1,2);
+
+    //If any pos != where the vampire should be is not good
   if(get_content(g, 1, 2) != VAMPIRE){
     res=false;
   }
@@ -145,6 +167,9 @@ bool test_add_monster(){
   int sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
   sum += current_nb_monsters(g, ZOMBIE);
+//If there's not another monster adding himself when it should not have
+
+
   for(unsigned int x = 0; x < g -> width; x++){
     for(unsigned int y = 0; y < g -> height; y++){
       if(x != 1 || y != 2)
@@ -153,6 +178,7 @@ bool test_add_monster(){
       }
     }
   }
+  
   printf(res ? "INFO:  test_add_monster : success\n" : "ERROR: test_add_monster failed\n");
   delete_game(g);
   return res;
@@ -310,45 +336,6 @@ bool test_new_game_advanced(){
   delete_game(g);
   return res;
 }
-/*
-bool test_new_game(){
-  bool res = true;
-  res = test_new_game_advanced() && res;
-  game g= new_game();
-  assert(g);
-  if(g == NULL){
-    res=false;
-  }
-  for(unsigned int i = 0; i < g -> width; i++){
-    for(unsigned int j = 0; j < g -> height; j++){
-      if(get_content(g, i, j) != EMPTY){
-        res=false;
-      }
-    }
-  }
-
-  for(unsigned int i = 0; i < 4; i++){
-    for(unsigned int j = 0; j < 4; j++){
-      if(required_nb_seen(g, j, i) != 0){
-        res=false;
-      }
-    }
-  }
-
-  for(unsigned int i = 0; i < 4; i++){
-    for(unsigned int j = 0; j < 4; j++){
-      if( current_nb_seen(g,i,j) != 0){
-        res=false;
-      }
-    }
-  }
-
-  printf(res ? "INFO:  test_new_game : success\n" : "ERROR: test_new_game failed\n");
-  delete_game(g);
-  //printf("Address: %p\n", &g);
-  //printf("Address: %p\n", (void *)g);
-  return res;
-}*/
 
 //game new_game_ext(4,4);
 bool test_new_game_ext(){
