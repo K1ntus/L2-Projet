@@ -36,15 +36,15 @@ Pour l'affichage, vous devez respecter la convention suivante :
 #include <stdio.h>
 #include "game_io.h"
 
-#define COLONNE 4
-#define LINE 4
-
 #define clear() printf("\033[H\033[y")
 
+//Gonna work about changing that disgusting global var.
+
+//i.e. remove them (first) then use the game structure data
 int nbVampire = 2;
 int nbGhost = 2;
 int nbZombie = 5;
-int nbSpirit = 5; //dépend de la taille de matrice
+int nbSpirit = 0; //dépend de la taille de matrice
 
 
 void generate(game g){
@@ -95,94 +95,131 @@ void generate(game g){
 
 void display(game g){
 //affichage du nombre de mobs a placer
-	printf("|   Z:%d V:%d G:%d S:%d   |\n",
+
+	printf("| ");
+	for(int i=0; i<((game_width(g)/4)) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+		printf("  ");
+	}
+	printf("Z:%d V:%d G:%d S:%d",
 		required_nb_monsters(g, ZOMBIE),
 		required_nb_monsters(g, VAMPIRE),
 		required_nb_monsters(g, GHOST),
 		required_nb_monsters(g, SPIRIT));
 
-	printf("|                     |\n");
+		for(int i=0; i<((game_width(g)))/4 +1 ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+			printf("  ");
+		}
+		printf(" |\n");
+		printf("|     ");
+		for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+			printf("  ");
+		}
+		printf("    |\n");
 
 //affichage des nombres cote nord
-	//affichage 1re ligne
+
+	//First empty line display
 	printf("|     ");
-	for(int i=0; i<game_width(g) ; i++){
+	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
 		printf("%d ",required_nb_seen(g, N, i));
 	}
 	printf("    |\n");
-	//affichage 2eme ligne
+	//End first empty line display
+
+	//Second empty line display
 	printf("|     ");
-	for(int i=0; i<game_width(g) ; i++){
-		printf(" ");
+	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+		printf("  ");
 	}
-	printf("     |\n");
+	printf("    |\n");
+	//End second empty line display
+
 
 	int tick_content;
-
 	for(int x = game_height(g)-1; x >= 0; x--){
-		//Bordures cote gauche && nombres
+		//Left & right side of the board
 		printf("|  %d  ", required_nb_seen(g, W, x));
 		for(int y = 0; y < game_width(g) ; y++){
 			tick_content = get_content(g,y,x);
 
-			//affichage graphique du contenu des cases
-			if(tick_content == EMPTY){
-				printf("  ");
-			}
-			if(tick_content == MIRROR){
-				printf("/ ");
-			}
-			if(tick_content == ANTIMIRROR){
-				printf("\\ ");
-			}
-			if(tick_content == VMIRROR){
-				printf("| ");
-			}
-			if(tick_content == HMIRROR){
-				printf("_ ");
-			}
-			if(tick_content == ZOMBIE){
-				printf("Z ");
-			}
-			if(tick_content == GHOST){
-				printf("G ");
-			}
-			if(tick_content == VAMPIRE){
-				printf("V ");
-			}
-			if(tick_content == SPIRIT){
-				printf("S ");
+			//Graphic show of cells contents
+
+			switch(tick_content){
+				case EMPTY:
+					printf("  ");
+					break;
+				case MIRROR:
+					printf("/ ");
+					break;
+				case ANTIMIRROR:
+					printf("\\ ");
+					break;
+				case VMIRROR:
+					printf("| ");
+					break;
+				case HMIRROR:
+					printf("_ ");
+					break;
+				case SPIRIT:
+					printf("S ");
+					break;
+				case ZOMBIE:
+					printf("Z ");
+					break;
+				case GHOST:
+					printf("G ");
+					break;
+				case VAMPIRE:
+					printf("V ");
+					break;
 			}
 		}
 		//Bordures cote droit && nombres
 		printf(" %d  |\n",required_nb_seen (g, E, x));
 	}
 
-	//nombres en bas
+	//lower numbers
 
-	//affichage ligne vide
+	//First bottom empty line display
 	printf("|     ");
-	for(int i=0; i<game_width(g) ; i++){
-		printf(" ");
+	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+		printf("  ");
 	}
-	printf("     |\n");
+	printf("    |\n");
+	//End first bottom empty line display
+
+
 	//affichage 1re ligne
 	printf("|     ");
 	for(int i=0; i<game_width(g) ; i++){
 		printf("%d ",required_nb_seen(g, S, i));
 	}
 	printf("    |\n");
-	//affichage ligne vide
+
+
+	//Last bottom empty line display
 	printf("|     ");
-	for(int i=0; i<game_width(g) ; i++){
-		printf(" ");
+	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+		printf("  ");
 	}
-	printf("     |\n");
+	printf("    |\n");
+	//Last first bottom empty line display
+
 
 	//affichage ligne start (a modifier si la taille est inférieure à 3
-	printf("|     start");
-	int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
-	for(int i=0; i<(nbr_space - 5) ; i++){ //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start
+	printf("|     ");
+	if(game_width(g) %2 == 1)
+		for(int i=1; i<game_width(g)/2 ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+			printf("  ");
+		}
+	else
+		for(int i=0; i<game_width(g)/2 ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+			printf("  ");
+		}
+
+	printf("start");
+	//int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
+	for(int i=0; i<game_width(g)/2; i++){ //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start
 		printf(" ");
 	}
 	printf("     |\n");
@@ -331,7 +368,7 @@ int main(){
 	int r, x, y;
 	char mstr;
 	//Génération du jeu
-  	game g = new_game_ext(5, 5);
+  	game g = new_game_ext(5, 4);
 	generate(g);
 	display(g);
 

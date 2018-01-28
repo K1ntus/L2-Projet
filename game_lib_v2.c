@@ -84,15 +84,15 @@ game new_game_ext(int width, int height){
   g->spirit    = 0;
 
 	//Initialisation of each required_nb_seen value
-	g->valuesNorth = malloc(g->height * sizeof(int));
-	g->valuesSouth = malloc(g->height * sizeof(int));
-	for(unsigned int i = 0;  i < g->height;i++){
+	g->valuesNorth = malloc(width * sizeof(int)*2);
+	g->valuesSouth = malloc(width * sizeof(int)*2);
+	for(unsigned int i = 0;  i < width;i++){
 		g->valuesNorth[i] = 0;
 		g->valuesSouth[i] = 0;
 	}
-	g->valuesEast = malloc(g->height * sizeof(int));
-	g->valuesWest = malloc(g->height * sizeof(int));
-	for(unsigned int i = 0; i < g->width; i++){
+	g->valuesEast = malloc(height * sizeof(int)*2);
+	g->valuesWest = malloc(height * sizeof(int)*2);
+	for(unsigned int i = 0; i < height; i++){
 		g->valuesEast[i] = 0;
 		g->valuesWest[i] = 0;
 	}
@@ -276,9 +276,21 @@ void delete_game (game g){
 
 
 int required_nb_seen(cgame game, direction side, int pos){
-	if(pos < 0 || pos > game->width){
+	if(pos < 0){
 		fprintf(stderr, "Wrong pos in fct required_nb_seen for pos : %d\n", pos);
 		return EXIT_FAILURE;
+	}
+
+	if(side == N || side == S){
+			if(pos >= game->width){
+				fprintf(stderr, "Wrong pos in fct required_nb_seen for posz : %d && side: %d\n", pos, side);
+				return EXIT_FAILURE;
+		}
+	}else{
+		if(pos >= game->height){
+			fprintf(stderr, "Wrong pos in fct required_nb_seen for pos : %d && side: %d\n", pos, side);
+				return EXIT_FAILURE;
+		}
 	}
 	switch (side){
 		case N:
