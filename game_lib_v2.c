@@ -4,6 +4,9 @@
 #include <stdbool.h>
 //#include <time.h>
 
+#define COLONNE 4
+#define LINE 4
+
 //Structure containing the game
 struct game_s{
 	int **matrice;
@@ -98,7 +101,6 @@ game new_game_ext(int width, int height){
 }
 
 
-//TODO
 game setup_new_game_ext(int width, int height,
 												int *labels[NB_DIR], content * board,
 												int required_nb_ghosts, int required_nb_vampires,
@@ -259,27 +261,15 @@ void delete_game (game g){
 	memory_test(g);
 	g->vampires = 0;
 	g->ghosts = 0;
+	g->spirit = 0;
 	g->zombies = 0;
 
-
-	for(int i=0 ; i< g->width ; i++){
-		g->valuesNorth[i] = 0; // 0 is actually == valueNorth
-		g->valuesSouth[i] = 0; // 1	  ..	. valueSouth
-	}
-
-	for(unsigned int i = 0; i < g->height; i++){
-		g->valuesEast[i] = 0; // 2	  ..	. valueEast
-		g->valuesWest[i] = 0; // 3	  ..	. valueWest
-	}
-
-
-	for(unsigned int x = 0; x < g->height; x++){
-		for(unsigned int y = 0; y < g->width; y++){
-			g->matrice[x][y] = EMPTY;
-		}
-	}
 	free(g->matrice[0]);
 	free(g->matrice);
+	free(g->valuesNorth);
+	free(g->valuesSouth);
+	free(g->valuesEast);
+	free(g->valuesWest);
 	free(g);
 }
 
@@ -479,14 +469,14 @@ int *current_nb_seen_init(cgame g, int pos, int *posTab, direction side){
 	int posX=0, posY=0;
 	if(side == N){
 			posX=pos;
-			posY=g->width -1;
+			posY=g->width-1;
 
 	}else if (side == S){
 			posX=pos;
 			posY=0;
 
 	}else if (side == E){
-			posX=g->height -1;
+			posX=g->height-1;
 			posY=pos;
 
 	}else if (side == W){
@@ -519,9 +509,9 @@ int current_nb_seen(cgame game, direction side, int pos){
 	while(!isEnd){
 		//If x OR y is invalid
 		if (posTab[0] <0
-          || posTab[0] > game->width-1
+          || posTab[0] >= game->width
           || posTab[1] < 0
-          || posTab[1] > game->height-1) {
+          || posTab[1] >= game->height) {
   		free(posTab);
   		return sum;
 		}
@@ -602,4 +592,137 @@ bool is_game_over (cgame g){
 		}
 	}
 	return true;
+}
+
+
+
+
+/**
+ *
+ *	OLD FUNCTIONS
+ *
+**/
+
+/**
+ * @brief creates an empty game with all squares set to empty, all labels and the number of required monsters set to 0.
+ * @return the created game
+ **/
+void init_matrice_old(game g){
+	g->matrice  = (int **)malloc(sizeof(int *) * COLONNE);
+	g->matrice[0] = (int *)malloc(sizeof(int) * LINE * COLONNE);
+	for(int i = 0; i < COLONNE; i++)
+		g->matrice[i] = (*g->matrice + LINE * i);
+
+	for (int x = 0; x <  COLONNE; x++){
+		for (int y = 0; y < LINE; y++){
+			g->matrice[x][y] = EMPTY;  // OR *(*(g->matrice+i)+j) = ++count
+		}
+	}
+}
+
+game new_game(void){
+	game g = malloc(sizeof(game)+(3*sizeof(int))+(16*sizeof(int))+4*sizeof(int)*100);
+
+	//Creation de la zone de jeu (ici de dimension LINE*COLONNE) et on rempli chaque case
+	//par empty
+	init_matrice_old(g);
+
+	memory_test(g);
+
+
+	//Nombre de monstres requis initialise a zero
+	g->vampires = 0;
+	g->ghosts = 0;
+	g->zombies = 0;
+	g->spirit = 0;
+
+	g->width = 4;
+	g->height = 4;
+
+	g->valuesNorth = malloc((g->width) * sizeof(int));
+	g->valuesSouth = malloc((g->width) * sizeof(int));
+	g->valuesEast = malloc((g->height) * sizeof(int));
+	g->valuesWest = malloc((g->height) * sizeof(int));
+
+	//nombre de monstres vu requis
+	for(unsigned int i = 0;  i < COLONNE;i++){
+		g->valuesNorth[i] = 0;
+		g->valuesSouth[i] = 0;
+	}
+
+	for(unsigned int i = 0; i < LINE; i++){
+		g->valuesEast[i] = 0;
+		g->valuesWest[i] = 0;
+	}
+
+	return g;
+}
+
+
+/**
+ * @brief creates a game from a board description.
+ * It uses a given board possibly with its mirrors, and a list of labels.
+ * @param labels an array of four pointers towards array of labels (namely, labels[N], labels[S], labels[E], labels[W]).
+ * The labels are given according to increasing coordinate value (from S to N or from W to E)
+ * @param board an array of all the board squares, stored sequentially line by line starting from coordinate (0,0)
+ * @param required_nb_ghosts the number of ghosts required in the game.
+ * @param required_nb_vampires the number of vampires required in the game.
+ * @param required_nb_zombies the number of zombies required in the game.
+ * @return the created game
+ **/
+game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts,  int required_nb_vampires, int required_nb_zombies){
+	game g = new_game();
+	memory_test(g);
+
+	g->vampires = required_nb_vampires;
+	g->ghosts = required_nb_ghosts;
+	g->zombies = required_nb_zombies;
+
+	for(int i=0 ; i<COLONNE ; i++){
+		g->valuesNorth[i] = labels[0][i]; // on supose que 0 equivalent a valueNorth
+		g->valuesSouth[i] = labels[1][i]; // ..	..   .. 1	  ..	. valueSouth
+	}
+
+	for(unsigned int i = 0; i < LINE; i++){
+		g->valuesEast[i] = labels[2][i]; //  ..	..   .. 2	  ..	. valueEast
+		g->valuesWest[i] = labels[3][i]; //  ..	..   .. 3	  ..	. valueWest
+	}
+
+	int i = 0; // caze parce que case c'est un reserver au switch case
+	for(int x=0 ; x<LINE ; x++){
+		for (int y=0; y<COLONNE ; y++){
+			g->matrice[y][x] = board[i];
+			i++;
+		}
+	}
+	//g->matrice[LINE-1][COLONNE-1] = board[LINE*COLONNE-1];
+
+  return g;
+}
+
+
+/**
+ * @brief adds a mirror on the game board
+ * @param game the game board where to add the mirror
+ * @param dir the direction on which to add the mirror: 0 for +45 degrees (/), 1 for -45 degrees (\\)
+ * @param col which column to insert the mirror on (0<=col<4)
+ * @param line which line to insert the mirror on (0<=line<4)
+ **/
+void add_mirror(game g, int dir, int x, int y){
+	memory_test(g);
+	assert(g);
+
+	if (x < 0 || x >= COLONNE){		//Si x est en dehors de la matrice
+		fprintf(stderr, "Wrong x parameter on get_content call\n");
+	} else if (y < 0 || y >= LINE){	//Si y est en dehors de la matrice
+		fprintf(stderr, "Wrong y parameter on get_content call\n");
+	}
+
+	if(dir == 0){
+		g->matrice[x][y] = MIRROR ;
+	} else if (dir == 1) {
+		g->matrice[x][y] = ANTIMIRROR ;
+	} else {
+		fprintf(stderr,"Error while placing mirror\n");
+	}
 }
