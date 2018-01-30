@@ -41,6 +41,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 //Gonna work about changing that disgusting global var.
 
 //i.e. remove them (first) then use the game structure data
+//A changer quand on aura une grille valide "type" avec nombre mstr + nouveaux miroirs
 int nbVampire = 2;
 int nbGhost = 2;
 int nbZombie = 5;
@@ -68,8 +69,15 @@ void generate(game g){
 	add_mirror_ext(g,MIRROR,3,1);
 	//va dépendre de la taille de la matrice
 
+/* //VMIRROR     A placer quand on saura où LOL
+	add_mirror_ext(g,VMIRROR,0,0);
 
-	//Tant qu'on sait pas si ça doit etre aléatoire ou non ou change pas
+//HMIRROR     idem
+	add_mirror_ext(g,HMIRROR,0,0);
+	*/
+
+
+//Tant qu'on sait pas si ça doit etre aléatoire ou non ou change pas
 	set_required_nb_seen (g, N, 0, 0);
 	set_required_nb_seen (g, N, 1, 3);
 	set_required_nb_seen (g, N, 2, 3);
@@ -206,23 +214,19 @@ void display(game g){
 	//Last first bottom empty line display
 
 
-	//affichage ligne start (a modifier si la taille est inférieure à 3
-	printf("|     ");
-	if(game_width(g) %2 == 1)
-		for(int i=1; i<game_width(g)/2 ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
-			printf("  ");
+	//affichage ligne start, pas de valeurs en dessous de 4 (si nn c'est moche et de tt façon ça marche pas LOL)
+	// par contre ça décale sur la droite les espaces et le / donc pas esthétique à voir si vous voulez changer
+	if (game_width(g) < 4){
+		printf("|     start       |");
+	}else{
+		printf("|     start");
+		//int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
+		int spaces = game_width(g) + (game_width(g)-1) - 5;  //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start
+		for(int i=0; i<spaces; i++){
+			printf(" ");
 		}
-	else
-		for(int i=0; i<game_width(g)/2 ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
-			printf("  ");
-		}
-
-	printf("start");
-	//int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
-	for(int i=0; i<game_width(g)/2; i++){ //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start
-		printf(" ");
+		printf("     |\n");
 	}
-	printf("     |\n");
 
 
 }
@@ -368,7 +372,7 @@ int main(){
 	int r, x, y;
 	char mstr;
 	//Génération du jeu
-  	game g = new_game_ext(5, 4);
+  	game g = new_game_ext(5, 5);
 	generate(g);
 	display(g);
 
