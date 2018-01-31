@@ -103,26 +103,29 @@ void generate(game g){
 
 void display(game g){
 //affichage du nombre de mobs a placer
-
-	printf("| ");
-	for(int i=0; i<((game_width(g)/4)) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
-		printf("  ");
-	}
-	printf("Z:%d V:%d G:%d S:%d",
+	if (game_width(g) <= 4){
+		printf("|  Z:%d V:%d G:%d S:%d  |\n",
+		required_nb_monsters(g, ZOMBIE),
+		required_nb_monsters(g, VAMPIRE),
+		required_nb_monsters(g, GHOST),
+		required_nb_monsters(g, SPIRIT));
+	}else{
+		printf("|  ");
+		int spaces = (game_width(g) + game_width(g) - 11)/2;    //11= taille du string des nombres requis
+		for(int i=0; i<spaces; i++){
+			printf(" ");
+		}
+		printf(" Z:%d V:%d G:%d S:%d ",
 		required_nb_monsters(g, ZOMBIE),
 		required_nb_monsters(g, VAMPIRE),
 		required_nb_monsters(g, GHOST),
 		required_nb_monsters(g, SPIRIT));
 
-		for(int i=0; i<((game_width(g)))/4 +1 ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
-			printf("  ");
+		for(int i=0; i<spaces+1; i++){
+			printf(" ");
 		}
-		printf(" |\n");
-		printf("|     ");
-		for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
-			printf("  ");
-		}
-		printf("    |\n");
+		printf("   |\n");
+	}
 
 //affichage des nombres cote nord
 
@@ -131,7 +134,7 @@ void display(game g){
 	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
 		printf("%d ",required_nb_seen(g, N, i));
 	}
-	printf("    |\n");
+	printf("      |\n");
 	//End first empty line display
 
 	//Second empty line display
@@ -139,14 +142,14 @@ void display(game g){
 	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
 		printf("  ");
 	}
-	printf("    |\n");
+	printf("      |\n");
 	//End second empty line display
 
 
 	int tick_content;
 	for(int x = game_height(g)-1; x >= 0; x--){
 		//Left & right side of the board
-		printf("|  %d  ", required_nb_seen(g, W, x));
+		printf("|   %d  ", required_nb_seen(g, W, x));
 		for(int y = 0; y < game_width(g) ; y++){
 			tick_content = get_content(g,y,x);
 
@@ -183,7 +186,7 @@ void display(game g){
 			}
 		}
 		//Bordures cote droit && nombres
-		printf(" %d  |\n",required_nb_seen (g, E, x));
+		printf(" %d   |\n",required_nb_seen (g, E, x));
 	}
 
 	//lower numbers
@@ -193,7 +196,7 @@ void display(game g){
 	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
 		printf("  ");
 	}
-	printf("    |\n");
+	printf("      |\n");
 	//End first bottom empty line display
 
 
@@ -202,7 +205,7 @@ void display(game g){
 	for(int i=0; i<game_width(g) ; i++){
 		printf("%d ",required_nb_seen(g, S, i));
 	}
-	printf("    |\n");
+	printf("      |\n");
 
 
 	//Last bottom empty line display
@@ -210,14 +213,14 @@ void display(game g){
 	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
 		printf("  ");
 	}
-	printf("    |\n");
+	printf("      |\n");
 	//Last first bottom empty line display
 
 
 	//affichage ligne start, pas de valeurs en dessous de 4 (si nn c'est moche et de tt façon ça marche pas LOL)
 	// par contre ça décale sur la droite les espaces et le / donc pas esthétique à voir si vous voulez changer
 	if (game_width(g) < 4){
-		printf("|     start       |");
+		printf("|      start       |");
 	}else{
 		printf("|     start");
 		//int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
@@ -225,7 +228,7 @@ void display(game g){
 		for(int i=0; i<spaces; i++){
 			printf(" ");
 		}
-		printf("     |\n");
+		printf("       |\n");
 	}
 
 
@@ -372,7 +375,7 @@ int main(){
 	int r, x, y;
 	char mstr;
 	//Génération du jeu
-  	game g = new_game_ext(5, 5);
+  	game g = new_game_ext(10, 5);
 	generate(g);
 	display(g);
 
