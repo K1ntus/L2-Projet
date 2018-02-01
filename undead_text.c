@@ -111,8 +111,8 @@ void display(game g){
 		required_nb_monsters(g, SPIRIT));
 	}else{
 		printf("|  ");
-		int spaces = (game_width(g) + game_width(g) - 11)/2;    //11= taille du string des nombres requis
-		for(int i=0; i<spaces; i++){
+		int spaces = (game_width(g) + game_width(g) - 11)/2;    //11= taille du string des nombres requis (et les espaces) ->spaces donne le nombre d'espaces à ajouter
+		for(int i=0; i<spaces; i++){							//pour  que le texte soit centré
 			printf(" ");
 		}
 		printf(" Z:%d V:%d G:%d S:%d ",
@@ -131,7 +131,7 @@ void display(game g){
 
 	//First empty line display
 	printf("|     ");
-	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+	for(int i=0; i<game_width(g) ; i++){	
 		printf("%d ",required_nb_seen(g, N, i));
 	}
 	printf("      |\n");
@@ -139,7 +139,7 @@ void display(game g){
 
 	//Second empty line display
 	printf("|     ");
-	for(int i=0; i<game_width(g) ; i++){	//Use primitive, please, that s not gonna work for evaluation instead
+	for(int i=0; i<game_width(g) ; i++){
 		printf("  ");
 	}
 	printf("      |\n");
@@ -217,21 +217,23 @@ void display(game g){
 	//Last first bottom empty line display
 
 
-	//affichage ligne start, pas de valeurs en dessous de 4 (si nn c'est moche et de tt façon ça marche pas LOL)
-	// par contre ça décale sur la droite les espaces et le / donc pas esthétique à voir si vous voulez changer
-	if (game_width(g) < 4){
-		printf("|      start       |");
+	//affichage ligne start, pas de valeurs en dessous de 4 (si nn c'est moche et de tt façon ça marche pas :)  )
+
+	if (game_width(g) <= 4){
+		printf("|       start       |");
 	}else{
-		printf("|     start");
-		//int nbr_space = game_width(g) + game_width(g)-1;  // donne la taille en espaces de required nbr seen + leurs espaces
-		int spaces = game_width(g) + (game_width(g)-1) - 5;  //  (5 taille de chaine 'start' )   donne le nombre d'espace à ajouter après start
-		for(int i=0; i<spaces; i++){
+		printf("|  ");
+		int spaces = game_width(g) + (game_width(g)-1) - 8;  //donne le nombre d'espace à ajouter avant et après start
+		for(int i = 0; i<spaces/2; i++){					 //on divise par deux pour droite et gauche
 			printf(" ");
 		}
-		printf("       |\n");
+		printf("     start      ");
+
+		for(int i=0; i<spaces/2 + 1; i++){
+			printf(" ");
+		}
+		printf("  |\n");
 	}
-
-
 }
 
 
@@ -375,7 +377,7 @@ int main(){
 	int r, x, y;
 	char mstr;
 	//Génération du jeu
-  	game g = new_game_ext(10, 5);
+  	game g = new_game_ext(10, 10);
 	generate(g);
 	display(g);
 
