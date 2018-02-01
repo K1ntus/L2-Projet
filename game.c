@@ -472,7 +472,6 @@ int *current_nb_seen_init(cgame g, int pos, int *posTab, direction side){
 }
 
 int current_nb_seen(cgame game, direction side, int pos){
-
 	/**
 	*
 	*	Initialisation :
@@ -638,8 +637,8 @@ game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts
 	}
 
 	int i = 0;
-	for(int x=0 ; x<game_height(g) ; x++){
-		for (int y=0; y<game_width(g) ; y++){
+	for(int x=0; x<game_height(g); x++){
+		for (int y=0; y<game_width(g); y++){
 			g->matrice[y][x] = board[i];
 			i++;
 		}

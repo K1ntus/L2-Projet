@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <stdio.h>
-#include "game_lib_v2.c"
+#include "game.h"
 #include <time.h>   // pour rand
 
 
@@ -71,8 +71,8 @@ bool test_add_monster_ghost(){
   }
 
   //If any pos != where the ghost should be is not empty
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           res=false;
@@ -98,8 +98,8 @@ bool test_add_monster_zombie(){
   }
 
     //If any pos != where the zombie should be is not empty
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           res = false;
@@ -126,8 +126,8 @@ bool test_add_monster_vampire(){
   }
 
     //If any pos != where the vampire should be is not empty
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 2 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           res = false;
@@ -170,8 +170,8 @@ bool test_add_monster(){
 //If there's not another monster adding himself when it should not have
 
 
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 1 || y != 2)
       if(get_content(g,x,y) != EMPTY){
         res=false;
@@ -349,8 +349,8 @@ bool test_new_game_ext(){
   //printf("Address: %p\n", &g);
   //printf("Address: %p\n", (void *)g+4);
   //NOP : assert(get_content(g, 5, 5));
-  for(unsigned int i = 0; i < g -> width; i++){
-    for(unsigned int j = 0; j < g -> height; j++){
+  for(unsigned int i = 0; i < game_width(g); i++){
+    for(unsigned int j = 0; j < game_height(g); j++){
       if(get_content(g, i, j) != EMPTY){
         res=false;
       }
@@ -433,7 +433,7 @@ bool test_delete_game(){
   return res;
 }
 
-//content get_content(cgame game, int col, int g -> height);
+//content get_content(cgame game, int col, int game_height(g));
 bool test_get_content(){
   bool res=true;
   game g = new_game_ext(4,4);
@@ -466,7 +466,7 @@ bool test_get_content(){
   return res;
 }
 
-//void add_mirror_ext(game game, int dir, int col, int g -> height);
+//void add_mirror_ext(game game, int dir, int col, int game_height(g));
 bool test_add_mirror_ext(){
   bool res=true;
   game g = new_game_ext(4,4);
@@ -476,8 +476,8 @@ bool test_add_mirror_ext(){
     assert(g);
     res=false;
   }
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 1 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           assert(g);
@@ -495,8 +495,8 @@ bool test_add_mirror_ext(){
     assert(g);
     res=false;
   }
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 1 && y != 2){
         if(get_content(g,x,y) != EMPTY){
           assert(g);
@@ -588,8 +588,8 @@ bool test_restart_game(){
   sum += current_nb_monsters(g, GHOST);
   sum += current_nb_monsters(g, ZOMBIE);
   restart_game(g);
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(get_content(g,x,y) != EMPTY){
         res=false;
       }
@@ -605,8 +605,8 @@ bool test_restart_game(){
 
   add_mirror_ext(g,MIRROR,2,1);
   restart_game(g);
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x !=2 && y !=1)
       if(get_content(g,x,y) != EMPTY){
         res=false;
@@ -618,8 +618,8 @@ bool test_restart_game(){
   delete_game(g);
   g=new_game_ext(4,4);
   restart_game(g);
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(x !=1 && y !=2)
       if(get_content(g,x,y) != EMPTY){
         res=false;
@@ -652,8 +652,8 @@ bool test_copy_game(){
   game g = new_game_ext(4,4);
   game g1 = copy_game(g);
 
-  for(unsigned int x = 0; x < g -> width; x++){
-    for(unsigned int y = 0; y < g -> height; y++){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
       if(get_content(g1,x,y) != get_content(g, x, y)){
         res=false;
       }
@@ -701,10 +701,10 @@ bool test_game_dimensions(){
   bool res = true;
   game g = new_game_ext(5,6);
   assert(g);
-  if (g -> width < 0 || g -> height < 0){
+  if (game_width(g) < 0 || game_height(g) < 0){
     res = false;
   }
-  if(g -> width != 5 || g -> height != 6){
+  if(game_width(g) != 5 || game_height(g) != 6){
     res = false;
   }
   printf(res ? "INFO : test_game_dimensions : success\n" : "ERROR: test_game_dimensions Failed\n");

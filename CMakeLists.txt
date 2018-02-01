@@ -38,7 +38,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(game game_lib_v2.c game_io.o)
+add_library(game game.c game_io.o)
 SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 #creation de l executable nom + fichiers dependants

@@ -20,4 +20,4 @@ NB: Vous devez utiliser le game.h qui vous est donné et vous ne devez pas le mo
 
 Amir :  undead_test.c
 Athman/Sarah :  undead_text.c
-Jordan: game.c
+Jordan: game.c - still to-do setup-new-game, use setup_new_game_ext && redondance nouvelle direction de current_nb_seen -
