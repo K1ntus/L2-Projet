@@ -3,9 +3,8 @@
 #include <assert.h>
 #include <stdio.h>
 #include "game.h"
-#include <time.h>   // pour rand
 
-
+//A winning board generation function
 void generate(game g){
 
   set_required_nb_monsters (g, ZOMBIE,  5);
@@ -13,14 +12,12 @@ void generate(game g){
   set_required_nb_monsters (g, SPIRIT, 0);
   set_required_nb_monsters (g, VAMPIRE,  2);
 
-//AntiMirror
   add_mirror_ext(g,ANTIMIRROR,0,0);
   add_mirror_ext(g,ANTIMIRROR,0,2);
   add_mirror_ext(g,ANTIMIRROR,0,3);
   add_mirror_ext(g,ANTIMIRROR,3,0);
   add_mirror_ext(g,ANTIMIRROR,2,1);
 
-//Mirror
   add_mirror_ext(g,MIRROR,3,3);
   add_mirror_ext(g,MIRROR,3,1);
 
@@ -86,18 +83,59 @@ bool test_add_monster_ghost(){
   return res;
 }
 
+bool test_add_monster_spirit(){
+  bool res = true;
+  game g =new_game_ext(4,4);
+  assert(g);
+  add_monster(g,SPIRIT,2,2);
+
+  //If the pos where the SPIRIT should be isnt good
+  if(get_content(g,2,2) != SPIRIT){
+    res=false;
+  }
+
+  //If any pos  where the SPIRIT shouldnt be is not empty
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
+      if(x != 2 && y != 2){
+        if(get_content(g,x,y) != EMPTY){
+          res=false;
+        }
+      }
+    }
+  }
+
+  int tmp =0;
+  if(game_width(g) > game_height(g))
+  tmp = game_height(g);
+  else
+  tmp = game_width(g);
+
+  for(unsigned int dir = 0; dir < NB_DIR; dir++){
+    for(unsigned int pos = 0; pos < tmp; pos++){
+      if(current_nb_seen(g,dir,pos) != 0){
+        res= false;
+        break;
+      }
+    }
+  }
+  printf(res ? "INFO:  test_add_monster_spirit : ✓\n" : "INFO:  test_add_monster_spirit ✕\n");
+  delete_game(g);
+  return res;
+}
+
 bool test_add_monster_zombie(){
   bool res = true;
   game g =new_game_ext(4,4);
   assert(g);
   add_monster(g,ZOMBIE,2,2);
 
-    //If any pos != where the zombie should be is not good
+  //If any pos != where the zombie should be is not good
   if(get_content(g,2,2) != ZOMBIE){
     res = false;
   }
 
-    //If any pos != where the zombie should be is not empty
+  //If any pos != where the zombie should be is not empty
   for(unsigned int x = 0; x < game_width(g); x++){
     for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 2 && y != 2){
@@ -108,6 +146,7 @@ bool test_add_monster_zombie(){
 
     }
   }
+
 
   printf(res ? "INFO:  test_add_monster_zombie : ✓\n" : "INFO:  test_add_monster_zombie ✕\n");
   delete_game(g);
@@ -120,12 +159,12 @@ bool test_add_monster_vampire(){
   assert(g);
   add_monster(g,VAMPIRE,2,2);
 
-    //If any pos != where the vampire should be is not good
+  //If any pos != where the vampire should be is not good
   if(get_content(g,2,2) != VAMPIRE){
     res = false;
   }
 
-    //If any pos != where the vampire should be is not empty
+  //If any pos != where the vampire should be is not empty
   for(unsigned int x = 0; x < game_width(g); x++){
     for(unsigned int y = 0; y < game_height(g); y++){
       if(x != 2 && y != 2){
@@ -148,6 +187,7 @@ bool test_add_monster(){
   res = test_add_monster_vampire() && res;
   res = test_add_monster_zombie() && res;
   res = test_add_monster_ghost() && res;
+  res = test_add_monster_spirit() && res;
 
   game g =new_game_ext(4,4);
 
@@ -159,7 +199,7 @@ bool test_add_monster(){
   assert(g);
   add_monster(g,VAMPIRE,1,2);
 
-    //If any pos != where the vampire should be is not good
+  //If any pos != where the vampire should be is not good
   if(get_content(g, 1, 2) != VAMPIRE){
     res=false;
   }
@@ -167,7 +207,7 @@ bool test_add_monster(){
   int sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
   sum += current_nb_monsters(g, ZOMBIE);
-//If there's not another monster adding himself when it should not have
+  //If there's not another monster adding himself when it should not have
 
 
   for(unsigned int x = 0; x < game_width(g); x++){
@@ -221,10 +261,30 @@ bool test_current_nb_monster(){
   return res;
 }
 
+bool test_current_nb_seen_advanced(){
+  bool res = true;
+  game g = new_game_ext(4,4);
+  assert(g);
+  generate(g);
+  for(unsigned int i = 0; i < 4; i++){
+    for(unsigned int j = 0; j < 4; j++){
+      if(required_nb_seen(g,i,j) != current_nb_seen(g,i,j)){
+
+        res=false;
+      }
+    }
+  }
+  printf(res ? "INFO:  test_current_nb_seen_advanced : ✓\n" : "INFO:  test_current_nb_seen_advanced ✕\n");
+  delete_game(g);
+  return res;
+}
+
+
 //int current_nb_seen (cgame  game , direction  side , int  pos);
 //void set_required_nb_seen(game game, direction side, int pos, int value);
 bool test_current_nb_seen(){
   bool res=true;
+  res = test_current_nb_seen_advanced();
   game g = new_game_ext(4,4);
   assert(g);
   add_monster(g, VAMPIRE, 1, 0);
@@ -290,23 +350,6 @@ bool test_current_nb_seen(){
   return res;
 }
 
-bool test_current_nb_seen_advanced(){
-  bool res = true;
-  game g = new_game_ext(4,4);
-  assert(g);
-  generate(g);
-  for(unsigned int i = 0; i < 4; i++){
-    for(unsigned int j = 0; j < 4; j++){
-      if(required_nb_seen(g,i,j) != current_nb_seen(g,i,j)){
-
-        res=false;
-      }
-    }
-  }
-  printf(res ? "INFO:  test_current_nb_seen_advanced : ✓\n" : "INFO:  test_current_nb_seen_advanced ✕\n");
-  delete_game(g);
-  return res;
-}
 
 bool test_new_game_advanced(){
   bool res = true;
@@ -443,16 +486,16 @@ bool test_get_content(){
   add_monster(g, ZOMBIE, 0, 3);
   assert(g);
   if(get_content(g, 0, 1) != GHOST){
-        res=false;
+    res=false;
   }
   if(get_content(g, 0, 2) != VAMPIRE){
-        res=false;
+    res=false;
   }
   if(get_content(g, 0, 3) != ZOMBIE ) {
-        res=false;
+    res=false;
   }
   if(get_content(g, 1, 0) != EMPTY || get_content(g, 2, 0) != EMPTY || get_content(g, 3, 0) != EMPTY ) {
-        res=false;
+    res=false;
   }
   int sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
@@ -466,9 +509,61 @@ bool test_get_content(){
   return res;
 }
 
+
+bool test_add_vmirror(){
+  bool res=true;
+  game g = new_game_ext(4,4);
+  assert(g);
+  add_mirror_ext(g, VMIRROR, 1, 2);
+  if(get_content(g, 1, 2) != VMIRROR) {
+    assert(g);
+    res=false;
+  }
+
+  add_monster(g,GHOST,1,3);
+
+  if(current_nb_seen(g,S,1) != 1){
+    res = false;
+  }
+
+  delete_game(g);
+  assert(g);
+  printf(res ? "INFO:  test_add_vmirror : ✓\n" : "INFO:  test_add_vmirror ✕\n");
+  return res;
+}
+
+
+
+bool test_add_hmirror(){
+  bool res=true;
+  game g = new_game_ext(4,4);
+  assert(g);
+  add_mirror_ext(g, HMIRROR, 1, 2);
+  if(get_content(g, 1, 2) != HMIRROR) {
+    assert(g);
+    res=false;
+  }
+
+  add_monster(g,GHOST,1,3);
+
+  if(current_nb_seen(g,S,1) != 0){
+    res = false;
+  }
+  if(current_nb_seen(g,N,1) != 1){
+    res = false;
+  }
+
+  delete_game(g);
+  assert(g);
+  printf(res ? "INFO:  test_add_hmirror : ✓\n" : "INFO:  test_add_hmirror ✕\n");
+  return res;
+}
+
+
 //void add_mirror_ext(game game, int dir, int col, int game_height(g));
 bool test_add_mirror_ext(){
   bool res=true;
+  res = test_add_vmirror() && test_add_hmirror() && res;
   game g = new_game_ext(4,4);
   assert(g);
   add_mirror_ext(g, MIRROR, 1, 2);
@@ -532,7 +627,7 @@ bool test_set_required_nb_seen(){
       }
     }
   }
-//TEST 2
+  //TEST 2
 
   restart_game(g);
   assert(g);
@@ -583,6 +678,7 @@ bool test_restart_game(){
   game g = new_game_ext(4,4);
   assert(g);
 
+  int requiredNbMonsters[] = {required_nb_monsters(g,ZOMBIE),required_nb_monsters(g,GHOST),required_nb_monsters(g,VAMPIRE),required_nb_monsters(g,SPIRIT)};
 
   sum = current_nb_monsters(g, VAMPIRE);
   sum += current_nb_monsters(g, GHOST);
@@ -595,6 +691,10 @@ bool test_restart_game(){
       }
     }
   }
+  if(required_nb_monsters(g,ZOMBIE) != requiredNbMonsters[0] || required_nb_monsters(g,GHOST) != requiredNbMonsters[1]
+        || required_nb_monsters(g,VAMPIRE) != requiredNbMonsters[2] || required_nb_monsters(g,SPIRIT) != requiredNbMonsters[3]){
+          res = false;
+        }
   assert(g);
   if(g == NULL){
     res=false;
@@ -707,7 +807,7 @@ bool test_game_dimensions(){
   if(game_width(g) != 5 || game_height(g) != 6){
     res = false;
   }
-  printf(res ? "INFO : test_game_dimensions : success\n" : "ERROR: test_game_dimensions Failed\n");
+  printf(res ? "INFO:  test_game_dimensions : success\n" : "ERROR: test_game_dimensions failed\n");
   delete_game(g);
   return res;
 }
@@ -716,29 +816,33 @@ int main(void){
   bool result = true;
 
   result = test_get_content() && result;
-  result = test_add_mirror_ext() && result;
+
   result = test_set_required_nb_seen() && result;
   result = test_set_required_nb_monsters() && result;
+
+
+  result = test_add_monster() && result;
+  result = test_add_mirror_ext() && result;
+
+  result = test_current_nb_monster() && result;
+  result = test_current_nb_seen() && result;
+  result = test_is_game_over() && result;
+
+  result = test_copy_game() && result;
   result = test_restart_game() && result;
   result = test_delete_game() && result;
+
   result = test_new_game_ext() && result;
-  result = test_add_monster() && result;
-  result = test_current_nb_monster() && result;
-
-  result = test_current_nb_seen() && result;
-  result = test_current_nb_seen_advanced() && result;
-
-  result = test_is_game_over() && result;
-  result = test_copy_game() && result;
   result = test_setup_new_game_ext() && result;
+
   result = test_game_dimensions() && result;
 
   if(result){
-      printf("\nINFO:  All tests successfull\n\n");
-      return EXIT_SUCCESS;
+    printf("\nINFO:  All tests successfull\n\n");
+    return EXIT_SUCCESS;
   }
   else{
-      printf("\nINFO:  A test failed\n\n");
-      return EXIT_FAILURE;
+    printf("\nINFO:  A test failed\n\n");
+    return EXIT_FAILURE;
   }
 }
