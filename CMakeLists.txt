@@ -55,7 +55,7 @@ target_link_libraries(undead_text game)
 
 
 #creation executable test
-add_executable(test_exec test.c)
+add_executable(test_exec solver.c)
 target_link_libraries(test_exec game)
 add_test(test_output test_exec COMMAND valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2  $<TARGET_FILE:test_exec>)
 
