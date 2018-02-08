@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include "game.h"
 
+
 //A winning board generation function
 void generate(game g){
 

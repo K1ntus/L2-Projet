@@ -209,8 +209,40 @@ void display(game g){
 		printf("\n\n");
 }
 
+/**
+	*	0	NORTH
+	*	1	SOUTH
+	*	2	EAST
+	*	3	WEST
+**/
+int ** init_array(game g){
+ int **res  = (int **)malloc(sizeof(int *) * NB_DIR);
+ int *north = (int *)malloc(sizeof(int) * game_height(g));
+ int *south = (int *)malloc(sizeof(int) * game_height(g));
+ int *east = (int *)malloc(sizeof(int) * game_width(g));
+ int *west = (int *)malloc(sizeof(int) * game_width(g));
 
-bool is_valid(game g, int pos){
+ res[0] = north;
+ res[1] = south;
+ res[2] = east;
+ res[3] = west;
+ return res;
+}
+
+
+int ** current_nb_seen_array(game g, int ** array){
+	return array;
+}
+
+void which_side_see_this_cell(game g, int pos, int ** array){
+
+
+
+
+}
+
+
+bool is_valid(game g, int pos, int ** array){
   display(g);
   int max_size = game_width(g)*game_height(g);
   if (pos < 0 || pos > max_size){
@@ -241,14 +273,14 @@ bool is_valid(game g, int pos){
 		}
 
 	display(g);
-	return is_valid(g, pos+1);
+	return is_valid(g, pos+1, array);
 
   for(unsigned int i = 0; i < max_size; i++){
     int x = pos/game_width(g);
     int y = pos%game_width(g);
     if(get_content(g,x,y) == EMPTY){
       printf("on add un truc");
-      is_valid(g, pos);
+      is_valid(g, pos, array);
     }
   }
   return true;
@@ -261,6 +293,7 @@ bool is_valid(game g, int pos){
 int main (void){
   game g = new_game_ext(4,4);
 	int nbMonsters[] = {2,2,5,0};
+	int ** array = init_array(g);
   generate(g, nbMonsters);
-  is_valid(g,0);
+  is_valid(g,0, array);
 }

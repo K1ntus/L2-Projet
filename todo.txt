@@ -1,23 +1,6 @@
-(*
-Cette nouvelle version est caractérisée par les changements suivants :
-    La grille peut avoir une largeur et une hauteur arbitraire
-    Il y a un nouveau type de monstre (SPIRIT) qui est totalement invisible.
-    Il y a deux nouveaux types de miroirs : VERTICAL et HORIZONTAL. Quand un rayon arrive horizontalement sur un miroir vertical, il fait demi-tour. Quand un rayon arrive horizontalement sur un miroir vertical, il poursuit son chemin horizontalement comme si la case était vide.
+Répartition : 
 
-
-Voici un plan d'attaque pour passer de la V1 à la V2 :
-
-0) Faites un diff sur game.h pour lister les changement.
-1) Remplacez game.h par  le nouveau.
-
-4) Identifiez la liste des modifications à apporter à game.c et undead_text.c undead_test.c pour répondre aux nouvelles spécifications.
-4') Identifiez la liste des nouveaux tests à implémenter
-
-5) Répartissez-vous les tâches à faire dans un fichier TODO.txt (commitez-le)
-
-NB: Vous devez utiliser le game.h qui vous est donné et vous ne devez pas le modifier !
-*)
-
-Amir :  undead_test.c
-Athman/Sarah :  undead_text.c
-Jordan: game.c - still to-do setup-new-game, use setup_new_game_ext && redondance nouvelle direction de current_nb_seen -
+Jordan : undead_solve -> fonction qui reset la grille si la solution est pas trouvée + aide pour le game_io.c
+Amir : undead_solve -> verifier si les coups sont valides (cad si le solveur a le droit de placer les monstres etc...) + fonction qui vérifie s'il existe une solution
+Athman :  load_game + sous fonctions solver (voir ce qu'on rajoute au fur et à mesure)
+Sarah : save_game.c + sous fonctions solver + fonction qui retourne la liste des pos de chaque cotés parcourant au moins une cell
