@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include "game_io.h"
 #include "game.c"
+
 
 /**
   *
@@ -226,9 +228,13 @@ game load_game(char* filename){
  * @param g game to save
  * @param filename
  **/
+ void save_empty_line(FILE* file){
+ 	fputc('\n',file);
+ }
 void save_game(cgame g, char* filename){
-  printf("INFO: Starting saving ...\n");
-  char lineJump[]={'\n'};
+  printf("\n\nINFO: Starting saving ...\n");
+
+	char emptyLine[1] = {'\n'};
   int height = game_height(g);
   int width = game_width(g);
 
@@ -239,8 +245,9 @@ void save_game(cgame g, char* filename){
   char tmp[100];
   sprintf(tmp, "%d\n%d\n", width,height);
   fputs(tmp, file);
+
   printf("INFO: Writing monsters available\nINFO: error\n");
-  //gsprintf(tmp, "%d %d %d %d\n", required_nb_monster(g, ZOMBIE), required_nb_monster(g, GHOST), required_nb_monster(g, VAMPIRE), required_nb_monster(g, SPIRIT));
+  //sprintf(tmp, "%d %d %d %d\n", required_nb_monster(g,ZOMBIE), required_nb_monster(g, GHOST), required_nb_monster(g, VAMPIRE), required_nb_monster(g, SPIRIT));
   //fputs(tmp, file);
 
   printf("INFO: Writing required labels\n");
@@ -248,25 +255,25 @@ void save_game(cgame g, char* filename){
     sprintf(tmp, "%d ",required_nb_seen(g,N,i));
     fputs(tmp,file);
   }
-  fputs(lineJump,file);
+	save_empty_line(file);
 
   for(unsigned int i = 0; i < width; i++){
     sprintf(tmp, "%d ",required_nb_seen(g,S,i));
     fputs(tmp,file);
   }
-  fputs(lineJump,file);
+	save_empty_line(file);
 
   for(unsigned int i = 0; i < height; i++){
     sprintf(tmp, "%d ",required_nb_seen(g,E,i));
     fputs(tmp,file);
   }
-  fputs(lineJump,file);
+	save_empty_line(file);
 
   for(unsigned int i = 0; i < height; i++){
     sprintf(tmp, "%d ",required_nb_seen(g,W,i));
     fputs(tmp,file);
   }
-  fputs(lineJump,file);
+	save_empty_line(file);
 
   printf("INFO: Writing cells content\n");
   for(unsigned int pos = 0; pos < width*height; pos++){
@@ -275,6 +282,7 @@ void save_game(cgame g, char* filename){
     sprintf(tmp, "%d ",get_content(g,posX,posY));
     fputs(tmp,file);
   }
+	save_empty_line(file);
 
 
   fclose(file);
