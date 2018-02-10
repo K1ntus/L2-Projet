@@ -38,7 +38,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(game game.c game_io.o)
+add_library(game game.c game_io.c)
 SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 #creation de l executable nom + fichiers dependants
@@ -55,7 +55,7 @@ target_link_libraries(undead_text game)
 
 
 #creation executable test
-add_executable(test_exec undead_solve.c)
+add_executable(test_exec test.c)
 target_link_libraries(test_exec game)
 add_test(test_output test_exec COMMAND valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2  $<TARGET_FILE:test_exec>)
 

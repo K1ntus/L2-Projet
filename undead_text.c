@@ -353,6 +353,7 @@ int main(){
 	display(g);
 
 	while(is_game_over(g) != true){
+		save_game(g,"autosave");
 		if(is_game_over(g)){
 			printf("\n\nVOUS AVEZ GAGNE\n\n");
 		}
@@ -376,4 +377,3 @@ int main(){
   	delete_game(g);
   	return EXIT_SUCCESS;
 }
-
