@@ -31,7 +31,12 @@
  * @return the loaded game
  **/
 game load_game(char* filename){
-	game g = new_game_ext(4,4);
+	int width = 4, height =4;
+	FILE * file = fopen(filename, "r");
+
+	game g = new_game_ext(width,height);
+
+	fclose(file);
 	return g;
 }
 
@@ -62,10 +67,12 @@ void save_game(cgame g, char* filename){
   sprintf(tmp, "%d %d\n", width,height);
   fputs(tmp, file);
 
-  printf("INFO: Writing monsters available\nINFO: error\n");
-	fprintf(file,"List of available monsters\n");
-  //sprintf(tmp, "%d %d %d %d\n", required_nb_monster(g,ZOMBIE), required_nb_monster(g, GHOST), required_nb_monster(g, VAMPIRE), required_nb_monster(g, SPIRIT));
-  //fputs(tmp, file);
+  printf("INFO: Writing monsters available\n");
+	fprintf(file, "%d ", required_nb_monsters(g,ZOMBIE));
+	fprintf(file, "%d ", required_nb_monsters(g,VAMPIRE));
+	fprintf(file, "%d ", required_nb_monsters(g,GHOST));
+	fprintf(file, "%d ", required_nb_monsters(g,SPIRIT));
+	save_empty_line(file);
 
   printf("INFO: Writing required labels\n");
   for(unsigned int i = 0; i < width; i++){
@@ -98,7 +105,7 @@ void save_game(cgame g, char* filename){
 	    sprintf(tmp, "%d ",get_content(g,posX,posY-1));
 	    fputs(tmp,file);
 		}
-		save_empty_line(file);		
+		save_empty_line(file);
   }
 	save_empty_line(file);
 
