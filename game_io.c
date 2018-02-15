@@ -100,15 +100,43 @@ void save_game(cgame g, char* filename){
 	save_empty_line(file);
 
   printf("INFO: Writing cells content\n");
-  for(unsigned int posY = height; posY >0; posY--){
-		for(unsigned int posX = 0; posX < width; posX++){
-	    sprintf(tmp, "%d ",get_content(g,posX,posY-1));
-	    fputs(tmp,file);
+  for(unsigned int posY = game_height(g); posY > 0; posY--){
+		for(unsigned int posX = 0; posX < game_width(g); posX++){
+      int tick_content = get_content(g,posX,posY-1);
+
+      //Graphic show of cells content
+      switch(tick_content){
+        case EMPTY:
+          fprintf(file,". ");
+          break;
+        case MIRROR:
+          fprintf(file,"/ ");
+          break;
+        case ANTIMIRROR:
+          fprintf(file,"\\ ");
+          break;
+        case VMIRROR:
+          fprintf(file,"| ");
+          break;
+        case HMIRROR:
+          fprintf(file,"_ ");
+          break;
+        case SPIRIT:
+          fprintf(file,"S ");
+          break;
+        case ZOMBIE:
+          fprintf(file,"Z ");
+          break;
+        case GHOST:
+          fprintf(file,"G ");
+          break;
+        case VAMPIRE:
+          fprintf(file,"V ");
+          break;
+      }
 		}
 		save_empty_line(file);
   }
 	save_empty_line(file);
-
-
   fclose(file);
 }
