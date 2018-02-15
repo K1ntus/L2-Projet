@@ -30,7 +30,9 @@
  * @param filename
  * @return the loaded game
  **/
-game load_game(char* filename){
+
+
+/*game load_game(char* filename){
 	int width = 4, height =4;
 	FILE * file = fopen(filename, "r");
 
@@ -38,8 +40,74 @@ game load_game(char* filename){
 
 	fclose(file);
 	return g;
+}*/
+void memory_test2(game g){
+	if(g==NULL){
+		fprintf(stderr,"Not enough memory!\n");
+		exit(EXIT_FAILURE);
+	}
+	if (g->matrice==NULL || g->valuesWest==NULL || g->valuesEast==NULL || g->valuesSouth==NULL || g->valuesNorth==NULL){
+		fprintf(stderr,"Not enough memory!\n");
+		exit(EXIT_FAILURE);
+
+	}
 }
 
+game load_game(char* filename){
+
+	//opening the file containing the game
+	printf("\n\nINFO: Starting loading ...\n");
+	filename = fopen(filename,"r");
+	if(filename==NULL){
+    fprintf(stderr,"Null parameter %s !\n",filename);
+    exit(EXIT_FAILURE);
+  }
+
+	int width,height;
+	fscanf(filename, "%d %d ", &width, &height);
+	//creating the game to be returned
+	game g = malloc(sizeof(game)/*structure alloc*/+height*width*sizeof(int)/*matrice alloc*/+2*width*sizeof(int)/*values north & south alloc*/+2*height*sizeof(int)/*values east & west alloc*/);
+	if(g==NULL){
+		fprintf(stderr,"Not enough memory!\n");
+		exit(EXIT_FAILURE);
+	}
+	g->matrice = malloc(height*width*sizeof(int));
+	g->valuesNorth = malloc(width*sizeof(int));
+	g->valuesSouth = malloc(width*sizeof(int));
+	g->valuesEast = malloc(height*sizeof(int));
+	g->valuesWest = malloc(height*sizeof(int));
+	memory_test2(g);
+
+
+	//filling the structure
+	g->width = width;
+	g->height = height;
+	//reading second line
+	fscanf(filename, "%d %d %d %d", g->ghosts, g->vampires, g->zombies, g->spirit);
+	//reading required nb monsters on each side
+	int cursor=1;
+	for(int i=1; i<=height; i++){
+		for(int j=1; j<=width; j++){
+				switch (cursor) {
+					case 1: fscanf(filename, "%d ", g->valuesNorth[j]); break;
+					case 2: fscanf(filename, "%d ", g->valuesSouth[j]); break;
+					case 3: fscanf(filename, "%d ", g->valuesEast[j]); break;
+					case 4: fscanf(filename, "%d ", g->valuesWest[j]); break;
+				}
+				cursor += j;
+		}
+		cursor %= width;
+	}
+
+	for(int i=1; i<=height; i++){
+		for(int j=1; j<=width; j++){
+				fscanf(filename,"%d ", g->matrice[i][j]);
+		}
+	}
+
+	return g;
+
+}
 
 
 /**
