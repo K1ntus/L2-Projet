@@ -215,12 +215,12 @@ void display(game g){
 	*	2	EAST
 	*	3	WEST
 **/
-int ** init_array(game g){
- int **res  = (int **)malloc(sizeof(int *) * NB_DIR);
- int *north = (int *)malloc(sizeof(int) * game_height(g));
- int *south = (int *)malloc(sizeof(int) * game_height(g));
- int *east = (int *)malloc(sizeof(int) * game_width(g));
- int *west = (int *)malloc(sizeof(int) * game_width(g));
+bool ** init_array(game g){
+ bool **res  = (bool **)malloc(sizeof(bool *) * NB_DIR);
+ bool *north = (bool *)malloc(sizeof(bool) * game_height(g));
+ bool *south = (bool *)malloc(sizeof(bool) * game_height(g));
+ bool *east = (bool *)malloc(sizeof(bool) * game_width(g));
+ bool *west = (bool *)malloc(sizeof(bool) * game_width(g));
 
  res[0] = north;
  res[1] = south;
@@ -230,22 +230,50 @@ int ** init_array(game g){
 }
 
 
-int ** current_nb_seen_array(game g, int ** array){
+bool ** current_nb_seen_array(game g, bool ** array){
 	return array;
 }
 
-void which_side_see_this_cell(game g, int pos, int ** array){
+void which_sideAndPos_see_this_cell(game g, int pos, bool ** array){
+	//Copy the main game to not remove progress
+	game g2 = copy_game(g);
+	//Removing all monster
+	restart_game(g2);
 
+	int x = pos/game_width(g2);
+	int y = pos%game_width(g2);
+	add_monster(g2, ZOMBIE,x,y);
 
+		for(unsigned int i = 0; i < game_width(g2); i++){
+			int res = current_nb_seen(g2, N, i);
+			if (res != 0){
+				array[0][i] = true;
+			}
 
+			res = current_nb_seen(g2, S, i);
+			if (res != 0){
+				array[1][i] = true;
+			}
+		}
 
+		for(unsigned int i = 0; i < game_width(g2); i++){
+			int res = current_nb_seen(g2, E, i);
+			if (res != 0){
+				array[2][i] = true;
+			}
+
+			res = current_nb_seen(g2, W, i);
+			if (res != 0){
+				array[3][i] = true;
+			}
+		}
 }
 
 
-bool is_valid(game g, int pos, int ** array){
+bool is_valid(game g, int pos, bool ** array){
   display(g);
   int max_size = game_width(g)*game_height(g);
-  if (pos < 0 || pos > max_size){
+  if (pos < 0 || pos > max_size-1){
     return false;
   }
 
@@ -253,9 +281,16 @@ bool is_valid(game g, int pos, int ** array){
   int x = pos/game_width(g);
   int y = pos%game_width(g);
 	printf("posX=%d; posY=%d\n",x,y);
+	which_sideAndPos_see_this_cell(g,pos, array);
+	/**
+	*	On parcours tt le tab. array
+	*	Si valeur true, on recupere la valeur de cette pos+side
+	*	On test ces valeurs avec current nb seen
+	**/
+
   if(get_content(g,x,y) != EMPTY){
     fprintf(stderr,"INFO: not an empty cell for the solver\n");
-	}
+	}else{
     if(current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
       add_monster(g, ZOMBIE,x,y);//Changer en fct du nb de monstre vu
 			printf("Added a zombie\n");
@@ -271,6 +306,7 @@ bool is_valid(game g, int pos, int ** array){
     }else{
       fprintf(stderr, "INFO: already max number of spirit placed\n");
 		}
+	}
 
 	display(g);
 	return is_valid(g, pos+1, array);
@@ -286,6 +322,7 @@ bool is_valid(game g, int pos, int ** array){
   return true;
 
 }
+
 
 
 void usage (void){
@@ -317,7 +354,8 @@ int main (void /*int argc, char *argv[]*/){
 	}*/
   game g = new_game_ext(4,4);
 	int nbMonsters[] = {2,2,5,0};
-	int ** array = init_array(g);
+	bool ** array = init_array(g);
+
   generate(g, nbMonsters);
   is_valid(g,0, array);
 }
