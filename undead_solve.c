@@ -288,9 +288,33 @@ bool is_valid(game g, int pos, int ** array){
 }
 
 
+void usage (void){
+		fprintf(stderr,"\n\nNombre de parametres invalides\n");
+		fprintf(stderr,"Usage: undead_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>\n");
+		exit(EXIT_FAILURE);
+}
 
 
-int main (void){
+int main (void /*int argc, char *argv[]*/){
+	/*
+	if (argc != 4){
+		usage();
+	}
+
+	switch(argv[1]){
+		case FIND_ONE:
+			//TODO
+			break;
+		case NB_SOL:
+			//TODO
+			break;
+		case FIND_ALL:
+			//TODO
+			break;
+		}
+		default:
+			break;
+	}*/
   game g = new_game_ext(4,4);
 	int nbMonsters[] = {2,2,5,0};
 	int ** array = init_array(g);

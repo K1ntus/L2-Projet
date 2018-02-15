@@ -339,6 +339,7 @@ bool usage (game g, int r, int x, int y, char mstr, int * nbMonsters){
 	return true;
 }
 
+
 int main(){
 	int r, x, y;
 	char mstr;
