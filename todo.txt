@@ -3,7 +3,10 @@ Répartition :
 Jordan : undead_solve -> fonction qui reset la grille si la solution est pas trouvée (=> restart_game) + aide pour le game_io.c
 Amir : undead_solve -> verifier si les coups sont valides (cad si le solveur a le droit de placer les monstres etc...) + fonction qui vérifie s'il existe une solution
 Athman :  load_game + sous fonctions solver (voir ce qu'on rajoute au fur et à mesure)
-Sarah : save_game.c + sous fonctions solver + fonction qui retourne la liste des pos de chaque cotés parcourant au moins une cell
+Sarah : save_game + sous fonctions solver + fonction qui retourne la liste des pos de chaque cotés parcourant au moins une cell
 
-
--> ajouter commande pour save en jeu (exemple: save nom_du_fichier)
+  -> ptete une func qui calcule et retourne le path parcouru par chaque pos de chaque side
+  -> ajouter commande pour save en jeu (exemple: save nom_du_fichier)
+  -> redécomposer le projet avec une lib supplémentaire contenant les fcts display, etc d'undead_text.c dans un nouveau header
+  -> Commande d'undead_text.c pour le chargement/génération des soluces
+  -> (later) fct. pour la génération aléatoire du board

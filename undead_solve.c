@@ -233,7 +233,14 @@ bool ** init_array(game g){
 bool ** current_nb_seen_array(game g, bool ** array){
 	return array;
 }
-
+void debug_whichSideAndPos(game g, bool ** array){
+	for (int i = 0; i < game_width(g); i++) {
+		for (int j = 0; j < game_height(g); j++) {
+				printf("%d ", array[i][j]);
+		}
+		printf("\n");
+	}
+}
 void which_sideAndPos_see_this_cell(game g, int pos, bool ** array){
 	//Copy the main game to not remove progress
 	game g2 = copy_game(g);
@@ -248,11 +255,15 @@ void which_sideAndPos_see_this_cell(game g, int pos, bool ** array){
 			int res = current_nb_seen(g2, N, i);
 			if (res != 0){
 				array[0][i] = true;
+			}else{
+				array[0][i] = false;
 			}
 
 			res = current_nb_seen(g2, S, i);
 			if (res != 0){
 				array[1][i] = true;
+			}else{
+				array[1][i] = false;
 			}
 		}
 
@@ -260,16 +271,93 @@ void which_sideAndPos_see_this_cell(game g, int pos, bool ** array){
 			int res = current_nb_seen(g2, E, i);
 			if (res != 0){
 				array[2][i] = true;
+			}else{
+				array[2][i] = false;
 			}
 
 			res = current_nb_seen(g2, W, i);
 			if (res != 0){
 				array[3][i] = true;
+			}else{
+				array[3][i] = false;
 			}
 		}
+		debug_whichSideAndPos(g, array);
 }
 
+void which_monster_to_place (game g, bool ** array, int pos){
+/**
+*	On parcours tt le tab. array
+*	Si valeur true, on recupere la valeur de cette pos+side
+*	On test ces valeurs avec current nb seen
+**/
+	int minToReach =666, maxToReach =-666;
+	which_sideAndPos_see_this_cell(g,pos, array);
 
+	for(unsigned int i = 0; i < game_width(g); i++){
+		if(array[0][i] == true){
+			printf("Side: 2 && pos: %d is true\n", i);
+			printf("Min is equal to: %d->%d\n\n", required_nb_seen(g, N, pos%game_height(g)), required_nb_seen(g, N, pos%game_height(g)) - current_nb_seen(g, N, pos/game_width(g)));
+
+			if (required_nb_seen(g,N, pos/game_width(g)) < minToReach)
+				minToReach = required_nb_seen(g, N, pos/game_width(g)) - current_nb_seen(g, N, pos/game_width(g));
+			else if (required_nb_seen(g, N, pos/game_width(g)) > maxToReach)
+				maxToReach =required_nb_seen(g, N, pos/game_width(g)) - current_nb_seen(g, N, pos/game_width(g));
+		}
+		if(array[1][i] == true){
+			printf("Side: 1 && pos: %d is true\n", i);
+			printf("Min is equal to: %d->%d\n\n", required_nb_seen(g, S, pos%game_height(g)), required_nb_seen(g, S, pos%game_height(g)) - current_nb_seen(g, S, pos/game_width(g)));
+
+			if (required_nb_seen(g,S, pos/game_width(g)) < minToReach)
+				minToReach = required_nb_seen(g, S, pos/game_width(g)) - current_nb_seen(g, S, pos/game_width(g));
+			else if (required_nb_seen(g, S, pos/game_width(g)) > maxToReach)
+				maxToReach =required_nb_seen(g, S, pos/game_width(g)) - current_nb_seen(g, S, pos/game_width(g));
+		}
+	}
+	for(unsigned int i = 0; i < game_height(g); i++){
+		if(array[2][i] == true){
+			printf("Side: 2 && pos: %d is true\n", i);
+			printf("Min is equal to: %d->%d\n\n", required_nb_seen(g, E, pos%game_height(g)), required_nb_seen(g, E, pos%game_height(g)) - current_nb_seen(g, E, pos/game_width(g)));
+			if (required_nb_seen(g,E, pos%game_height(g)) < minToReach)
+				minToReach = required_nb_seen(g, E, pos%game_height(g)) - current_nb_seen(g, E, pos/game_width(g));
+			else if (required_nb_seen(g, E, pos%game_height(g)) > maxToReach)
+				maxToReach =required_nb_seen(g, E, pos%game_height(g)) - current_nb_seen(g, E, pos/game_width(g));
+		}
+		if(array[3][i] == true){
+			printf("Side: 3 && pos: %d is true\n", i);
+			printf("Min is equal to: %d->%d\n\n", required_nb_seen(g, W, pos%game_height(g)), required_nb_seen(g, W, pos%game_height(g)) - current_nb_seen(g, W, pos/game_width(g)));
+
+			if (required_nb_seen(g, W, pos%game_height(g)) < minToReach)
+				minToReach = required_nb_seen(g, W, pos%game_height(g)) - current_nb_seen(g, W, pos/game_width(g));
+			else if (required_nb_seen(g, W, pos%game_height(g)) > maxToReach)
+				maxToReach =required_nb_seen(g, W, pos%game_height(g)) - current_nb_seen(g, W, pos/game_width(g));
+		}
+	}
+
+	int x = pos/game_width(g);
+	int y = pos%game_width(g);
+	printf("the max is: %d and the min is: %d\n\n", maxToReach, minToReach);
+
+	if(maxToReach > 0 && minToReach >1 && current_nb_monsters(g,ZOMBIE) >= required_nb_monsters(g,ZOMBIE)){
+    if(current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
+      add_monster(g, ZOMBIE,x,y);//Changer en fct du nb de monstre vu
+		}
+	} else {
+			if (current_nb_monsters(g,VAMPIRE) < required_nb_monsters(g,VAMPIRE)){
+	      fprintf(stderr, "INFO: already max number of zombie placed\n");
+	      add_monster(g,VAMPIRE,x,y);
+	    }else if (current_nb_monsters(g,GHOST) < required_nb_monsters(g,GHOST)){
+	      fprintf(stderr, "INFO: already max number of vampire placed\n");
+	      add_monster(g,GHOST,x,y);
+	    }else if (current_nb_monsters(g,SPIRIT) < required_nb_monsters(g,SPIRIT)){
+	      fprintf(stderr, "INFO: already max number of ghost placed\n");
+	      add_monster(g,SPIRIT,x,y);
+	    }else{
+	      fprintf(stderr, "INFO: already max number of spirit placed\n");
+		}
+	}
+
+}
 bool is_valid(game g, int pos, bool ** array){
   display(g);
   int max_size = game_width(g)*game_height(g);
@@ -277,35 +365,16 @@ bool is_valid(game g, int pos, bool ** array){
     return false;
   }
 
+	which_monster_to_place(g, array, pos);
 	printf("pos=%d\n",pos);
   int x = pos/game_width(g);
   int y = pos%game_width(g);
 	printf("posX=%d; posY=%d\n",x,y);
-	which_sideAndPos_see_this_cell(g,pos, array);
-	/**
-	*	On parcours tt le tab. array
-	*	Si valeur true, on recupere la valeur de cette pos+side
-	*	On test ces valeurs avec current nb seen
-	**/
 
   if(get_content(g,x,y) != EMPTY){
     fprintf(stderr,"INFO: not an empty cell for the solver\n");
 	}else{
-    if(current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
-      add_monster(g, ZOMBIE,x,y);//Changer en fct du nb de monstre vu
-			printf("Added a zombie\n");
-    }else if (current_nb_monsters(g,VAMPIRE) < required_nb_monsters(g,VAMPIRE)){
-      fprintf(stderr, "INFO: already max number of zombie placed\n");
-      add_monster(g,VAMPIRE,x,y);
-    }else if (current_nb_monsters(g,GHOST) < required_nb_monsters(g,GHOST)){
-      fprintf(stderr, "INFO: already max number of vampire placed\n");
-      add_monster(g,GHOST,x,y);
-    }else if (current_nb_monsters(g,SPIRIT) < required_nb_monsters(g,SPIRIT)){
-      fprintf(stderr, "INFO: already max number of ghost placed\n");
-      add_monster(g,SPIRIT,x,y);
-    }else{
-      fprintf(stderr, "INFO: already max number of spirit placed\n");
-		}
+		which_monster_to_place(g, array, pos);
 	}
 
 	display(g);
@@ -358,4 +427,6 @@ int main (void /*int argc, char *argv[]*/){
 
   generate(g, nbMonsters);
   is_valid(g,0, array);
+
+	free(array);
 }
