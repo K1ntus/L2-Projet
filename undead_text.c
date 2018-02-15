@@ -339,25 +339,36 @@ bool usage (game g, int r, int x, int y, char mstr, int * nbMonsters){
 	return true;
 }
 
+void usage_loading_save(void){
 
-int main(){
+}
+
+
+int main(int argc, char *argv[]){
 	int r, x, y;
 	char mstr;
 
 	//Game generation
   game g = new_game_ext(4, 4);
-	int nbMonsters[] = {2,2,5,0};
 	//nbMonsters[0] => Vampire; nbMonsters[1] => Ghost; nbMonsters[2] => Zombie; nbMonsters[3] => Spirits
-	generate(g, nbMonsters);
+	int nbMonsters[] = {2,2,5,0};
+
+	if(argc == 2){
+		printf("Loading %s file\n",argv[1]);
+		g = load_game(argv[1]);
+	} else {
+		printf("Generating random board, unable to load any save file\n");
+
+		generate(g, nbMonsters);
+	}
+
 
 
 	display(g);
 
 	while(is_game_over(g) != true){
 		save_game(g,"autosave");
-		if(is_game_over(g)){
-			printf("\n\nVOUS AVEZ GAGNE\n\n");
-		}
+
 //User Entry
 		printf("\n\nLe format est le suivant : <x> <y> <G|V|Z|S|E>,\navec <x> et <y> des entiers naturels valident.\n\n		Commande : ");
 		r = scanf("%d %d %c",&x,&y,&mstr);
