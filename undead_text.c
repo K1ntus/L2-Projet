@@ -34,6 +34,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h> //access() fun
 #include "game_io.h"
 #include "game.h"
 
@@ -211,7 +212,7 @@ void display(game g){
 }
 
 // Handle the entry of the user
-void entry(game g, int x, int y, char mstr, int * nbMonsters, char choice){
+void entry(game g, int x, int y, char mstr, int * nbMonsters){
 	if (x >= 0 && x <= game_width(g) && y >= 0 && y <= game_height(g) ){ //Check the validity of the position
 		//If we want to remove a monster
 		if(mstr == 'E' || mstr == 'e'){//If the user have enter 'E' (or 'e') for Empty
@@ -286,10 +287,12 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters, char choice){
 	}else{
 		printf("\n\nCoordonnÃ©es invalides\n");
 	}
+	/*
 	if(choice == 'y' || choice == 'Y'){
 		printf("Vous avez sauvegardé la partie");
 		save_game(g,"autosave");
 	}
+	*/
 }
 
 
@@ -331,9 +334,9 @@ void bufferCleaner(void){
   }
 }
 
-bool usage (game g, int r, int x, int y, char mstr, int * nbMonsters, char choice){
+bool usage (game g, int r, int x, int y, char mstr, int * nbMonsters/*, char choice */){
 	if(r == 4){
-		entry(g, x, y, mstr, nbMonsters, choice);
+		entry(g, x, y, mstr, nbMonsters/*, choice */);
 	} else if(r == EOF){
 		return false;
 	} else if (r != 3){
@@ -348,21 +351,40 @@ void usage_loading_save(void){
 }
 
 
+bool is_loading_game(int argc){
+	if(argc != 2){
+		return false;
+	}
+	return true;
+}
+
+bool file_exist(char* filename){
+	if( access( filename, F_OK ) != -1 ) {
+	    return true;
+	}
+	return false;
+}
+
 int main(int argc, char *argv[]){
 	int r, x, y;
-	char mstr, choice;
+	char mstr/*, choice */;
 
 	//Game generation
   	game g = new_game_ext(4, 4);
 	//nbMonsters[0] => Vampire; nbMonsters[1] => Ghost; nbMonsters[2] => Zombie; nbMonsters[3] => Spirits
 	int nbMonsters[] = {2,2,5,0};
 
-	if(argc == 3){
+//Check if we want to load a file at beginning, else generate board
+	if(is_loading_game(argc)){
 		printf("Loading %s file\n",argv[1]);
-		g = load_game(argv[1]);
+		if(file_exist(argv[1])){
+			g = load_game(argv[1]);
+		}else{
+			fprintf(stderr,"File does not exist, sorry\n");
+			generate(g, nbMonsters);
+		}
 	} else {
 		printf("Generating random board, unable to load any save file\n");
-
 		generate(g, nbMonsters);
 	}
 
@@ -374,18 +396,16 @@ int main(int argc, char *argv[]){
 	//User Entry
 		printf("\n\nLe format est le suivant : <x> <y> <G|V|Z|S|E>,\navec <x> et <y> des entiers naturels valident.\n\n		Commande : ");
 		r = scanf("%d %d %c",&x,&y,&mstr);
-		printf("Do you want to save the game ?\n");
-		choice = scanf("%c",&choice);
 		printf("\n\n");
-	//Check the validity of user Entry
-		if(!usage(g, r, x, y, mstr, nbMonsters, choice)){ //If an important error occurs, (ie. r = EOF)
-			break;
+
+		if(!usage(g, r, x, y, mstr, nbMonsters)){ //If an important error occurs, (ie. r = EOF)
+			continue;
+		}else{
+			entry(g,x,y,mstr,nbMonsters);
 		}
 
 		display(g);
-		//debug(g);
 	}
-	//end while
 
 	if(is_game_over(g)){
 		printf("\n\nVOUS AVEZ GAGNE\n\n");

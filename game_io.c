@@ -64,7 +64,7 @@ void apply_required_nb_seen(game g, int * north, int * south, int * east, int * 
 
 void apply_monsterAndMirror_cell_content(game g, int ** monsterArray){
   for(unsigned int x = 0; x < game_width(g); x++){
-    for(unsigned int y = 0; y < game_height(g); y++){
+    for(unsigned int y = game_height(g); y > 0; y--){
       switch(monsterArray[x][y]){
         case ANTIMIRROR:
           add_mirror_ext(g,ANTIMIRROR,x,y);
@@ -104,17 +104,18 @@ int** init_matrice2(game g){
 	int **res  = (int **)malloc(sizeof(int *) * game_width(g));
 	res[0] = (int *)malloc(sizeof(int) * game_height(g) * game_width(g));
 	for(int i = 0; i < game_width(g); i++)
-	 *res[i] = (**res +  game_height(g) * i);
+	   res[i] = malloc(sizeof(int)*game_width(g));
 
-	//Initialise each cells of the board with enum type EMPTY
-	for (int x = 0; x <  game_width(g); x++){
-		for (int y = 0; y <  game_height(g); y++){
-			res[x][y] = EMPTY;
-		}
-	}
   return res;
 }
 
+void free_matrice(game g, int ** matrice){
+  for (int x = game_width(g); x >0; x--){
+    free(matrice[x]);
+  }
+  free(matrice[0]);
+  free(matrice);
+}
 
 /// @{
 /**
@@ -128,7 +129,7 @@ int** init_matrice2(game g){
 game load_game(char* filename){
   FILE* file = fopen(filename, "r");
 
-  char charBuffer[100];
+  char charBuffer[35];
   int widthAndHeight[15];
   int nbMonsters[15];
   int northLabel[15];
@@ -136,20 +137,21 @@ game load_game(char* filename){
   int eastLabel[15];
   int westLabel[15];
 
-
   //width & height
-  if(!fgets(charBuffer, 100, file)){
+  if(!fgets(charBuffer, 35, file)){
+    fprintf(stderr,"Invalid array in memory, sorry dude\n");
     return NULL;
   } else {
     string_filtering(charBuffer, widthAndHeight, file);
   }
+
 	unsigned int height = widthAndHeight[1], width = widthAndHeight[0];
   game g = new_game_ext(height,width);
-  //int monsterAndMirrorArray[width][height];
+
   int ** monsterAndMirrorArray = init_matrice2(g);
 
   //required nb monsters
-  if(!fgets(charBuffer, 100, file)){
+  if(!fgets(charBuffer, 35, file)){
     return NULL;
   } else {
     string_filtering(charBuffer, nbMonsters, file);
@@ -157,28 +159,28 @@ game load_game(char* filename){
 
 
   //north label
-  if(!fgets(charBuffer, 100, file)){
+  if(!fgets(charBuffer, 35, file)){
     return NULL;
   } else {
     string_filtering(charBuffer, northLabel, file);
   }
 
   //south label
-  if(!fgets(charBuffer, 100, file)){
+  if(!fgets(charBuffer, 35, file)){
     return NULL;
   } else {
     string_filtering(charBuffer, southLabel, file);
   }
 
   //east label
-  if(!fgets(charBuffer, 100, file)){
+  if(!fgets(charBuffer, 35, file)){
     return NULL;
   } else {
     string_filtering(charBuffer, eastLabel, file);
   }
 
   //west label
-  if(!fgets(charBuffer, 100, file)){
+  if(!fgets(charBuffer, 35, file)){
     return NULL;
   } else {
     string_filtering(charBuffer, westLabel, file);
@@ -186,14 +188,13 @@ game load_game(char* filename){
 
   //Monster cells
   for(unsigned int y = 0; y<height;y++){
-    if(!fgets(charBuffer, 100, file)){
+    if(!fgets(charBuffer, 35, file)){
       return NULL;
     } else {
       string_filtering(charBuffer, monsterAndMirrorArray[y], file);
     }
   }
 
-  fclose(file);
 
 
 
@@ -201,6 +202,8 @@ game load_game(char* filename){
   apply_required_nb_monsters(g, nbMonsters);
   apply_required_nb_seen(g, northLabel, southLabel, eastLabel, westLabel);
 
+  fclose(file);
+  free_matrice(g, monsterAndMirrorArray);
   return g;
 }
 
