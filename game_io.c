@@ -2,8 +2,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <string.h>
 #include "game_io.h"
 
+#define NB_MONSTERS 4
 
 
 /** Change save file sample to match :
@@ -21,6 +23,99 @@
 
 
 
+
+void string_filtering(char*str, int*res, FILE* f){
+	//get the numbers char on file
+  char * token;
+  token = strtok(str, " ;,.-");
+  int var=0;
+
+  int i = 0;
+//manage the numbers list in order to remove space
+  while (token != NULL) {
+      sscanf (token, "%d", &var);
+      res[i] = var;
+      token = strtok(NULL, " ;,.-");
+      i+=1;
+  }
+}
+
+void error_while_loading_file(game g){
+
+}
+
+void apply_required_nb_monsters(game g, int * nbMonsters){
+  set_required_nb_monsters(g,GHOST, nbMonsters[0]);
+  set_required_nb_monsters(g,VAMPIRE, nbMonsters[1]);
+  set_required_nb_monsters(g,ZOMBIE, nbMonsters[2]);
+  set_required_nb_monsters(g,SPIRIT, nbMonsters[3]);
+}
+
+void apply_required_nb_seen(game g, int * north, int * south, int * east, int * west){
+  for(unsigned int pos = 0; pos < game_width(g); pos++){
+    set_required_nb_seen(g, N, pos, north[pos]);
+    set_required_nb_seen(g, S, pos, south[pos]);
+  }
+  for(unsigned int pos = 0; pos < game_height(g); pos++){
+    set_required_nb_seen(g, E, pos, east[pos]);
+    set_required_nb_seen(g, W, pos, west[pos]);
+  }
+}
+
+void apply_monsterAndMirror_cell_content(game g, int ** monsterArray){
+  for(unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
+      switch(monsterArray[x][y]){
+        case ANTIMIRROR:
+          add_mirror_ext(g,ANTIMIRROR,x,y);
+          break;
+        case MIRROR:
+          add_mirror_ext(g,MIRROR,x,y);
+          break;
+        case HMIRROR:
+          add_mirror_ext(g,HMIRROR,x,y);
+          break;
+        case VMIRROR:
+          add_mirror_ext(g,VMIRROR,x,y);
+          break;
+
+        case ZOMBIE:
+          add_monster(g,ZOMBIE,x,y);
+          break;
+        case GHOST:
+          add_monster(g,GHOST,x,y);
+          break;
+        case VAMPIRE:
+          add_monster(g,VAMPIRE,x,y);
+          break;
+        case SPIRIT:
+          add_monster(g,SPIRIT,x,y);
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+}
+
+
+int** init_matrice2(game g){
+	int **res  = (int **)malloc(sizeof(int *) * game_width(g));
+	res[0] = (int *)malloc(sizeof(int) * game_height(g) * game_width(g));
+	for(int i = 0; i < game_width(g); i++)
+	 *res[i] = (**res +  game_height(g) * i);
+
+	//Initialise each cells of the board with enum type EMPTY
+	for (int x = 0; x <  game_width(g); x++){
+		for (int y = 0; y <  game_height(g); y++){
+			res[x][y] = EMPTY;
+		}
+	}
+  return res;
+}
+
+
 /// @{
 /**
  * @brief Creates a game by loading its description in a file
@@ -30,83 +125,83 @@
  * @param filename
  * @return the loaded game
  **/
-
-
-/*game load_game(char* filename){
-	int width = 4, height =4;
-	FILE * file = fopen(filename, "r");
-
-	game g = new_game_ext(width,height);
-
-	fclose(file);
-	return g;
-}*/
-void memory_test2(game g){
-	if(g==NULL){
-		fprintf(stderr,"Not enough memory!\n");
-		exit(EXIT_FAILURE);
-	}
-	if (g->matrice==NULL || g->valuesWest==NULL || g->valuesEast==NULL || g->valuesSouth==NULL || g->valuesNorth==NULL){
-		fprintf(stderr,"Not enough memory!\n");
-		exit(EXIT_FAILURE);
-
-	}
-}
-
 game load_game(char* filename){
+  FILE* file = fopen(filename, "r");
 
-	//opening the file containing the game
-	printf("\n\nINFO: Starting loading ...\n");
-	filename = fopen(filename,"r");
-	if(filename==NULL){
-    fprintf(stderr,"Null parameter %s !\n",filename);
-    exit(EXIT_FAILURE);
+  char charBuffer[100];
+  int widthAndHeight[15];
+  int nbMonsters[15];
+  int northLabel[15];
+  int southLabel[15];
+  int eastLabel[15];
+  int westLabel[15];
+
+
+  //width & height
+  if(!fgets(charBuffer, 100, file)){
+    return NULL;
+  } else {
+    string_filtering(charBuffer, widthAndHeight, file);
+  }
+	unsigned int height = widthAndHeight[1], width = widthAndHeight[0];
+  game g = new_game_ext(height,width);
+  //int monsterAndMirrorArray[width][height];
+  int ** monsterAndMirrorArray = init_matrice2(g);
+
+  //required nb monsters
+  if(!fgets(charBuffer, 100, file)){
+    return NULL;
+  } else {
+    string_filtering(charBuffer, nbMonsters, file);
   }
 
-	int width,height;
-	fscanf(filename, "%d %d ", &width, &height);
-	//creating the game to be returned
-	game g = malloc(sizeof(game)/*structure alloc*/+height*width*sizeof(int)/*matrice alloc*/+2*width*sizeof(int)/*values north & south alloc*/+2*height*sizeof(int)/*values east & west alloc*/);
-	if(g==NULL){
-		fprintf(stderr,"Not enough memory!\n");
-		exit(EXIT_FAILURE);
-	}
-	g->matrice = malloc(height*width*sizeof(int));
-	g->valuesNorth = malloc(width*sizeof(int));
-	g->valuesSouth = malloc(width*sizeof(int));
-	g->valuesEast = malloc(height*sizeof(int));
-	g->valuesWest = malloc(height*sizeof(int));
-	memory_test2(g);
+
+  //north label
+  if(!fgets(charBuffer, 100, file)){
+    return NULL;
+  } else {
+    string_filtering(charBuffer, northLabel, file);
+  }
+
+  //south label
+  if(!fgets(charBuffer, 100, file)){
+    return NULL;
+  } else {
+    string_filtering(charBuffer, southLabel, file);
+  }
+
+  //east label
+  if(!fgets(charBuffer, 100, file)){
+    return NULL;
+  } else {
+    string_filtering(charBuffer, eastLabel, file);
+  }
+
+  //west label
+  if(!fgets(charBuffer, 100, file)){
+    return NULL;
+  } else {
+    string_filtering(charBuffer, westLabel, file);
+  }
+
+  //Monster cells
+  for(unsigned int y = 0; y<height;y++){
+    if(!fgets(charBuffer, 100, file)){
+      return NULL;
+    } else {
+      string_filtering(charBuffer, monsterAndMirrorArray[y], file);
+    }
+  }
+
+  fclose(file);
 
 
-	//filling the structure
-	g->width = width;
-	g->height = height;
-	//reading second line
-	fscanf(filename, "%d %d %d %d", g->ghosts, g->vampires, g->zombies, g->spirit);
-	//reading required nb monsters on each side
-	int cursor=1;
-	for(int i=1; i<=height; i++){
-		for(int j=1; j<=width; j++){
-				switch (cursor) {
-					case 1: fscanf(filename, "%d ", g->valuesNorth[j]); break;
-					case 2: fscanf(filename, "%d ", g->valuesSouth[j]); break;
-					case 3: fscanf(filename, "%d ", g->valuesEast[j]); break;
-					case 4: fscanf(filename, "%d ", g->valuesWest[j]); break;
-				}
-				cursor += j;
-		}
-		cursor %= width;
-	}
 
-	for(int i=1; i<=height; i++){
-		for(int j=1; j<=width; j++){
-				fscanf(filename,"%d ", g->matrice[i][j]);
-		}
-	}
+  apply_monsterAndMirror_cell_content(g,monsterAndMirrorArray);
+  apply_required_nb_monsters(g, nbMonsters);
+  apply_required_nb_seen(g, northLabel, southLabel, eastLabel, westLabel);
 
-	return g;
-
+  return g;
 }
 
 
