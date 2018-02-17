@@ -63,33 +63,33 @@ void apply_required_nb_seen(game g, int * north, int * south, int * east, int * 
 }
 
 void apply_monsterAndMirror_cell_content(game g, int ** monsterArray){
-  for(unsigned int x = 0; x < game_width(g); x++){
-    for(unsigned int y = game_height(g); y > 0; y--){
+for(unsigned int x = 0; x < game_width(g); x++){
+  for(unsigned int y = 0; y < game_height(g); y++){
       switch(monsterArray[x][y]){
         case ANTIMIRROR:
-          add_mirror_ext(g,ANTIMIRROR,x,y);
+          add_mirror_ext(g,ANTIMIRROR,y,x);
           break;
         case MIRROR:
-          add_mirror_ext(g,MIRROR,x,y);
+          add_mirror_ext(g,MIRROR,y,x);
           break;
         case HMIRROR:
-          add_mirror_ext(g,HMIRROR,x,y);
+          add_mirror_ext(g,HMIRROR,y,x);
           break;
         case VMIRROR:
-          add_mirror_ext(g,VMIRROR,x,y);
+          add_mirror_ext(g,VMIRROR,y,x);
           break;
 
         case ZOMBIE:
-          add_monster(g,ZOMBIE,x,y);
+          add_monster(g,ZOMBIE,y,x);
           break;
         case GHOST:
-          add_monster(g,GHOST,x,y);
+          add_monster(g,GHOST,y,x);
           break;
         case VAMPIRE:
-          add_monster(g,VAMPIRE,x,y);
+          add_monster(g,VAMPIRE,y,x);
           break;
         case SPIRIT:
-          add_monster(g,SPIRIT,x,y);
+          add_monster(g,SPIRIT,y,x);
           break;
 
         default:
@@ -268,7 +268,7 @@ void save_game(cgame g, char* filename){
   printf("INFO: Writing cells content\n");
   for(unsigned int posY = game_height(g); posY > 0; posY--){
 		for(unsigned int posX = 0; posX < game_width(g); posX++){
-      int tick_content = get_content(g,posX,posY-1);
+      content tick_content = get_content(g,posX,posY-1);
 
       //Graphic show of cells content
       switch(tick_content){

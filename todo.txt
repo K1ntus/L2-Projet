@@ -10,3 +10,7 @@ Sarah : save_game + sous fonctions solver + fonction qui retourne la liste des p
   -> redécomposer le projet avec une lib supplémentaire contenant les fcts display, etc d'undead_text.c dans un nouveau header
   -> Commande d'undead_text.c pour le chargement/génération des soluces
   -> (later) fct. pour la génération aléatoire du board
+
+
+-> corriger fuite mémoire game_io.c
+-> corriger bug function load de game_io.c
