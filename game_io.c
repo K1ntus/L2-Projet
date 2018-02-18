@@ -27,7 +27,7 @@
 void string_filtering(char*str, int*res, FILE* f){
 	//get the numbers char on file
   char * token;
-  token = strtok(str, " ;,.-");
+  token = strtok(str, " ");
   int var=0;
 
   int i = 0;
@@ -35,10 +35,11 @@ void string_filtering(char*str, int*res, FILE* f){
   while (token != NULL) {
       sscanf (token, "%d", &var);
       res[i] = var;
-      token = strtok(NULL, " ;,.-");
+      token = strtok(NULL, " ");
       i+=1;
   }
 }
+
 
 void error_while_loading_file(game g){
 
@@ -64,32 +65,32 @@ void apply_required_nb_seen(game g, int * north, int * south, int * east, int * 
 
 void apply_monsterAndMirror_cell_content(game g, int ** monsterArray){
 for(unsigned int x = 0; x < game_width(g); x++){
-  for(unsigned int y = 0; y < game_height(g); y++){
-      switch(monsterArray[x][y]){
+  for(unsigned int y = game_height(g); y >0; y--){
+      switch(monsterArray[game_width(g) - (y)][x]){
         case ANTIMIRROR:
-          add_mirror_ext(g,ANTIMIRROR,y,x);
+          add_mirror_ext(g,ANTIMIRROR,x,y-1);
           break;
         case MIRROR:
-          add_mirror_ext(g,MIRROR,y,x);
+          add_mirror_ext(g,MIRROR,x,y-1);
           break;
         case HMIRROR:
-          add_mirror_ext(g,HMIRROR,y,x);
+          add_mirror_ext(g,HMIRROR,x,y-1);
           break;
         case VMIRROR:
-          add_mirror_ext(g,VMIRROR,y,x);
+          add_mirror_ext(g,VMIRROR,x,y-1);
           break;
 
         case ZOMBIE:
-          add_monster(g,ZOMBIE,y,x);
+          add_monster(g,ZOMBIE,x,y-1);
           break;
         case GHOST:
-          add_monster(g,GHOST,y,x);
+          add_monster(g,GHOST,x,y-1);
           break;
         case VAMPIRE:
-          add_monster(g,VAMPIRE,y,x);
+          add_monster(g,VAMPIRE,x,y-1);
           break;
         case SPIRIT:
-          add_monster(g,SPIRIT,y,x);
+          add_monster(g,SPIRIT,x,y-1);
           break;
 
         default:
@@ -194,9 +195,6 @@ game load_game(char* filename){
       string_filtering(charBuffer, monsterAndMirrorArray[y], file);
     }
   }
-
-
-
 
   apply_monsterAndMirror_cell_content(g,monsterAndMirrorArray);
   apply_required_nb_monsters(g, nbMonsters);
