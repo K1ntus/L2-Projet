@@ -1,10 +1,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <assert.h>
+
 
 #include "game.c"
 
-
+typedef enum e_undead_solve {FIND_NONE, FIND_ONE, NB_SOL, FIND_ALL} e_solver;
 
 //Creation of a new map containing the new monster
 void generate(game g, int * nbMonsters){
@@ -55,7 +57,9 @@ bool already_max_monsters_placed (game g, content monster){
 
 void init_matrice2(game g){
 	int **res  = (int **)malloc(sizeof(int *) * game_width(g));
+	assert(res);
 	res[0] = (int *)malloc(sizeof(int) * game_height(g) * game_width(g));
+	assert(res[0]);
 	for(int i = 0; i < game_width(g); i++)
 	 *res[i] = (**res +  game_height(g) * i);
 
@@ -217,15 +221,20 @@ void display(game g){
 **/
 bool ** init_array(game g){
  bool **res  = (bool **)malloc(sizeof(bool *) * NB_DIR);
+ assert(res);
  bool *north = (bool *)malloc(sizeof(bool) * game_height(g));
+ assert(north);
  bool *south = (bool *)malloc(sizeof(bool) * game_height(g));
+ assert(south);
  bool *east = (bool *)malloc(sizeof(bool) * game_width(g));
+ assert(east);
  bool *west = (bool *)malloc(sizeof(bool) * game_width(g));
-
+ assert(west);
  res[0] = north;
  res[1] = south;
  res[2] = east;
  res[3] = west;
+
  return res;
 }
 
@@ -395,32 +404,50 @@ bool is_valid(game g, int pos, bool ** array){
 
 
 void usage (void){
-		fprintf(stderr,"\n\nNombre de parametres invalides\n");
+		fprintf(stderr,"\n\nGiven Parameters Numbers Are Invalid\n");
 		fprintf(stderr,"Usage: undead_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>\n");
 		exit(EXIT_FAILURE);
 }
+/*
+e_solver undead_solver (char * solver){
+	if(strcmp(solver, "FIND_ONE") == 0){
+		return FIND_ONE;
+	}
+	if(strcmp(solver, "NB_SOL") == 0){
+		return NB_SOL;
+	}
+	if(strcmp(solver, "FIND_ALL") == 0){
+		return FIND_ALL;
+	}
+	return FIND_NONE;
+}
+*/
 
-
-int main (void /*int argc, char *argv[]*/){
+int main (int argc, char *argv[]){
 	/*
 	if (argc != 4){
 		usage();
 	}
 
-	switch(argv[1]){
-		case FIND_ONE:
-			//TODO
-			break;
-		case NB_SOL:
-			//TODO
-			break;
-		case FIND_ALL:
-			//TODO
-			break;
-		}
-		default:
-			break;
-	}*/
+	e_solver = undead_solver (argv[1]){
+	if(solve == FIND_NONE){
+			fprintf(stderr, "Can't be sloved with this path\n");
+			exit(EXIT_FAILURE);
+	}
+			case FIND_ONE:
+				//TODO
+				break;
+			case NB_SOL:
+				//TODO
+				break;
+			case FIND_ALL:
+				//TODO
+				break;
+			}
+			default:
+				break;
+		}*/
+
   game g = new_game_ext(4,4);
 	int nbMonsters[] = {2,2,5,0};
 	bool ** array = init_array(g);

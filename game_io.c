@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include <string.h>
 #include "game_io.h"
+#include <assert.h>
 
 #define NB_MONSTERS 4
 
@@ -103,9 +104,12 @@ for(unsigned int x = 0; x < game_width(g); x++){
 
 int** init_matrice2(game g){
 	int **res  = (int **)malloc(sizeof(int *) * game_width(g));
+  assert(res);
 	res[0] = (int *)malloc(sizeof(int) * game_height(g) * game_width(g));
+  assert(res[0]);
 	for(int i = 0; i < game_width(g); i++)
 	   res[i] = malloc(sizeof(int)*game_width(g));
+     assert(res);
 
   return res;
 }
@@ -225,6 +229,7 @@ void save_game(cgame g, char* filename){
 
   printf("INFO: Creating save file\n");
   FILE* file = fopen(filename,"w");
+
 
   printf("INFO: Writing game dimension\n");
   char tmp[100];
