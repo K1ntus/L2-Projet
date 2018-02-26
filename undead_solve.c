@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
+#include <unistd.h>
 #include <assert.h>
 
 
@@ -347,20 +348,24 @@ void which_monster_to_place (game g, bool ** array, int pos){
 	int y = pos%game_width(g);
 	printf("the max is: %d and the min is: %d\n\n", maxToReach, minToReach);
 
-	if(maxToReach > 0 && minToReach >1 && current_nb_monsters(g,ZOMBIE) >= required_nb_monsters(g,ZOMBIE)){
+	if(minToReach >=0 && current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
     if(current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
       add_monster(g, ZOMBIE,x,y);//Changer en fct du nb de monstre vu
+			return;
 		}
 	} else {
 			if (current_nb_monsters(g,VAMPIRE) < required_nb_monsters(g,VAMPIRE)){
-	      fprintf(stderr, "INFO: already max number of zombie placed\n");
+	      fprintf(stderr, "INFO: already max number of zombie placed, or unvalid value\n");
 	      add_monster(g,VAMPIRE,x,y);
+				return;
 	    }else if (current_nb_monsters(g,GHOST) < required_nb_monsters(g,GHOST)){
 	      fprintf(stderr, "INFO: already max number of vampire placed\n");
 	      add_monster(g,GHOST,x,y);
+				return;
 	    }else if (current_nb_monsters(g,SPIRIT) < required_nb_monsters(g,SPIRIT)){
 	      fprintf(stderr, "INFO: already max number of ghost placed\n");
 	      add_monster(g,SPIRIT,x,y);
+				return;
 	    }else{
 	      fprintf(stderr, "INFO: already max number of spirit placed\n");
 		}
@@ -368,6 +373,7 @@ void which_monster_to_place (game g, bool ** array, int pos){
 
 }
 bool is_valid(game g, int pos, bool ** array){
+	sleep(1);
   display(g);
   int max_size = game_width(g)*game_height(g);
   if (pos < 0 || pos > max_size-1){
@@ -382,19 +388,19 @@ bool is_valid(game g, int pos, bool ** array){
 
   if(get_content(g,x,y) != EMPTY){
     fprintf(stderr,"INFO: not an empty cell for the solver\n");
+		//return is_valid(g, pos+1, array);
 	}else{
 		which_monster_to_place(g, array, pos);
 	}
 
 	display(g);
-	return is_valid(g, pos+1, array);
 
   for(unsigned int i = 0; i < max_size; i++){
-    int x = pos/game_width(g);
-    int y = pos%game_width(g);
+    int x = i/game_width(g);
+    int y = i%game_width(g);
     if(get_content(g,x,y) == EMPTY){
       printf("on add un truc");
-      is_valid(g, pos, array);
+      is_valid(g, i, array);
     }
   }
   return true;
