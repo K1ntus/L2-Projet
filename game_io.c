@@ -124,7 +124,7 @@ char** init_matrice2(game g){
   assert(res);
 	res[0] = (char *)malloc(sizeof(char) * game_height(g) * game_width(g));
   assert(res[0]);
-	for(int i = 0; i < game_width(g); i++)
+	for(int i = 1; i < game_width(g); i++)
 	   res[i] = malloc(sizeof(char)*game_width(g));
      assert(res);
 
@@ -132,9 +132,10 @@ char** init_matrice2(game g){
 }
 
 void free_matrice(game g, char ** matrice){
-  for (int x = game_width(g); x >0; x--){
-    free(matrice[x]);
+  for(unsigned int i = game_width(g)-1; i > 0; i--){
+    free(matrice[i]);
   }
+
   free(matrice[0]);
   free(matrice);
 }
@@ -227,6 +228,8 @@ game load_game(char* filename){
 
   fclose(file);
   free_matrice(g, monsterAndMirrorArray);
+
+
   return g;
 }
 
