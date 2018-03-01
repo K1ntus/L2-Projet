@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "game.h"
+#include "game_display.c"
 #include "game_io.h"
 
 bool potential_invalid_game(game g){
@@ -13,7 +14,6 @@ bool potential_invalid_game(game g){
       return false;
   }
 
-
   for(unsigned int x = 0; x < game_height(g);x++){
     if(required_nb_seen(g, E, x) - current_nb_seen(g, E,x) < 0)
     return false;
@@ -23,12 +23,24 @@ bool potential_invalid_game(game g){
 
     return true;
 }
+
+bool board_is_full(game g){
+  for (unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
+      if(get_content(g,x,y) == EMPTY)
+        return false;
+    }
+  }
+  return true;
+}
+
+
 game is_valid(game g, int pos, content monster){
   int x = pos/game_width(g);
   int y = pos/game_height(g);
 
-
-  game g2 = copy_game(g);
+  game g2 = new_game_ext(game_width(g), game_height(g));
+  g2 = copy_game(g);
   free(g);
   if(!(potential_invalid_game(g2))){
     free(g2);
@@ -40,7 +52,7 @@ game is_valid(game g, int pos, content monster){
     add_monster(g2, monster, x, y);
   }
 
-  if(pos == game_width(g2) * game_height(g2) -1){
+  if(board_is_full(g2)){
     if(is_game_over(g2)){
       return g2;
     }else{
@@ -57,9 +69,14 @@ game is_valid(game g, int pos, content monster){
 
 
 int main(void) {
-  game g = new_game_ext(4,4);
-  g = is_valid(g,0,EMPTY);
+  game g1 = load_game("autosave");
+  g1 = is_valid(g1,0,EMPTY);
 
-  save_game(g, "solution dude");
-  free(g);
+  //display(g);
+  if(g1 == NULL){
+    printf("No solution has been find\n");
+  } else{
+    save_game(g1, "solution_dude");
+  }
+  free(g1);
 }
