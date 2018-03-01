@@ -6,6 +6,7 @@
 
 
 #include "game.c"
+#include "game_io.c"
 
 typedef enum e_undead_solve {FIND_NONE, FIND_ONE, NB_SOL, FIND_ALL} e_solver;
 
@@ -56,7 +57,7 @@ bool already_max_monsters_placed (game g, content monster){
   return true;
 }
 
-void init_matrice2(game g){
+void init_matrice3(game g){
 	int **res  = (int **)malloc(sizeof(int *) * game_width(g));
 	assert(res);
 	res[0] = (int *)malloc(sizeof(int) * game_height(g) * game_width(g));
@@ -410,11 +411,11 @@ bool is_valid(game g, int pos, bool ** array){
 
 
 void usage (void){
-		fprintf(stderr,"\n\nGiven Parameters Numbers Are Invalid\n");
+		fprintf(stderr,"\n\nInvalid Parameters\n");
 		fprintf(stderr,"Usage: undead_solve FIND_ONE|NB_SOL|FIND_ALL <nom_fichier_pb> <prefix_fichier_sol>\n");
 		exit(EXIT_FAILURE);
 }
-/*
+
 e_solver undead_solver (char * solver){
 	if(strcmp(solver, "FIND_ONE") == 0){
 		return FIND_ONE;
@@ -427,20 +428,23 @@ e_solver undead_solver (char * solver){
 	}
 	return FIND_NONE;
 }
-*/
+
 
 int main (int argc, char *argv[]){
-	/*
 	if (argc != 4){
 		usage();
-	}
-
-	e_solver = undead_solver (argv[1]){
+ 	}
+	e_solver solve = undead_solver (argv[2]);
 	if(solve == FIND_NONE){
 			fprintf(stderr, "Can't be sloved with this path\n");
 			exit(EXIT_FAILURE);
 	}
-			case FIND_ONE:
+	//Try to solve the game
+	game g = load_game (argv[3]);
+	assert(g);
+	char * filename = argv[4];
+
+			/*case FIND_ONE:
 				//TODO
 				break;
 			case NB_SOL:
@@ -454,7 +458,7 @@ int main (int argc, char *argv[]){
 				break;
 		}*/
 
-  game g = new_game_ext(4,4);
+  //game g = new_game_ext(4,4);
 	int nbMonsters[] = {2,2,5,0};
 	bool ** array = init_array(g);
 
