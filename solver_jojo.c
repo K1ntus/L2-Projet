@@ -44,37 +44,36 @@ bool board_is_full(game g){
 
 //game is_valid(game g, int pos, content monster, int *nb_sol){
 game is_valid(game g, int pos, content monster){
-  //sleep(1);
-  int y = pos%game_width(g);
-  int x = pos/game_width(g);
+  int x = pos%game_width(g);
+  int y = pos/game_width(g);
 
-  printf("posX:%d; posY:%d\n",x,y);
-  //display(g);
-  if(pos > game_width(g) * game_height(g) -1){
-    return NULL;
-  }
 
+      if(is_game_over(g)){
+        return g;
+      }
   game g2 = new_game_ext(game_width(g), game_height(g));
   g2 = copy_game(g);
-  display(g2);
+  printf("pos:%d\n", pos);
+
+  /*
   if(!(potential_invalid_game(g2))){
-    //free(g2);
+    free(g2);
     return NULL;
-  }
+  }*/
+
 
 
   if(get_content(g2,x,y) == EMPTY){
     add_monster(g2, monster, x, y);
   }
+      if(is_game_over(g2)){
+        return g2;
+      }
+
 
   if(board_is_full(g2)){
-    if(is_game_over(g2)){
-      //nb_sol +=1;
-      return g2;
-    }else{
-      free(g2);
-      return NULL;
-    }
+    free(g2);
+    return NULL;
   }
   /*
   return is_valid(g2, pos++, ZOMBIE, nb_sol);
@@ -83,19 +82,26 @@ game is_valid(game g, int pos, content monster){
   return is_valid(g2, pos++, VAMPIRE, nb_sol);
   */
 
-  is_valid(g2, pos+1, ZOMBIE);
-  is_valid(g2, pos+1, GHOST);
-  is_valid(g2, pos+1, SPIRIT);
-  is_valid(g2, pos+1, VAMPIRE);
+  if(required_nb_monsters(g,ZOMBIE) - current_nb_monsters(g, ZOMBIE) > 0)
+    is_valid(g2, pos+1, ZOMBIE);
+
+  if(required_nb_monsters(g,GHOST) - current_nb_monsters(g, GHOST) > 0)
+    is_valid(g2, pos+1, GHOST);
+
+  if(required_nb_monsters(g,SPIRIT) - current_nb_monsters(g, SPIRIT) > 0)
+    is_valid(g2, pos+1, SPIRIT);
+
+  if(required_nb_monsters(g,VAMPIRE) - current_nb_monsters(g, VAMPIRE) > 0)
+    is_valid(g2, pos+1, VAMPIRE);
 
   return NULL;
 }
 
 
 int main(void) {
-  printf("a\n");
+  printf("Loading file\n");
   game g1 = load_game("autosave");
-    printf("a\n");
+  printf("File has been loaded\n");
   //int nb_solution = 0;
 
   //g1 = is_valid(g1,0,EMPTY, &nb_solution);
