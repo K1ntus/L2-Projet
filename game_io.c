@@ -152,7 +152,7 @@ void free_matrice(game g, char ** matrice){
 game load_game(char* filename){
   FILE* file = fopen(filename, "r");
   if(file == NULL){
-    fprintf(stderr, "Error opening the file\n");
+    fprintf(stderr, "Error1 opening the file\n");
     exit(EXIT_FAILURE);
   }
 
@@ -254,7 +254,7 @@ void save_game(cgame g, char* filename){
   //printf("INFO: Creating save file\n");
   FILE* file = fopen(filename,"w");
   if(file == NULL){
-    fprintf(stderr, "Error opening the file\n");
+    fprintf(stderr, "Error2 opening the file \n");
     exit(EXIT_FAILURE);
   }
 

@@ -38,13 +38,13 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(game game.c game_io.c game_display.c)
+add_library(game game.c game_io.c)
 SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 
 #creation de l executable nom + fichiers dependants
 add_executable(undead_text undead_text.c)
-add_executable(undead_solve undead_solve.c)
+add_executable(undead_solve solver_jojo.c)
 
 #lien entre executable et la bibliotheque
 target_link_libraries(undead_text game)

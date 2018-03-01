@@ -118,3 +118,22 @@ void display_start(game g){
 		printf("  |\n");
 	}
 }
+
+
+void display(game g){
+		display_required_nb_monsters(g);
+		display_empty_line(g);
+
+		display_required_nb_seen_north(g);
+		display_empty_line(g);
+
+		display_cellsContent_and_sideValues(g);
+		display_empty_line(g);
+
+		display_required_nb_seen_south(g);
+		display_empty_line(g);
+		display_empty_line(g);
+
+		display_start(g);
+		printf("\n\n");
+}

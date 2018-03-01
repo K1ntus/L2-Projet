@@ -1,76 +1,114 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
-#include <unistd.h>
-#include <assert.h>
-#include <math.h>
+#include <time.h>
 
-#include "game_io.c"
-#include "solver_lib.c"
+#include "game.h"
+#include "game_display.c"
+#include "game_io.h"
 
-void convert_monster_placement_to_another_struct(s_priority_placement *array){
-  s_priority_placement res[4];
-  res[0] = array[0];
-  unsigned int j = 0;
-  for(unsigned int i = 0; i < 4; i++){
-    for(j = i; j>0 && array[j].priorityValue>array[i].priorityValue; j--){
-      res[j] = res[j-1];
+
+typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
+
+
+
+bool potential_invalid_game(game g){
+  for(unsigned int x = 0; x < game_width(g);x++){
+    if(required_nb_seen(g, N, x) - current_nb_seen(g,N,x) < 0)
+      return false;
+    if(required_nb_seen(g,S,x) - current_nb_seen(g,S,x) < 0)
+      return false;
     }
-    res[j] = array[i];
+
+
+  for(unsigned int x = 0; x < game_height(g);x++){
+    if(required_nb_seen(g, E, x) - current_nb_seen(g, E,x) < 0)
+    return false;
+    if(required_nb_seen(g,W,x) - current_nb_seen(g,W,x) < 0)
+    return false;
   }
+
+  return true;
 }
 
-bool is_valid2(game g, int pos){
-  //TMP
-  if(pos >3)
-    return false;
-
-  if(pos < 0 || pos >= game_width(g)*game_height(g))
-    return false;
-
-  display(g);
-
-  s_solverUtility structSideViewer;
-  s_solverUtility * arrayOfSolverStruct = malloc(sizeof(s_solverUtility) * 50);
-  s_priority_placement * arrayOfMonster = malloc(sizeof(s_priority_placement) *4);
-
-  int x = pos%game_width(g);
-  int y = pos/game_height(g);
-
-  if(get_content(g,x,y) != EMPTY){
-    free(arrayOfSolverStruct);
-    return is_valid2(g,pos+1);
+bool board_is_full(game g){
+  for (unsigned int x = 0; x < game_width(g); x++){
+    for(unsigned int y = 0; y < game_height(g); y++){
+      if(get_content(g,x,y) == EMPTY)
+        return false;
+    }
   }
-
-
-  the_solverUtility_filler(g, structSideViewer, pos, arrayOfSolverStruct);
-
-  arrayOfMonster = voting_to_choose_a_mob(g, arrayOfSolverStruct);
-  convert_monster_placement_to_another_struct(arrayOfMonster);
-
-
-  //content nextMobPlaned = which_mstr_have_a_lot_of_votes(s_monsterSelection);
-
-  //add_monster(g,nextMobPlaned,x,y);
-
-  free(arrayOfMonster);
-  free(arrayOfSolverStruct);
-  return is_valid2(g, pos+1);
+  return true;
 }
 
 
+//game is_valid(game g, int pos, content monster, int *nb_sol){
+game is_valid(game g, int pos, content monster){
+  //sleep(1);
+  int y = pos%game_width(g);
+  int x = pos/game_width(g);
 
+  printf("posX:%d; posY:%d\n",x,y);
+  //display(g);
+  if(pos > game_width(g) * game_height(g) -1){
+    return NULL;
+  }
 
-
-
-int main(void){
-  game g = new_game_ext(4,4);
-	int nbMonsters[] = {2,2,5,0};
-
-  generate(g, nbMonsters);
-  if(is_valid2(g,0)){
-    save_game(g, "game.sol");
+  game g2 = new_game_ext(game_width(g), game_height(g));
+  g2 = copy_game(g);
+  display(g2);
+  if(!(potential_invalid_game(g2))){
+    //free(g2);
+    return NULL;
   }
 
 
+  if(get_content(g2,x,y) == EMPTY){
+    add_monster(g2, monster, x, y);
+  }
+
+  if(board_is_full(g2)){
+    if(is_game_over(g2)){
+      //nb_sol +=1;
+      return g2;
+    }else{
+      free(g2);
+      return NULL;
+    }
+  }
+  /*
+  return is_valid(g2, pos++, ZOMBIE, nb_sol);
+  return is_valid(g2, pos++, GHOST, nb_sol);
+  return is_valid(g2, pos++, SPIRIT, nb_sol);
+  return is_valid(g2, pos++, VAMPIRE, nb_sol);
+  */
+
+  is_valid(g2, pos+1, ZOMBIE);
+  is_valid(g2, pos+1, GHOST);
+  is_valid(g2, pos+1, SPIRIT);
+  is_valid(g2, pos+1, VAMPIRE);
+
+  return NULL;
+}
+
+
+int main(void) {
+  printf("a\n");
+  game g1 = load_game("autosave");
+    printf("a\n");
+  //int nb_solution = 0;
+
+  //g1 = is_valid(g1,0,EMPTY, &nb_solution);
+  g1 = is_valid(g1,0,EMPTY);
+
+  if(g1 == NULL){
+    printf("No solution has been find\n");
+  } else{
+    //printf("There's %d solutions! \n",nb_solution);
+    save_game(g1, "this_is_the_solution_dude");
+  }
+
+  free(g1);
+
+  return EXIT_SUCCESS;
 }
