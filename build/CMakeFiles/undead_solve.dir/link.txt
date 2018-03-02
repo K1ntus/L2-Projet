@@ -1,1 +1,0 @@
-/usr/bin/cc  -std=c99 -g -Wall -Werror   CMakeFiles/undead_solve.dir/solver_jojo.c.o  -o undead_solve -rdynamic libgame.a 
