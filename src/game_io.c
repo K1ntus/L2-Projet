@@ -122,12 +122,12 @@ for(unsigned int x = 0; x < game_width(g); x++){
 
 
 char** init_matrice2(game g){
-	char **res	= (char **)malloc(sizeof(char *) * game_width(g));
+	char **res	= (char **)malloc(sizeof(char *) * game_width(g)* 50);
 	assert(res);
-	res[0] = (char *)malloc(sizeof(char) * game_height(g) * game_width(g));
+	res[0] = (char *)malloc(sizeof(char) * game_height(g) * game_width(g)*50);
 	assert(res[0]);
 	for(int i = 1; i < game_width(g); i++)
-		 res[i] = malloc(sizeof(char)*game_width(g));
+		 res[i] = malloc(sizeof(char)*game_height(g)*50);
 		 assert(res);
 
 	return res;
@@ -171,6 +171,7 @@ game load_game(char* filename){
 	//width & height
 	if(!fgets(charBuffer, 35, file)){
 		fprintf(stderr,"Invalid array in memory, sorry dude\n");
+		fclose(file);
 		return NULL;
 	} else {
 		string_filtering(charBuffer, widthAndHeight, file);
@@ -181,8 +182,15 @@ game load_game(char* filename){
 
 	char ** monsterAndMirrorArray = init_matrice2(g);
 
+	if(!monsterAndMirrorArray){
+		fclose(file);
+		return NULL;
+	}
+
 	//required nb monsters
 	if(!fgets(charBuffer, 35, file)){
+		fclose(file);
+		free_matrice(g, monsterAndMirrorArray);
 		return NULL;
 	} else {
 		string_filtering(charBuffer, nbMonsters, file);
@@ -191,6 +199,8 @@ game load_game(char* filename){
 
 	//north label
 	if(!fgets(charBuffer, 35, file)){
+		fclose(file);
+		free_matrice(g, monsterAndMirrorArray);
 		return NULL;
 	} else {
 		string_filtering(charBuffer, northLabel, file);
@@ -198,6 +208,8 @@ game load_game(char* filename){
 
 	//south label
 	if(!fgets(charBuffer, 35, file)){
+		fclose(file);
+		free_matrice(g, monsterAndMirrorArray);
 		return NULL;
 	} else {
 		string_filtering(charBuffer, southLabel, file);
@@ -205,6 +217,8 @@ game load_game(char* filename){
 
 	//east label
 	if(!fgets(charBuffer, 35, file)){
+		fclose(file);
+		free_matrice(g, monsterAndMirrorArray);
 		return NULL;
 	} else {
 		string_filtering(charBuffer, eastLabel, file);
@@ -212,6 +226,8 @@ game load_game(char* filename){
 
 	//west label
 	if(!fgets(charBuffer, 35, file)){
+		fclose(file);
+		free_matrice(g, monsterAndMirrorArray);
 		return NULL;
 	} else {
 		string_filtering(charBuffer, westLabel, file);
@@ -220,6 +236,8 @@ game load_game(char* filename){
 	//Monster cells
 	for(unsigned int y = 0; y<height;y++){
 		if(!fgets(charBuffer, 35, file)){
+			fclose(file);
+			free_matrice(g, monsterAndMirrorArray);
 			return NULL;
 		} else {
 			string_filtering_to_char(charBuffer, monsterAndMirrorArray[y], file);

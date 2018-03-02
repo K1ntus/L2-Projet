@@ -236,7 +236,7 @@ int randomValue(int min, int max){
 }
 
 int main(int argc, char *argv[]){
-	int r, x, y;
+	int x, y;
 	char mstr/*, choice */;
 
 	//Game generation
@@ -267,6 +267,7 @@ int main(int argc, char *argv[]){
 	display(g);
 
 	while(is_game_over(g) != true){
+		int r;	//Getting keyboard entry for mob placement etc
 		save_game(g, "autosave");	//Autosaving game board
 		//User Entry
 		if(is_game_over(g)){
