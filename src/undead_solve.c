@@ -11,6 +11,7 @@
 #include "game_solver_lib.c"
 
 //game is_valid(game g, int pos, content monster, int *nb_sol){
+<<<<<<< HEAD
 game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 	int x = pos%game_width(g);
 	int y = pos/game_width(g);
@@ -27,7 +28,27 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 	if(g2 == NULL){
 		return NULL;
 	}
+=======
+void is_valid(game g, int pos, content monster, game * res, int * nb_sol){
+	int x = pos%game_width(g);
+	int y = pos/game_width(g);
 
+	//display(g);
+	if(res[0] != NULL){
+		free(g);
+		return;
+	}
+
+	if(g == NULL){
+		return;
+	}
+	game g2 = copy_game(g);
+
+>>>>>>> 45c191ed8602654987dfa405b63516fdfd166729
+
+			if(g2 == NULL){
+				return;
+			}
 
 
 	if(get_content(g2,x,y) == EMPTY){
@@ -38,6 +59,7 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 		//printf("A solution has been found !\n");
 		append_game_array(g2,res);
 		*nb_sol +=1;
+<<<<<<< HEAD
 		//sleep(1);
 		return g2;
 	}
@@ -80,6 +102,29 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 	//delete_game(g2);
 	//delete_game(g);
 	return NULL;
+=======
+		free(g);
+		//sleep(1);
+		return ;
+	}
+	if(board_is_full(g2)){
+		//free(g2);
+		return ;
+	}
+
+	if(required_nb_monsters(g2,ZOMBIE) - current_nb_monsters(g2, ZOMBIE) > 0)
+		is_valid(g2, pos+1, ZOMBIE,res,nb_sol);
+
+	if(required_nb_monsters(g2,GHOST) - current_nb_monsters(g2, GHOST) > 0)
+		is_valid(g2, pos+1, GHOST,res,nb_sol);
+
+	if(required_nb_monsters(g2,SPIRIT) - current_nb_monsters(g2, SPIRIT) > 0)
+		is_valid(g2, pos+1, SPIRIT,res,nb_sol);
+
+	if(required_nb_monsters(g2,VAMPIRE) - current_nb_monsters(g2, VAMPIRE) > 0)
+		is_valid(g2, pos+1, VAMPIRE,res,nb_sol);
+
+>>>>>>> 45c191ed8602654987dfa405b63516fdfd166729
 }
 
 int main(int argc, char * argv[]) {
