@@ -44,7 +44,7 @@ SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 #creation de l executable nom + fichiers dependants
 add_executable(undead_text undead_text.c)
-add_executable(undead_solve solver_jojo.c)
+add_executable(undead_solve undead_solve.c)
 
 #lien entre executable et la bibliotheque
 target_link_libraries(undead_text game)
