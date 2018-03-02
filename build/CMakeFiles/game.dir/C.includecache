@@ -1,0 +1,70 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.c
+assert.h
+-
+stdlib.h
+-
+stdio.h
+-
+stdbool.h
+-
+game.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+stdbool.h
+-
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game_display.c
+stdlib.h
+-
+stdbool.h
+-
+stdio.h
+-
+unistd.h
+-
+assert.h
+-
+game.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game_io.c
+assert.h
+-
+stdlib.h
+-
+stdio.h
+-
+stdbool.h
+-
+string.h
+-
+game_io.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game_io.h
+assert.h
+-
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game_io.h
+game.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game_util.c
+stdlib.h
+-
+stdio.h
+-
+unistd.h
+-
+game_io.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game_io.h
+game.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+

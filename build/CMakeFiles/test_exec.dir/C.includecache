@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+stdbool.h
+-
+
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/test.c
+stdlib.h
+-
+stdbool.h
+-
+assert.h
+-
+stdio.h
+-
+game.h
+/autofs/netapp/travail/jmasson/Année/L2/Semestre 4/workspace/Undead-V2/game.h
+
