@@ -265,9 +265,9 @@ void save_game(cgame g, char* filename){
   fputs(tmp, file);
 
   //printf("INFO: Writing monsters available\n");
-	fprintf(file, "%d ", required_nb_monsters(g,ZOMBIE));
-	fprintf(file, "%d ", required_nb_monsters(g,VAMPIRE));
 	fprintf(file, "%d ", required_nb_monsters(g,GHOST));
+	fprintf(file, "%d ", required_nb_monsters(g,VAMPIRE));
+	fprintf(file, "%d ", required_nb_monsters(g,ZOMBIE));
 	fprintf(file, "%d ", required_nb_monsters(g,SPIRIT));
 	save_empty_line(file);
 
