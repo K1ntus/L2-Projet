@@ -1,34 +1,34 @@
 /*
-- un fichier undead_text.c qui maintenant permet de jouer Ãƒ  undead.
+- un fichier undead_text.c qui maintenant permet de jouer Ãƒ	undead.
 L'instance qui sera chargÃƒÂ©e sera exactement celle contenue comme exemple dans game.h.
 Le fonctionnement du jeu doit ÃƒÂªtre le suivant :
 
 tant que la solution n'est pas trouvÃƒÂ©e :
-   afficher la grille
-   lire un coup sur l'entrÃƒÂ©e standard : (le format est le suivant : <x> <y> <G|V|Z>\n )
-   si le coup est valide alors
-	   jouer ce coup
-   sinon
-	   ignorer ce coup
+afficher la grille
+lire un coup sur l'entrÃƒÂ©e standard : (le format est le suivant : <x> <y> <G|V|Z>\n )
+si le coup est valide alors
+jouer ce coup
+sinon
+ignorer ce coup
 fin tant que
 afficher la grille
 
 Pour l'affichage, vous devez respecter la convention suivante :
 
- @verbatim
- |   Z:5 V:2 G:2   |   Z:5 V:2 G:2   |
- |                 |                 |
- |     0 3 3 0     |     0 3 3 0     |
- |                 |                 |
- |  3  \     /  2  |  3  \ V V /  2  |
- |  3  \        3  |  3  \ Z Z Z  3  |
- |  2      \ /  0  |  2  Z G \ /  0  |
- |  0  \     \  0  |  0  \ Z G \  0  |
- |                 |                 |
- |     0 3 2 3     |     0 3 2 3     |
- |                 |                 |
- |     start       |     solution    |
- @endverbatim
+@verbatim
+|	 Z:5 V:2 G:2	 |	 Z:5 V:2 G:2	 |
+|								 |								 |
+|		 0 3 3 0		 |		 0 3 3 0		 |
+|								 |								 |
+|	3	\		 /	2	|	3	\ V V /	2	|
+|	3	\				3	|	3	\ Z Z Z	3	|
+|	2			\ /	0	|	2	Z G \ /	0	|
+|	0	\		 \	0	|	0	\ Z G \	0	|
+|								 |								 |
+|		 0 3 2 3		 |		 0 3 2 3		 |
+|								 |								 |
+|		 start			 |		 solution		|
+@endverbatim
 */
 
 
@@ -43,19 +43,19 @@ Pour l'affichage, vous devez respecter la convention suivante :
 
 //Creation of a new map containing the new monster
 void generate(game g, int * nbMonsters){
-	set_required_nb_monsters (g, ZOMBIE,  nbMonsters[2]);
-	set_required_nb_monsters (g, GHOST,  nbMonsters[1]);
-	set_required_nb_monsters (g, VAMPIRE,  nbMonsters[0]);
-	set_required_nb_monsters (g, SPIRIT,  nbMonsters[3]);
+	set_required_nb_monsters (g, ZOMBIE,	nbMonsters[2]);
+	set_required_nb_monsters (g, GHOST,	nbMonsters[1]);
+	set_required_nb_monsters (g, VAMPIRE,	nbMonsters[0]);
+	set_required_nb_monsters (g, SPIRIT,	nbMonsters[3]);
 
-//AntiMirror
+	//AntiMirror
 	add_mirror_ext(g,ANTIMIRROR,0,0);
 	add_mirror_ext(g,ANTIMIRROR,0,2);
 	add_mirror_ext(g,ANTIMIRROR,0,3);
 	add_mirror_ext(g,ANTIMIRROR,3,0);
 	add_mirror_ext(g,ANTIMIRROR,2,1);
 
-//Mirror
+	//Mirror
 	add_mirror_ext(g,MIRROR,3,3);
 	add_mirror_ext(g,MIRROR,3,1);
 
@@ -90,19 +90,19 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 			int mstr = get_content(g, x, y);
 			if(mstr == VAMPIRE){
 				nbMonsters[0]++;
-  				set_required_nb_monsters (g, VAMPIRE,  nbMonsters[0]);
+				set_required_nb_monsters (g, VAMPIRE,	nbMonsters[0]);
 			}
 			if(mstr == ZOMBIE){
 				nbMonsters[2]++;
-  				set_required_nb_monsters (g, ZOMBIE,  nbMonsters[2]);
+				set_required_nb_monsters (g, ZOMBIE,	nbMonsters[2]);
 			}
 			if(mstr == GHOST){
 				nbMonsters[1]++;
-  				set_required_nb_monsters (g, GHOST,  nbMonsters[1]);
+				set_required_nb_monsters (g, GHOST,	nbMonsters[1]);
 			}
 			if(mstr == SPIRIT){
 				nbMonsters[3]++;
-  				set_required_nb_monsters (g, SPIRIT,  nbMonsters[3]);
+				set_required_nb_monsters (g, SPIRIT,	nbMonsters[3]);
 			}
 			add_monster(g, EMPTY, x, y);
 			printf("\n");
@@ -110,60 +110,54 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 
 		//Event if we want to place a monster
 		if(get_content (g, x, y) == EMPTY){
-			if(mstr == 'V' || mstr == 'v'){   //If the user wrote 'V' (or 'v') for a vampire
-				if(nbMonsters[0] == 0){        //If there's not enought Vampire to place
-					printf("Vous avez dÃ©jÃ   placÃ© tous les Vampires\n");
-				}else{
-					nbMonsters[0]--;
-					mstr = VAMPIRE;
-					add_monster(g, mstr, x, y);
-					printf("\n");
-					}
+			if(mstr == 'V' || mstr == 'v'){	 //If the user wrote 'V' (or 'v') for a vampire
+				if(nbMonsters[0] == 0){				//If there's not enought Vampire to place
+				printf("Vous avez dÃ©jÃ	 placÃ© tous les Vampires\n");
+			}else{
+				nbMonsters[0]--;
+				mstr = VAMPIRE;
+				add_monster(g, mstr, x, y);
+				printf("\n");
 			}
+		}
 
-			if(mstr == 'G' || mstr == 'g'){//If the user wrote 'G' (or 'g') for a ghost
-				if(nbMonsters[1] == 0){
-					printf("\nVous avez dÃ©jÃ  placÃ© tous les FantÃ´mes\n");
-				}else{
-					nbMonsters[1]--;
-					mstr = GHOST;
-					add_monster(g, mstr, x, y);
-					printf("\n");
-					}
+		if(mstr == 'G' || mstr == 'g'){//If the user wrote 'G' (or 'g') for a ghost
+			if(nbMonsters[1] == 0){
+				printf("\nVous avez dÃ©jÃ	placÃ© tous les FantÃ´mes\n");
+			}else{
+				nbMonsters[1]--;
+				mstr = GHOST;
+				add_monster(g, mstr, x, y);
+				printf("\n");
 			}
-			if(mstr == 'Z' || mstr == 'z'){//If the user wrote 'Z' (or 'z') for a zombie
-				if(nbMonsters[2] == 0){
-					printf("Vous avez dÃ©jÃ  placÃ© tous les Zombies\n");
-				}else{
-					nbMonsters[2]--;
-					mstr = ZOMBIE;
-					add_monster(g, mstr, x, y);
-					printf("\n");
-					}
+		}
+		if(mstr == 'Z' || mstr == 'z'){//If the user wrote 'Z' (or 'z') for a zombie
+			if(nbMonsters[2] == 0){
+				printf("Vous avez dÃ©jÃ	placÃ© tous les Zombies\n");
+			}else{
+				nbMonsters[2]--;
+				mstr = ZOMBIE;
+				add_monster(g, mstr, x, y);
+				printf("\n");
 			}
-			if(mstr == 'S' || mstr == 's'){//If the user wrote 'G' (or 'g') for a ghost
-				if(nbMonsters[3] == 0){//If there s not enought spirit to place
-					printf("Vous avez dÃ©jÃ  placÃ© tous les Spirits\n");
-				}else{
-					nbMonsters[3]--;
-					mstr = SPIRIT;
-					add_monster(g, mstr, x, y);
-					printf("\n");
-				}
+		}
+		if(mstr == 'S' || mstr == 's'){//If the user wrote 'G' (or 'g') for a ghost
+			if(nbMonsters[3] == 0){//If there s not enought spirit to place
+				printf("Vous avez dÃ©jÃ	placÃ© tous les Spirits\n");
+			}else{
+				nbMonsters[3]--;
+				mstr = SPIRIT;
+				add_monster(g, mstr, x, y);
+				printf("\n");
 			}
+		}
 
 		}else{
-				printf("\n\nCase non vide, veuillez rÃ©essayer\n");
-			}
+			printf("\n\nCase non vide, veuillez rÃ©essayer\n");
+		}
 	}else{
 		printf("\n\nCoordonnÃ©es invalides\n");
 	}
-	/*
-	if(choice == 'y' || choice == 'Y'){
-		printf("Vous avez sauvegardé la partie");
-		save_game(g,"autosave");
-	}
-	*/
 }
 
 
@@ -198,11 +192,10 @@ void debug(game g){
 */
 
 void bufferCleaner(void){
-  int c = 0;
-  while (c != '\n' && c != EOF)
-  {
-      c = getchar();
-  }
+	int c = 0;
+	while (c != '\n' && c != EOF){
+		c = getchar();
+	}
 }
 
 bool usage (game g, int r, int x, int y, char mstr, int * nbMonsters/*, char choice */){
@@ -231,24 +224,26 @@ bool is_loading_game(int argc){
 
 bool file_exist(char* filename){
 	if( access( filename, F_OK ) != -1 ) {
-	    return true;
+		return true;
 	}
 	return false;
 }
+
 int randomValue(int min, int max){
 	int res = (rand() % (max - min +1)) + min;
 	return res;
 }
+
 int main(int argc, char *argv[]){
 	int r, x, y;
 	char mstr/*, choice */;
 
 	//Game generation
-  game g;
+	game g;
 	//nbMonsters[0] => Vampire; nbMonsters[1] => Ghost; nbMonsters[2] => Zombie; nbMonsters[3] => Spirits
 	int nbMonsters[] = {2,2,5,0};
 
-//Check if we want to load a file at beginning, else generate board
+	//Check if we want to load a file at beginning, else generate board
 	if(is_loading_game(argc)){
 		printf("Loading %s file\n",argv[1]);
 		if(file_exist(argv[1])){
@@ -269,7 +264,7 @@ int main(int argc, char *argv[]){
 	display(g);
 
 	while(is_game_over(g) != true){
-	//User Entry
+		//User Entry
 		if(is_game_over(g)){
 			break;	//Safety like
 		}
@@ -290,6 +285,6 @@ int main(int argc, char *argv[]){
 	if(is_game_over(g)){
 		printf("\n\nVOUS AVEZ GAGNE\n\n");
 	}
-  delete_game(g);
-  return EXIT_SUCCESS;
+	delete_game(g);
+	return EXIT_SUCCESS;
 }
