@@ -123,15 +123,15 @@ void append(char* s, char c){
 
 char* concat(const char *s1, const char *s2){
     char *result = malloc(strlen(s1)+strlen(s2)+1);//+1 for the null-terminator
-    //in real code you would check for errors in malloc here
+    //check for errors in malloc here
     strcpy(result, s1);
     strcat(result, s2);
     return result;
 }
 
-void save_one_solution (game * res, char * prefix, int n){
+void save_one_solution (game * res1, char * prefix, int n){
 
-  char savePrefix[1] = {""};
+  char savePrefix[50];
 
   for(unsigned int i = 0; i < strlen(prefix); i++){
     savePrefix[i] = prefix[i];
@@ -141,27 +141,33 @@ void save_one_solution (game * res, char * prefix, int n){
 
 
   if(n != 0){
-    char suffix[5] = {'.','s','o','l','\n'};
+    //char suffix[]=".sol";
     char s[50];
-    sprintf(s, "%d", n); // Conversion de l'entier
+    char res[50];
+    printf("savePrefix before:%s\n",savePrefix );
+    sprintf(s, "%d\n",n); // Conversion de l'entier
+    concat(res,savePrefix);
+    concat(res,s);
+    printf("SavePrefix after:%s\n",savePrefix);
+    printf("final string:%s\n",res);
 
-    strcat(savePrefix, suffix);
+    //strcat(savePrefix, s);
 
-    save_game(res[n], savePrefix);
+    save_game(res1[n], savePrefix);
     return;
   }else if(n==0){
-    char suffix[]=".sol";
+    char suffix[]=".sol\n";
     strcat(savePrefix, suffix);
 
-    save_game(res[n], savePrefix);
+    save_game(res1[n], savePrefix);
     return;
   }
 
 }
 
 void save_all_solutions(game * res, char*prefix, int nbSol){
-  int i=0;
-  while(res[i] != NULL)
+  save_one_solution(res, prefix,0);
+  for(unsigned int i = 1; i < nbSol; i++)
     save_one_solution(res, prefix, i);
 }
 
@@ -190,7 +196,7 @@ void saving_data_from_the_solver (solve_mode s, int nbSol, game * res, char * pr
       break;
     case FIND_ALL:
       //save_all_solutions(res, prefix, nbSol);
-      printf("ET OUAIS IL EST PAS FAIT ENCORE\n");
+      //printf("ET OUAIS IL EST PAS FAIT ENCORE\n");
       break;
     default:
       break;
