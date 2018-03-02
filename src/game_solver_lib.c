@@ -131,24 +131,14 @@ void save_nb_sol(int nbSol, char * prefix){
 void saving_data_from_the_solver (solve_mode s, int nbSol, game * res, char * prefix){
 	switch(s){
 		case FIND_ONE:
-<<<<<<< HEAD
-			if(res[0] != NULL)
-				save_one_solution(res, prefix,0);
-=======
 			save_one_solution(res, prefix,0);
->>>>>>> 45c191ed8602654987dfa405b63516fdfd166729
 			break;
 		case NB_SOL:
 			save_nb_sol(nbSol, prefix);
 			break;
 		case FIND_ALL:
-<<<<<<< HEAD
-			//save_all_solutions(res, prefix, nbSol);
-			printf("ET OUAIS IL EST PAS FAIT ENCORE\n");
-=======
 			save_all_solutions(res, prefix, nbSol);
 			//printf("ET OUAIS IL EST PAS FAIT ENCORE\n");
->>>>>>> 45c191ed8602654987dfa405b63516fdfd166729
 			break;
 		default:
 			break;

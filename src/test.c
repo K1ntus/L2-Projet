@@ -205,6 +205,9 @@ bool test_add_monster(){
 		res=false;
 	}
 	assert(g);
+	int sum = current_nb_monsters(g, VAMPIRE);
+	sum += current_nb_monsters(g, GHOST);
+	sum += current_nb_monsters(g, ZOMBIE);
 
 
 	//Test if there's not another monster adding himself to the board when it should not have
@@ -281,9 +284,6 @@ bool test_current_nb_seen_advanced(){
 
 bool test_current_nb_seen(){
 	bool res=true;
-	if(!res){
-		//TMP TO DEBUG LINTER
-	}
 	res = test_current_nb_seen_advanced();
 	game g = new_game_ext(4,4);
 	assert(g);
