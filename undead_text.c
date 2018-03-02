@@ -81,24 +81,6 @@ void generate(game g, int * nbMonsters){
 }
 
 
-//Calls each functions created to display all the element of the game board
-void display(game g){
-		display_required_nb_monsters(g);
-		display_empty_line(g);
-
-		display_required_nb_seen_north(g);
-		display_empty_line(g);
-
-		display_cellsContent_and_sideValues(g);
-		display_empty_line(g);
-
-		display_required_nb_seen_south(g);
-		display_empty_line(g);
-		display_empty_line(g);
-
-		display_start(g);
-}
-
 
 // Handle the entry of the user
 void entry(game g, int x, int y, char mstr, int * nbMonsters){
@@ -273,12 +255,14 @@ int main(int argc, char *argv[]){
 			g = load_game(argv[1]);
 		}else{
 			fprintf(stderr,"File does not exist, sorry\n");
-			g = new_game_ext(randomValue(4,10), randomValue(4,10));
+			//g = new_game_ext(randomValue(4,10), randomValue(4,10));
+			g = new_game_ext(4,4);
 			generate(g, nbMonsters);
 		}
 	} else {
 		printf("Generating random board, unable to load any save file\n");
-		g = new_game_ext(randomValue(4,10), randomValue(4,10));
+		//g = new_game_ext(randomValue(4,10), randomValue(4,10));
+		g = new_game_ext(4,4);
 		generate(g, nbMonsters);
 	}
 
