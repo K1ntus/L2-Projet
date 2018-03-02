@@ -1,1 +1,1 @@
-./executable/undead_text
+./executable/undead_text autosave

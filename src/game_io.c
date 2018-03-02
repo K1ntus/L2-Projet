@@ -3,8 +3,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
+#include <unistd.h>
+
+
 #include "game_io.h"
-#include <assert.h>
 
 #define NB_MONSTERS 4
 
@@ -140,6 +142,7 @@ void free_matrice(game g, char ** matrice){
 	free(matrice);
 }
 
+
 /// @{
 /**
  * @brief Creates a game by loading its description in a file
@@ -150,6 +153,7 @@ void free_matrice(game g, char ** matrice){
  * @return the loaded game
  **/
 game load_game(char* filename){
+	chdir("executable/saves");
 	FILE* file = fopen(filename, "r");
 	if(file == NULL){
 		fprintf(stderr, "Error1 opening the file\n");
@@ -254,6 +258,7 @@ void save_game(cgame g, char* filename){
 	int width = game_width(g);
 
 	//printf("INFO: Creating save file\n");
+	chdir("executable/saves");
 	FILE* file = fopen(filename,"w");
 	if(file == NULL){
 		fprintf(stderr, "Error2 opening the file \n");

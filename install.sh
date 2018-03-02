@@ -1,3 +1,5 @@
+#Feel free to read installation instructions on util/README.*
+
 mkdir -p build
 cd build
 cmake ..

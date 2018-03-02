@@ -20,21 +20,22 @@ Pour l'affichage, vous devez respecter la convention suivante :
 |								 |								 |
 |		 0 3 3 0		 |		 0 3 3 0		 |
 |								 |								 |
-|	3	\		 /	2	|	3	\ V V /	2	|
-|	3	\				3	|	3	\ Z Z Z	3	|
-|	2			\ /	0	|	2	Z G \ /	0	|
-|	0	\		 \	0	|	0	\ Z G \	0	|
+|	3	\		 /	2		 |	3	\ V V /	2		 |
+|	3	\				3		 |	3	\ Z Z Z	3		 |
+|	2			\ /	0		 |	2	Z G \ /	0		 |
+|	0	\		 \	0		 |	0	\ Z G \	0		 |
 |								 |								 |
 |		 0 3 2 3		 |		 0 3 2 3		 |
 |								 |								 |
-|		 start			 |		 solution		|
+|		 start			 |		 solution		 |
 @endverbatim
 */
 
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h> //access() fun
+#include <unistd.h> //access() fun + chdir
+
 #include "game_io.h"
 #include "game.h"
 #include "game_display.c"
@@ -243,6 +244,8 @@ int main(int argc, char *argv[]){
 	//nbMonsters[0] => Vampire; nbMonsters[1] => Ghost; nbMonsters[2] => Zombie; nbMonsters[3] => Spirits
 	int nbMonsters[] = {2,2,5,0};
 
+	chdir("executable/saves");
+
 	//Check if we want to load a file at beginning, else generate board
 	if(is_loading_game(argc)){
 		printf("Loading %s file\n",argv[1]);
@@ -264,6 +267,7 @@ int main(int argc, char *argv[]){
 	display(g);
 
 	while(is_game_over(g) != true){
+		save_game(g, "autosave");	//Autosaving game board
 		//User Entry
 		if(is_game_over(g)){
 			break;	//Safety like
@@ -279,7 +283,6 @@ int main(int argc, char *argv[]){
 		}
 
 		display(g);
-		save_game(g, "autosave");	//Autosaving game board
 	}
 
 	if(is_game_over(g)){
