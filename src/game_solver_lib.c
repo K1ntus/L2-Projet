@@ -51,7 +51,7 @@ void append_game_array(game g, game * res){
 
 
 void result_array_init(game * res){
-	for(unsigned int i = 0; i < 50; i++)
+	for(unsigned int i = 0; i < 5; i++)	//5 parce qu'après c chiant pour les files
 		res[i] = NULL;
 }
 
@@ -86,22 +86,40 @@ char* concat(const char *s1, const char *s2){
 		return result;
 }
 
-void save_one_solution (game * res, char * prefix, int n){
+char* convert_int_to_string(char* output, char*str, int val){
+	char * res = malloc(sizeof(char) * (strlen(str)+val/10) );
+	sprintf(res, "%s%d",str,val);
+	return res;
+}
 
-  char * savePrefix = malloc(sizeof(char) * 16);
-	char * suffix = malloc(sizeof(char)*8);
+void save_one_solution (game * resArray, char * prefix, int n){
 
+  char * savePrefix = malloc(sizeof(char) * strlen(prefix));
+	char * suffixRes = malloc(sizeof(char) * (strlen(".sol") + n/10));
+	char * res = malloc(sizeof(char) * (strlen(prefix) + n/10 + strlen(".sol") +1));
+	char * suffix = malloc(sizeof(char) * (strlen(".sol")));
 
-  for(unsigned int i = 0; i < strlen(prefix); i++){
-    savePrefix[i] = prefix[i];
-  }
 
 	strcpy(suffix,".sol");
 	strcpy(savePrefix,prefix);
 
-  strcat(savePrefix, suffix);
 
-  save_game(res[n], savePrefix);
+	if(n == 0){
+		strcpy(savePrefix,prefix);
+
+	  strcat(savePrefix, suffix);
+	}else{
+		convert_int_to_string(suffixRes, suffix,n);
+			res = concat(prefix,suffixRes);
+				if(resArray[n]!= NULL)
+			  	save_game(resArray[n], res);
+
+
+	}
+
+
+	if(resArray[n]!= NULL)
+  	save_game(resArray[n], savePrefix);
 
 	free(savePrefix);
 }
@@ -131,7 +149,8 @@ void save_nb_sol(int nbSol, char * prefix){
 void saving_data_from_the_solver (solve_mode s, int nbSol, game * res, char * prefix){
 	switch(s){
 		case FIND_ONE:
-			save_one_solution(res, prefix,0);
+			if(res[0] != NULL)
+				save_one_solution(res, prefix,0);
 			break;
 		case NB_SOL:
 			save_nb_sol(nbSol, prefix);

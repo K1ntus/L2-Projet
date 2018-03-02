@@ -5,6 +5,7 @@
 #include <assert.h>
 #include "game.h"
 
+
 //Display an empty line
 void display_empty_line(game g){
 		printf("|     ");
