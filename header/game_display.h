@@ -12,22 +12,46 @@
  *
  **/
 
-//Displays an empty line
+ /**
+  * @brief display an empty line on the console
+  * @param g the game board
+  * @return void
+  **/
 void display_empty_line(game g);
 
-//Displays the numbers of monsters to place in top of the board
+ /**
+  * @brief display the required numbers of monsters to place
+  * @param g the game board
+  * @return void
+  **/
 void display_required_nb_monsters(game g);
 
-//Displays the numbers of monsters seen on the north side of the map
+ /**
+  * @brief display the labels values of the top side
+  * @param g the game board
+  * @return void
+  **/
 void display_required_nb_seen_north(game g);
 
-//Displays a line of the map including the number of monsters seen corresponding to the same line
+ /**
+  * @brief display the labels values of the bottom and side labels
+  * @param g the game board
+  * @return void
+  **/
 void display_cellsContent_and_sideValues(game g);
 
-//Displays the start line
+ /**
+  * @brief display the logo "start" at the bottom of the game
+  * @param g the game board
+  * @return void
+  **/
 void display_start(game g);
 
-//the main fonction for displaying the game (it uses the other fonctions that display the a part of the game)
+ /**
+  * @brief function which display the whole game_board
+  * @param g the game board
+  * @return void
+  **/
 void display(game g);
 
 #endif
