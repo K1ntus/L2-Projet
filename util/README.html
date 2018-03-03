@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome file</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h1 id="projet-licence-2-informatique---université-bordeaux-i">Projet Licence 2 Informatique - Université Bordeaux I</h1>
+<p><strong>Undead</strong> est un jeu se jouant sur une grille à deux dimensions. Initialement inventé par David Millar sous le nom de “Haunted Mirror Maze”, une démonstration du jeu est actuellement disponible sur la Collection Portable de Puzzle de Simon Tatham (Simon Tatham’s Portable Puzzle Collection).<br>
+Initialement, le jeu avait une grille de dimension 4*4. Cependant, nous devons faire son équivalent, avec une taille variable.</p>
+<h1 id="principe-du-jeu">Principe du jeu</h1>
+<p><strong>But du jeu</strong><br>
+Chaque cellule du jeu est initialement:</p>
+<ul>
+<li>un type de mirroir (il y a les miroirs verticaux, horizontaux, “normaux” et son contraire) respectivement représenté par les symboles “|”, “_”, “/”, “”.</li>
+<li>une cellule vide</li>
+</ul>
+<p>Pour chaque position de chaque côté(Nord, Sud, Est et Ouest), il y a un nombre visible, représentant les monstres qui doivent être vu.<br>
+Afin de résoudre ce jeu, il y a 4 types de monstres mis à disposition:</p>
+<ul>
+<li>Zombie: Toujours visible</li>
+<li>Fantôme: Visible seulement après avoir été réfléchi dans un miroir</li>
+<li>Vampire: Visible uniquement avant avoir été réfléchi dans un miroir</li>
+<li>Spirit: Jamais visible</li>
+</ul>
+<p>Plus de détail <a href="https://www.chiark.greenend.org.uk/~sgtatham/puzzles/js/undead.html">ici</a></p>
+<p><strong>Spécificité technique</strong><br>
+La position de départ se trouve dans le coin en bas à gauche (coordonnée: 0,0)</p>
+<p>If you have finished with me, you can just create new files by opening the <strong>file explorer</strong> on the left corner of the navigation bar.</p>
+<h1 id="installer-le-programme">Installer le programme</h1>
+<p><strong>Méthode n°1</strong><br>
+Copiez le répertoire du jeu où vous voulez l’installer. Puis lancez l’installation en faisant "sh <a href="http://install.sh">install.sh</a>"<br>
+Les executables se trouveront alors dans le dossier “executable”</p>
+<p><strong>Méthode n°2</strong><br>
+Créez un nouveau dossier qui permettra de compiler le projet à la racine de ce dernier.<br>
+(ex. $GAME_PATH/build)</p>
+<blockquote>
+<p><strong>Note:</strong> $GAME_PATH étant la racine du jeu et “build” un nom de répertoire au choix de l’utilisateur.</p>
+</blockquote>
+<p>Depuis ce dossier, faites cmake . . . puis make. Les exécutables se trouveront alors dans ce même dossier.</p>
+<h1 id="lancer-le-jeu">Lancer le jeu</h1>
+<p>The file explorer is accessible using the button in left corner of the navigation bar. You can create a new file by clicking the <strong>New file</strong> button in the file explorer. You can also create folders by clicking the <strong>New folder</strong> button.</p>
+<h2 id="paramètres-de-lancement-dundead_text">Paramètres de lancement d’undead_text</h2>
+<p>Vous pouvez créer une nouvelle partie en lançant l’executable undead_text sans paramètres<br>
+Pour charger une sauvegarde: ./undead_text $PATH/nom_de_la_sauvegarde</p>
+<h2 id="paramètres-de-lancement-du-solver-automatique">Paramètres de lancement du solver automatique</h2>
+<p>Il y a 3 modes de lancement pour le solver:</p>
+<ul>
+<li>FIND_ONE: Créer un fichier contenant une solution à une grille passée en paramètres</li>
+<li>FIND_ALL: Génère autant de fichiers que de solution à une grille passée en paramètres</li>
+<li>NB_SOL: Retourne le nombre de grille possible qui termine la partie</li>
+</ul>
+<blockquote>
+<p><strong>Note:</strong> Usage: ./undead_solve &lt;-MODE-&gt; &lt;-Nom du fichier contenant la grille à résoudre-&gt; &lt;-Nom du fichier à générer contenant la sortie du solver-&gt;</p>
+</blockquote>
+</div>
+</body>
+
+</html>

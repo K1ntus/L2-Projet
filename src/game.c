@@ -9,7 +9,7 @@
 struct game_s{
 	int **matrice;	//A two dimensional array containing the board content, ie. mirrors and monsters
 	int vampires, ghosts, zombies, spirit;
-  int width, height;	//Width && height of the board
+	int width, height;	//Width && height of the board
 	int *valuesNorth;	//Those four arrays are here to save the required nb of monster to be seen on each side
 	int *valuesSouth;
 	int *valuesEast;
@@ -17,7 +17,7 @@ struct game_s{
 };
 
 /**
- *  Misc.
+ *	Misc.
 **/
 
 void memory_test(game g){
@@ -40,17 +40,17 @@ void memory_test(game g){
  * @return the created game
  **/
  void init_matrice(game g, int width, int height){
- 	g->matrice  = (int **)malloc(sizeof(int *) * width);
+ 	g->matrice	= (int **)malloc(sizeof(int *) * width);
  	g->matrice[0] = (int *)malloc(sizeof(int) * height * width);
  	for(int i = 0; i < width; i++)
  		g->matrice[i] = (*g->matrice + height * i);
 
 //Initialise each cells of the board with enum type EMPTY
- 	for (int x = 0; x <  width; x++){
+ 	for (int x = 0; x <	width; x++){
  		for (int y = 0; y < height; y++){
  			g->matrice[x][y] = EMPTY;
  		}
-  }
+	}
 }
 
 game new_game_ext(int width, int height){
@@ -61,20 +61,20 @@ game new_game_ext(int width, int height){
 
 	memory_test(g);
 
-  //Put width & height params on structure
-  g->height = height;
-  g->width = width;
+	//Put width & height params on structure
+	g->height = height;
+	g->width = width;
 
 	//Initialisation of numbers of each monsters
-	g->vampires  = 0;
-	g->ghosts    = 0;
-	g->zombies   = 0;
-  g->spirit    = 0;
+	g->vampires	= 0;
+	g->ghosts		= 0;
+	g->zombies	= 0;
+	g->spirit		= 0;
 
 	//Initialisation of each required_nb_seen value
 	g->valuesNorth = malloc(width * sizeof(int));
 	g->valuesSouth = malloc(width * sizeof(int));
-	for(unsigned int i = 0;  i < width;i++){
+	for(unsigned int i = 0;	i < width;i++){
 		g->valuesNorth[i] = 0;
 		g->valuesSouth[i] = 0;
 	}
@@ -103,12 +103,12 @@ game setup_new_game_ext(int width, int height,
 
 	for(int i=0 ; i<g->width ; i++){
 		g->valuesNorth[i] = labels[0][i]; // 0 is equivalent to valueNorth
-		g->valuesSouth[i] = labels[1][i]; // 1	  ..	. valueSouth
+		g->valuesSouth[i] = labels[1][i]; // 1		..	. valueSouth
 	}
 
 	for(unsigned int i = 0; i < g->height; i++){
-		g->valuesEast[i] = labels[2][i]; //  2	  ..	. valueEast
-		g->valuesWest[i] = labels[3][i]; //  3	  ..	. valueWest
+		g->valuesEast[i] = labels[2][i]; //	2		..	. valueEast
+		g->valuesWest[i] = labels[3][i]; //	3		..	. valueWest
 	}
 
 	int i = 0;
@@ -119,29 +119,29 @@ game setup_new_game_ext(int width, int height,
 		}
 	}
 
-  return g;
+	return g;
 }
 
 
 
 
 int game_height(cgame game){
-  return game->height;
+	return game->height;
 }
 int game_width(cgame game){
-  return game->width;
+	return game->width;
 }
 
 
 void add_mirror_ext(game game, content mirror_type, int col, int line){
-  	memory_test(game);
-  	assert(game);
+		memory_test(game);
+		assert(game);
 
-  	if (col < 0 || col >= game->width){		//If x isnt a valid position
-  		fprintf(stderr, "Wrong x parameter on get_content call\n");
-  	} else if (line < 0 || line >= game->height){	//If y isnt a valid position
-  		fprintf(stderr, "Wrong y parameter on get_content call\n");
-  	}
+		if (col < 0 || col >= game->width){		//If x isnt a valid position
+			fprintf(stderr, "Wrong x parameter on get_content call\n");
+		} else if (line < 0 || line >= game->height){	//If y isnt a valid position
+			fprintf(stderr, "Wrong y parameter on get_content call\n");
+		}
 
 		if (mirror_type != MIRROR && mirror_type != ANTIMIRROR && mirror_type != VMIRROR && mirror_type != HMIRROR){
 			fprintf(stderr,"Error while placing mirror\n");
@@ -181,7 +181,7 @@ void set_required_nb_seen(game game, direction side, int pos, int value){
 void set_required_nb_monsters(game game, content monster, int value){
 	memory_test(game);
 	if(value < 0) {
-		fprintf(stderr, "Wrong value  in fct set_required_nb_monsters2 for value : %d\n", value);
+		fprintf(stderr, "Wrong value	in fct set_required_nb_monsters2 for value : %d\n", value);
 		return;
 	}
 	if(monster == ZOMBIE){
@@ -327,10 +327,10 @@ void restart_game(game g){
 					break;
 				case ANTIMIRROR:
 					break;
-    		case HMIRROR:
-    			break;
-    		case VMIRROR:
-    			break;
+				case HMIRROR:
+					break;
+				case VMIRROR:
+					break;
 				default:
 					g->matrice[x][y]=EMPTY;
 					break;
@@ -346,8 +346,8 @@ bool add_monster(game game, content monster, int col, int line){
 
 	//If x && y position is any mirror type
 	if(game->matrice[col][line] == MIRROR || game->matrice[col][line] == ANTIMIRROR
-                                || game->matrice[col][line] == VMIRROR
-                                || game->matrice[col][line] == HMIRROR){
+																|| game->matrice[col][line] == VMIRROR
+																|| game->matrice[col][line] == HMIRROR){
 		return false;
 	} else if(col >=game->width || col < 0 || line < 0 || line >= game->height){	//If the position x OR y is out of the matrice
 				return false;
@@ -482,20 +482,20 @@ int current_nb_seen(cgame game, direction side, int pos){
 	*
 	**/
 	bool mirror_seen = false;
-	bool isEnd       = false;
+	bool isEnd			 = false;
 	int sum = 0;
 
 	int *posTab = malloc(sizeof(int)*2);//array with the position x && y; sizeof(int)*2 because that's an array with 2 cells
-	posTab = current_nb_seen_init(game, pos, posTab, side);  //Init. of the position with the side & pos parameters
+	posTab = current_nb_seen_init(game, pos, posTab, side);	//Init. of the position with the side & pos parameters
 
 	while(!isEnd){
 		//If x OR y is invalid
 		if (posTab[0] <0
-          || posTab[0] >= game->width
-          || posTab[1] < 0
-          || posTab[1] >= game->height) {
-  		free(posTab);
-  		return sum;
+					|| posTab[0] >= game->width
+					|| posTab[1] < 0
+					|| posTab[1] >= game->height) {
+			free(posTab);
+			return sum;
 		}
 
 
@@ -589,14 +589,14 @@ bool is_game_over (cgame g){
  * @return the created game
  **/
 void init_matrice_old(game g){
-	g->matrice  = (int **)malloc(sizeof(int *) * game_width(g));
+	g->matrice	= (int **)malloc(sizeof(int *) * game_width(g));
 	g->matrice[0] = (int *)malloc(sizeof(int) * game_height(g) * game_width(g));
 	for(int i = 0; i < game_width(g); i++)
 		g->matrice[i] = (*g->matrice + game_height(g) * i);
 
-	for (int x = 0; x <  game_width(g); x++){
+	for (int x = 0; x <	game_width(g); x++){
 		for (int y = 0; y < game_height(g); y++){
-			g->matrice[x][y] = EMPTY;  // OR *(*(g->matrice+i)+j) = ++count
+			g->matrice[x][y] = EMPTY;	// OR *(*(g->matrice+i)+j) = ++count
 		}
 	}
 }
@@ -618,7 +618,7 @@ game new_game(void){
  * @param required_nb_zombies the number of zombies required in the game.
  * @return the created game
  **/
-game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts,  int required_nb_vampires, int required_nb_zombies){
+game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts,	int required_nb_vampires, int required_nb_zombies){
 	game g = new_game();
 	memory_test(g);
 
@@ -627,13 +627,13 @@ game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts
 	g->zombies = required_nb_zombies;
 
 	for(int i=0 ; i<game_width(g) ; i++){
-		g->valuesNorth[i] = labels[0][i]; // 0 is  equivalent to valueNorth
-		g->valuesSouth[i] = labels[1][i]; // 1	  ..	. valueSouth
+		g->valuesNorth[i] = labels[0][i]; // 0 is	equivalent to valueNorth
+		g->valuesSouth[i] = labels[1][i]; // 1		..	. valueSouth
 	}
 
 	for(unsigned int i = 0; i < game_height(g); i++){
-		g->valuesEast[i] = labels[2][i]; // 2	  ..	. valueEast
-		g->valuesWest[i] = labels[3][i]; // 3	  ..	. valueWest
+		g->valuesEast[i] = labels[2][i]; // 2		..	. valueEast
+		g->valuesWest[i] = labels[3][i]; // 3		..	. valueWest
 	}
 
 	int i = 0;
@@ -644,7 +644,7 @@ game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts
 		}
 	}
 
-  return g;
+	return g;
 }
 
 

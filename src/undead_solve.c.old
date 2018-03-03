@@ -350,45 +350,45 @@ void which_monster_to_place (game g, bool ** array, int pos){
 	printf("the max is: %d and the min is: %d\n\n", maxToReach, minToReach);
 
 	if(minToReach >=0 && current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
-    if(current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
-      add_monster(g, ZOMBIE,x,y);//Changer en fct du nb de monstre vu
-			return;
-		}
+			if(current_nb_monsters(g,ZOMBIE) < required_nb_monsters(g,ZOMBIE)){
+				add_monster(g, ZOMBIE,x,y);//Changer en fct du nb de monstre vu
+				return;
+			}
 	} else {
 			if (current_nb_monsters(g,VAMPIRE) < required_nb_monsters(g,VAMPIRE)){
-	      fprintf(stderr, "INFO: already max number of zombie placed, or unvalid value\n");
-	      add_monster(g,VAMPIRE,x,y);
+				fprintf(stderr, "INFO: already max number of zombie placed, or unvalid value\n");
+				add_monster(g,VAMPIRE,x,y);
 				return;
-	    }else if (current_nb_monsters(g,GHOST) < required_nb_monsters(g,GHOST)){
-	      fprintf(stderr, "INFO: already max number of vampire placed\n");
-	      add_monster(g,GHOST,x,y);
+			}else if (current_nb_monsters(g,GHOST) < required_nb_monsters(g,GHOST)){
+				fprintf(stderr, "INFO: already max number of vampire placed\n");
+				add_monster(g,GHOST,x,y);
 				return;
-	    }else if (current_nb_monsters(g,SPIRIT) < required_nb_monsters(g,SPIRIT)){
-	      fprintf(stderr, "INFO: already max number of ghost placed\n");
-	      add_monster(g,SPIRIT,x,y);
+			}else if (current_nb_monsters(g,SPIRIT) < required_nb_monsters(g,SPIRIT)){
+				fprintf(stderr, "INFO: already max number of ghost placed\n");
+				add_monster(g,SPIRIT,x,y);
 				return;
-	    }else{
-	      fprintf(stderr, "INFO: already max number of spirit placed\n");
+			}else{
+				fprintf(stderr, "INFO: already max number of spirit placed\n");
 		}
 	}
 
 }
 bool is_valid(game g, int pos, bool ** array){
 	sleep(1);
-  display(g);
-  int max_size = game_width(g)*game_height(g);
-  if (pos < 0 || pos > max_size-1){
-    return false;
-  }
+	display(g);
+	int max_size = game_width(g)*game_height(g);
+	if (pos < 0 || pos > max_size-1){
+		return false;
+	}
 
 	which_monster_to_place(g, array, pos);
 	printf("pos=%d\n",pos);
-  int x = pos/game_width(g);
-  int y = pos%game_width(g);
+	int x = pos/game_width(g);
+	int y = pos%game_width(g);
 	printf("posX=%d; posY=%d\n",x,y);
 
-  if(get_content(g,x,y) != EMPTY){
-    fprintf(stderr,"INFO: not an empty cell for the solver\n");
+	if(get_content(g,x,y) != EMPTY){
+		fprintf(stderr,"INFO: not an empty cell for the solver\n");
 		//return is_valid(g, pos+1, array);
 	}else{
 		which_monster_to_place(g, array, pos);
@@ -396,15 +396,15 @@ bool is_valid(game g, int pos, bool ** array){
 
 	display(g);
 
-  for(unsigned int i = 0; i < max_size; i++){
-    int x = i/game_width(g);
-    int y = i%game_width(g);
-    if(get_content(g,x,y) == EMPTY){
-      printf("on add un truc");
-      is_valid(g, i, array);
-    }
-  }
-  return true;
+	for(unsigned int i = 0; i < max_size; i++){
+		int x = i/game_width(g);
+		int y = i%game_width(g);
+		if(get_content(g,x,y) == EMPTY){
+			printf("on add un truc");
+			is_valid(g, i, array);
+		}
+	}
+	return true;
 
 }
 
@@ -458,12 +458,12 @@ int main (int argc, char *argv[]){
 				break;
 		}*/
 
-  //game g = new_game_ext(4,4);
+	game g = new_game_ext(4,4);
 	int nbMonsters[] = {2,2,5,0};
 	bool ** array = init_array(g);
 
-  generate(g, nbMonsters);
-  is_valid(g,0, array);
+	generate(g, nbMonsters);
+	is_valid(g,0, array);
 
 	free(array);
 }
