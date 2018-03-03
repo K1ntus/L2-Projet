@@ -157,7 +157,6 @@ game load_game(char* filename){
 	FILE* file = fopen(filename, "r");
 	if(file == NULL){
 		fprintf(stderr, "Error1 opening the file\n");
-		fclose(file);
 		exit(EXIT_FAILURE);
 	}
 
