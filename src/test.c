@@ -2,7 +2,7 @@
 #include <stdbool.h>
 #include <assert.h>
 #include <stdio.h>
-#include "game.h"
+#include "../header/game.h"
 
 
 //A winning board generation function

@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
-#include "game.h"
-#include "game_display.h"
+#include "../header/game.h"
+#include "../header/game_display.h"
 
 
 //Display an empty line
@@ -138,4 +138,30 @@ void display(game g){
 
 		display_start(g);
 		printf("\n\n");
+}
+
+content convert_char_to_content(char c){
+	switch(c){
+		case 'G':
+			return GHOST;
+		case 'g':
+			return GHOST;
+		case 'S':
+			return SPIRIT;
+		case 's':
+			return SPIRIT;
+		case 'V':
+			return VAMPIRE;
+		case 'v':
+			return VAMPIRE;
+		case 'z':
+			return ZOMBIE;
+		case 'Z':
+			return ZOMBIE;
+		case 'e':
+			return EMPTY;
+		case 'E':
+			return EMPTY;
+	}
+	return EMPTY;
 }

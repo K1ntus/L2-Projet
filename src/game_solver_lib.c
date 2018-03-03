@@ -4,8 +4,8 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "game.h"
-#include "game_io.h"
+#include "../header/game.h"
+#include "../header/game_io.h"
 
 typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
 
@@ -19,8 +19,8 @@ bool board_already_saved_as_solution(game g1, game * array){
 			return false;
 		}
 
-		for(unsigned int x = 0; x < game_width(g1); x++){
-			for(unsigned int y = 0; y < game_height(g1); y++){
+		for( int x = 0; x < game_width(g1); x++){
+			for( int y = 0; y < game_height(g1); y++){
 
 				if(get_content(g1,x,y) == get_content(array[i],x,y)){
 					nb_identical_cells +=1;
@@ -38,7 +38,7 @@ bool board_already_saved_as_solution(game g1, game * array){
 
 
 bool potential_invalid_game(game g){
-	for(unsigned int x = 0; x < game_width(g);x++){
+	for(int x = 0; x < game_width(g);x++){
 		if(required_nb_seen(g, N, x) - current_nb_seen(g,N,x) < 0)
 			return false;
 		if(required_nb_seen(g,S,x) - current_nb_seen(g,S,x) < 0)
@@ -46,7 +46,7 @@ bool potential_invalid_game(game g){
 	}
 
 
-	for(unsigned int x = 0; x < game_height(g);x++){
+	for(int x = 0; x < game_height(g);x++){
 		if(required_nb_seen(g, E, x) - current_nb_seen(g, E,x) < 0)
 		return false;
 		if(required_nb_seen(g,W,x) - current_nb_seen(g,W,x) < 0)
@@ -57,8 +57,8 @@ bool potential_invalid_game(game g){
 }
 
 bool board_is_full(game g){
-	for (unsigned int x = 0; x < game_width(g); x++){
-		for(unsigned int y = 0; y < game_height(g); y++){
+	for (signed int x = 0; x < game_width(g); x++){
+		for(int y = 0; y < game_height(g); y++){
 			if(get_content(g,x,y) == EMPTY)
 				return false;
 		}
@@ -105,7 +105,7 @@ void append(char* s, char c){
 }
 
 char* concat(const char *s1, const char *s2){
-		char *result = malloc(strlen(s1)+strlen(s2)+1);//+1 for the null-terminator
+		char * result = (char *) malloc(strlen(s1)+strlen(s2)+1);//+1 for the null-terminator
 		//check for errors in malloc here
 		strcpy(result, s1);
 		strcat(result, s2);
@@ -113,17 +113,17 @@ char* concat(const char *s1, const char *s2){
 }
 
 char* convert_int_to_string(char* output, char*str, int val){
-	char * res = malloc(sizeof(char) * (strlen(str)+val/10) );
+	char * res = (char *) malloc(sizeof(char) * (strlen(str)+val/10) );
 	sprintf(res, "%s%d",str,val);
 	return res;
 }
 
 void save_one_solution (game * resArray, char * prefix, int n){
 
-  char * savePrefix = malloc(sizeof(char) * strlen(prefix));
-	char * suffixRes = malloc(sizeof(char) * (strlen(".sol") + n/10));
-	char * res = malloc(sizeof(char) * (strlen(prefix) + n/10 + strlen(".sol") +1));
-	char * suffix = malloc(sizeof(char) * (strlen(".sol")));
+  char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix));
+	char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + n/10));
+	char * res = (char*) malloc(sizeof(char) * (strlen(prefix) + n/10 + strlen(".sol") +1));
+	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")));
 
 
 	strcpy(suffix,".sol");
@@ -152,7 +152,7 @@ void save_one_solution (game * resArray, char * prefix, int n){
 
 void save_all_solutions(game * res, char*prefix, int nbSol){
 	save_one_solution(res, prefix,0);
-	for(unsigned int i = 1; i < nbSol; i++)
+	for(int i = 1; i < nbSol; i++)
 		save_one_solution(res, prefix, i);
 }
 

@@ -6,7 +6,7 @@
 #include <unistd.h>
 
 
-#include "game_io.h"
+#include "../header/game_io.h"
 
 #define NB_MONSTERS 4
 
@@ -73,19 +73,19 @@ void apply_required_nb_monsters(game g, int * nbMonsters){
 }
 
 void apply_required_nb_seen(game g, int * north, int * south, int * east, int * west){
-	for(unsigned int pos = 0; pos < game_width(g); pos++){
+	for(int pos = 0; pos < game_width(g); pos++){
 		set_required_nb_seen(g, N, pos, north[pos]);
 		set_required_nb_seen(g, S, pos, south[pos]);
 	}
-	for(unsigned int pos = 0; pos < game_height(g); pos++){
+	for(int pos = 0; pos < game_height(g); pos++){
 		set_required_nb_seen(g, E, pos, east[pos]);
 		set_required_nb_seen(g, W, pos, west[pos]);
 	}
 }
 
 void apply_monsterAndMirror_cell_content(game g, char ** monsterArray){
-for(unsigned int x = 0; x < game_width(g); x++){
-	for(unsigned int y = game_height(g); y >0; y--){
+for(int x = 0; x < game_width(g); x++){
+	for(int y = game_height(g); y >0; y--){
 			switch(monsterArray[game_width(g) - (y)][x]){
 				case '\\':
 					add_mirror_ext(g,ANTIMIRROR,x,y-1);
@@ -127,7 +127,7 @@ char** init_matrice2(game g){
 	res[0] = (char *)malloc(sizeof(char) * game_height(g) * game_width(g)*100);
 	assert(res[0]);
 	for(int i = 1; i < game_width(g); i++)
-		 res[i] = malloc(sizeof(char)*game_height(g)*20);
+		 res[i] =(char*) malloc(sizeof(char)*game_height(g)*20);
 		 assert(res);
 
 	return res;
@@ -293,33 +293,33 @@ void save_game(cgame g, char* filename){
 	save_empty_line(file);
 
 	//printf("INFO: Writing required labels\n");
-	for(unsigned int i = 0; i < width; i++){
+	for(int i = 0; i < width; i++){
 		sprintf(tmp, "%d ",required_nb_seen(g,N,i));
 		fputs(tmp,file);
 	}
 	save_empty_line(file);
 
-	for(unsigned int i = 0; i < width; i++){
+	for(int i = 0; i < width; i++){
 		sprintf(tmp, "%d ",required_nb_seen(g,S,i));
 		fputs(tmp,file);
 	}
 	save_empty_line(file);
 
-	for(unsigned int i = 0; i < height; i++){
+	for(int i = 0; i < height; i++){
 		sprintf(tmp, "%d ",required_nb_seen(g,E,i));
 		fputs(tmp,file);
 	}
 	save_empty_line(file);
 
-	for(unsigned int i = 0; i < height; i++){
+	for(int i = 0; i < height; i++){
 		sprintf(tmp, "%d ",required_nb_seen(g,W,i));
 		fputs(tmp,file);
 	}
 	save_empty_line(file);
 
 	//printf("INFO: Writing cells content\n");
-	for(unsigned int posY = game_height(g); posY > 0; posY--){
-		for(unsigned int posX = 0; posX < game_width(g); posX++){
+	for(int posY = game_height(g); posY > 0; posY--){
+		for(int posX = 0; posX < game_width(g); posX++){
 			content tick_content = get_content(g,posX,posY-1);
 
 			//Graphic show of cells content

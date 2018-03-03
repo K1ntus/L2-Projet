@@ -3,12 +3,11 @@
 #include <stdio.h>
 #include <string.h>
 
-#include "game.h"
-#include "game_display.c"
-#include "game_io.h"
+#include "../header/game.h"
+#include "../header/game_io.h"
+#include "../header/game_display.h"
+
 #include "game_solver_lib.c"
-
-
 
 
 //game is_valid(game g, int pos, content monster, int *nb_sol){
@@ -27,11 +26,11 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 
 
 
-	game g2 = malloc(sizeof(game));
+	game g2 = (game) malloc(sizeof(game));
 	g2 = copy_game(g);
 
 	if(g2 == NULL){
-		g2 =realloc(g2, sizeof(g2) *2);
+		g2 =(game) realloc(g2, sizeof(g2) *2);
 	if(g2 == NULL)
 		return NULL;
 	}
@@ -88,7 +87,7 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 }
 
 int main(int argc, char * argv[]) {
-	game * res= malloc(sizeof(game) *5);
+	game * res= (game*) malloc(sizeof(game) *5);
 	result_array_init(res);
 
 	if(argc != 4){
@@ -99,9 +98,11 @@ int main(int argc, char * argv[]) {
 	printf("params: %s; %s; %s; %s\n",argv[0], argv[1],argv[2],argv[3]);
 	solve_mode solving_result = get_which_solve_mode_is_asked(argv[1]);
 
-
+ 
 
 	game g1 = load_game(argv[2]);
+	if(g1 == NULL)
+		return EXIT_FAILURE;
 
 	int nb_solution = 0;
 

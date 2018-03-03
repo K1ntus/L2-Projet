@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "game.h"
+#include "../header/game.h"
 //#include <time.h>
 
 //Structure containing the game
@@ -54,7 +54,7 @@ void memory_test(game g){
 }
 
 game new_game_ext(int width, int height){
-	game g = malloc(sizeof(game)+(3*sizeof(int))+(16*sizeof(int))+4*sizeof(int));
+	game g = (game) malloc(sizeof(game)+(3*sizeof(int))+(16*sizeof(int))+4*sizeof(int));
 
 	//Game board creation (dimension : width/height) and required mallocs.
 	init_matrice(g, width, height);
@@ -72,15 +72,15 @@ game new_game_ext(int width, int height){
 	g->spirit		= 0;
 
 	//Initialisation of each required_nb_seen value
-	g->valuesNorth = malloc(width * sizeof(int));
-	g->valuesSouth = malloc(width * sizeof(int));
-	for(unsigned int i = 0;	i < width;i++){
+	g->valuesNorth = (int*) malloc(width * sizeof(int));
+	g->valuesSouth = (int*) malloc(width * sizeof(int));
+	for(int i = 0;	i < width;i++){
 		g->valuesNorth[i] = 0;
 		g->valuesSouth[i] = 0;
 	}
-	g->valuesEast = malloc(height * sizeof(int));
-	g->valuesWest = malloc(height * sizeof(int));
-	for(unsigned int i = 0; i < height; i++){
+	g->valuesEast = (int*) malloc(height * sizeof(int));
+	g->valuesWest = (int*) malloc(height * sizeof(int));
+	for(int i = 0; i < height; i++){
 		g->valuesEast[i] = 0;
 		g->valuesWest[i] = 0;
 	}
@@ -106,7 +106,7 @@ game setup_new_game_ext(int width, int height,
 		g->valuesSouth[i] = labels[1][i]; // 1		..	. valueSouth
 	}
 
-	for(unsigned int i = 0; i < g->height; i++){
+	for(int i = 0; i < g->height; i++){
 		g->valuesEast[i] = labels[2][i]; //	2		..	. valueEast
 		g->valuesWest[i] = labels[3][i]; //	3		..	. valueWest
 	}
@@ -222,7 +222,7 @@ game copy_game (cgame g_src){
 		copy_game -> valuesSouth[i] = g_src -> valuesSouth[i];
 	}
 
-	for(unsigned int i = 0; i < g_src->height; i++){
+	for(int i = 0; i < g_src->height; i++){
 		copy_game -> valuesEast[i] = g_src -> valuesEast[i];
 		copy_game -> valuesWest[i] = g_src -> valuesWest[i];
 	}
@@ -286,10 +286,10 @@ content get_content(cgame game, int col, int line){
 	} else if (line < 0 || line >= game->height){	//	If line is invalid
 		fprintf(stderr, "Wrong y parameter on get_content call\n");
 	} else { 						// If all pos are okay
-		int tick_content = game->matrice[col][line];
-		return tick_content;
+		int tick_content =  game->matrice[col][line];
+		return (content)tick_content;
 	}
-	return EXIT_FAILURE;
+	return EMPTY;
 }
 
 
@@ -374,7 +374,7 @@ direction direction_after_antimirror(direction side) {
 			return N;
 		default:
 			fprintf(stderr, "Error while switching side after a an antimirror\n");
-			return EXIT_FAILURE;
+			return (direction) EXIT_FAILURE;
 	}
 }
 
@@ -390,7 +390,7 @@ direction direction_after_mirror(direction side) {
 			return S;
 		default:
 			fprintf(stderr, "Error while switching side after a mirror\n");
-			return EXIT_FAILURE;
+			return (direction) EXIT_FAILURE;
 	}
 }
 
@@ -406,7 +406,7 @@ direction direction_after_vmirror(direction side) {
 			return E;
 		default:
 			fprintf(stderr, "Error while switching side after a vertical mirror\n");
-			return EXIT_FAILURE;
+			return (direction) EXIT_FAILURE;
 	}
 }
 
@@ -422,7 +422,7 @@ direction direction_after_hmirror(direction side) {
 			return W;
 		default:
 			fprintf(stderr, "Error while switching side after a horizontal mirror\n");
-			return EXIT_FAILURE;
+			return (direction) EXIT_FAILURE;
 	}
 }
 
@@ -485,7 +485,7 @@ int current_nb_seen(cgame game, direction side, int pos){
 	bool isEnd			 = false;
 	int sum = 0;
 
-	int *posTab = malloc(sizeof(int)*2);//array with the position x && y; sizeof(int)*2 because that's an array with 2 cells
+	int *posTab =(int *) malloc(sizeof(int)*2);//array with the position x && y; sizeof(int)*2 because that's an array with 2 cells
 	posTab = current_nb_seen_init(game, pos, posTab, side);	//Init. of the position with the side & pos parameters
 
 	while(!isEnd){
@@ -565,8 +565,8 @@ bool is_game_over (cgame g){
 
 
 	//check numbers of monsters seen
-	for(unsigned int dir = 0; dir < NB_DIR; dir++){
-		for(unsigned int pos = 0; pos < g->width; pos++){
+	for(int dir = 0; dir < NB_DIR; dir++){
+		for(int pos = 0; pos < g->width; pos++){
 			if(current_nb_seen(g, dir, pos) != required_nb_seen(g,dir,pos)){
 				return false;
 			}
@@ -631,7 +631,7 @@ game setup_new_game(int *labels[NB_DIR], content * board, int required_nb_ghosts
 		g->valuesSouth[i] = labels[1][i]; // 1		..	. valueSouth
 	}
 
-	for(unsigned int i = 0; i < game_height(g); i++){
+	for(int i = 0; i < game_height(g); i++){
 		g->valuesEast[i] = labels[2][i]; // 2		..	. valueEast
 		g->valuesWest[i] = labels[3][i]; // 3		..	. valueWest
 	}

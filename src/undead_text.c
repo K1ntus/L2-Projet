@@ -36,8 +36,10 @@ Pour l'affichage, vous devez respecter la convention suivante :
 #include <stdio.h>
 #include <unistd.h> //access() fun + chdir
 
-#include "game_io.h"
-#include "game.h"
+#include "../header/game_display.h"
+#include "../header/game_io.h"
+#include "../header/game.h"
+
 #include "game_display.c"
 
 #define clear() printf("\033[H\033[y")
@@ -116,8 +118,7 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 				printf("Vous avez dÃ©jÃ	 placÃ© tous les Vampires\n");
 			}else{
 				nbMonsters[0]--;
-				mstr = VAMPIRE;
-				add_monster(g, mstr, x, y);
+				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
@@ -127,8 +128,7 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 				printf("\nVous avez dÃ©jÃ	placÃ© tous les FantÃ´mes\n");
 			}else{
 				nbMonsters[1]--;
-				mstr = GHOST;
-				add_monster(g, mstr, x, y);
+				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
@@ -137,8 +137,7 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 				printf("Vous avez dÃ©jÃ	placÃ© tous les Zombies\n");
 			}else{
 				nbMonsters[2]--;
-				mstr = ZOMBIE;
-				add_monster(g, mstr, x, y);
+				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
@@ -147,8 +146,7 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 				printf("Vous avez dÃ©jÃ	placÃ© tous les Spirits\n");
 			}else{
 				nbMonsters[3]--;
-				mstr = SPIRIT;
-				add_monster(g, mstr, x, y);
+				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
@@ -164,22 +162,22 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 
 void debug(game g){
 	printf("\nINFO: Nombre de monstres visibles NORTH :\n");
-	for(unsigned int i = 0; i < game_width(g); i++){
+	for(int i = 0; i < game_width(g); i++){
 		int tmp = current_nb_seen(g, N, i);
 		printf("%d ", tmp);
 	}
 	printf("\nINFO: Nombre de monstres visibles SOUTH :\n");
-	for(unsigned int i = 0; i < game_width(g); i++){
+	for(int i = 0; i < game_width(g); i++){
 		int tmp = current_nb_seen(g, S, i);
 		printf("%d ", tmp);
 	}
 	printf("\nINFO: Nombre de monstres visibles EAST :\n");
-	for(unsigned int i = 0; i < game_height(g); i++){
+	for(int i = 0; i < game_height(g); i++){
 		int tmp = current_nb_seen(g, E, i);
 		printf("%d ", tmp);
 	}
 	printf("\nINFO: Nombre de monstres visibles WEST :\n");
-	for(unsigned int i = 0; i < game_height(g); i++){
+	for(int i = 0; i < game_height(g); i++){
 		int tmp = current_nb_seen(g, W, i);
 		printf("%d ", tmp);
 	}
@@ -245,12 +243,14 @@ int main(int argc, char *argv[]){
 	int nbMonsters[] = {2,2,5,0};
 
 	chdir("executable/saves");
+	char *save_name;
 
 	//Check if we want to load a file at beginning, else generate board
 	if(is_loading_game(argc)){
-		printf("Loading %s file\n",argv[1]);
-		if(file_exist(argv[1])){
-			g = load_game(argv[1]);
+		save_name = argv[1];
+		printf("Loading %s file\n",save_name);
+		if(file_exist(save_name)){
+			g = load_game(save_name);
 		}else{
 			fprintf(stderr,"File does not exist, sorry\n");
 			//g = new_game_ext(randomValue(4,10), randomValue(4,10));
@@ -258,6 +258,7 @@ int main(int argc, char *argv[]){
 			generate(g, nbMonsters);
 		}
 	} else {
+		save_name = (char*)"autosave";
 		printf("Generating random board, unable to load any save file\n");
 		//g = new_game_ext(randomValue(4,10), randomValue(4,10));
 		g = new_game_ext(4,4);
@@ -267,7 +268,7 @@ int main(int argc, char *argv[]){
 	display(g);
 
 	while(is_game_over(g) != true){
-		save_game(g, "autosave");	//Autosaving game board
+		save_game(g, save_name);	//Autosaving game board
 		//User Entry
 		if(is_game_over(g)){
 			break;	//Safety like
