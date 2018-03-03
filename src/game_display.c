@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <assert.h>
 #include "game.h"
+#include "game_display.h"
 
 
 //Display an empty line
