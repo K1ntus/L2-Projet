@@ -57,15 +57,6 @@ bool potential_invalid_game(game g){
 	return true;
 }
 
-bool board_is_full(game g){
-	for (signed int x = 0; x < game_width(g); x++){
-		for(int y = 0; y < game_height(g); y++){
-			if(get_content(g,x,y) == EMPTY)
-				return false;
-		}
-	}
-	return true;
-}
 
 void append_game_array(game g, game * res){
 	for(unsigned int i = 0; i < 5; i++){

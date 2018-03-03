@@ -6,8 +6,10 @@
 #include "../header/game.h"
 #include "../header/game_io.h"
 #include "../header/game_display.h"
+#include "../header/game_fun.h"
 
 #include "./game_solver_lib.c"
+#include "./game_util.c"
 
 int nb_iterations = 0;
 
@@ -87,7 +89,6 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 		printf("Olalala\n");
 	}
 
-	delete_game(g2);
 	return NULL;
 }
 
