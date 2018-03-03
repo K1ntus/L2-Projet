@@ -6,6 +6,7 @@
 
 #include "../header/game.h"
 #include "../header/game_io.h"
+#include "../header/game_fun.h"
 
 typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
 
@@ -97,27 +98,6 @@ solve_mode get_which_solve_mode_is_asked (char * argv){
 	return FIND_ONE;
 
 }
-
-void append(char* s, char c){
-				int len = strlen(s);
-				s[len] = c;
-				s[len+1] = '\0';
-}
-
-char* concat(const char *s1, const char *s2){
-		char * result = (char *) malloc(strlen(s1)+strlen(s2)+1);//+1 for the null-terminator
-		//check for errors in malloc here
-		strcpy(result, s1);
-		strcat(result, s2);
-		return result;
-}
-
-char* convert_int_to_string(char* output, char*str, int val){
-	char * res = (char *) malloc(sizeof(char) * (strlen(str)+val/10) );
-	sprintf(res, "%s%d",str,val);
-	return res;
-}
-
 void save_one_solution (game * resArray, char * prefix, int n){
 
   char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix));

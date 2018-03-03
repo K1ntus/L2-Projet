@@ -38,6 +38,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 
 #include "../header/game_display.h"
 #include "../header/game_io.h"
+#include "../header/game_fun.h"
 #include "../header/game.h"
 
 #include "game_display.c"

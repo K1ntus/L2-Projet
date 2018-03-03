@@ -39,7 +39,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(game src/game.c src/game_io.c src/game_display.c)
+add_library(game src/game.c src/game_io.c src/game_display.c src/game_util.c)
 SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
 
 
