@@ -11,6 +11,32 @@ typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
 
 
 
+bool board_already_saved_as_solution(game g1, game * array){
+	int nb_identical_cells=0;
+	for(unsigned int i = 0; i < 5; i ++){
+		nb_identical_cells=0;
+		if(array[i] == NULL){
+			return false;
+		}
+
+		for(unsigned int x = 0; x < game_width(g1); x++){
+			for(unsigned int y = 0; y < game_height(g1); y++){
+
+				if(get_content(g1,x,y) == get_content(array[i],x,y)){
+					nb_identical_cells +=1;
+				}
+				if(nb_identical_cells == (game_height(g1)*game_height(g1) -1))
+					return true;
+
+			}
+		}
+
+	}
+
+	return false;
+}
+
+
 bool potential_invalid_game(game g){
 	for(unsigned int x = 0; x < game_width(g);x++){
 		if(required_nb_seen(g, N, x) - current_nb_seen(g,N,x) < 0)
@@ -41,7 +67,7 @@ bool board_is_full(game g){
 }
 
 void append_game_array(game g, game * res){
-	for(unsigned int i = 0; i < 50; i++){
+	for(unsigned int i = 0; i < 5; i++){
 		if(res[i] == NULL){
 			res[i] = copy_game(g);
 			break;

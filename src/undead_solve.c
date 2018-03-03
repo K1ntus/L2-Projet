@@ -11,7 +11,6 @@
 
 
 
-
 //game is_valid(game g, int pos, content monster, int *nb_sol){
 game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 	int x = pos%game_width(g);
@@ -26,7 +25,6 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 		return NULL;
 	}
 
-	//50413
 
 
 	game g2 = malloc(sizeof(game));
@@ -46,8 +44,11 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 
 	if(board_is_full(g2)){
 		if(is_game_over(g2)){
-			append_game_array(g2,res);
-			*nb_sol +=1;
+			if(!board_already_saved_as_solution(g2, res)){
+				if(*nb_sol < 5)
+					append_game_array(g2,res);
+				*nb_sol +=1;
+			}
 		}
 		delete_game(g2);
 		return NULL;
@@ -109,7 +110,7 @@ int main(int argc, char * argv[]) {
 	delete_game(g1);
 
 	if(res[0] == NULL){
-		printf("No solution has been find\n");
+		printf("No solution has been found\n");
 	} else{
 		printf("There's %d solutions! \n",nb_solution);
 		saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
