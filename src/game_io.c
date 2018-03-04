@@ -335,7 +335,7 @@ void save_game(cgame g, char* filename){
 					fprintf(file,"| ");
 					break;
 				case HMIRROR:
-					fprintf(file,"_ ");
+					fprintf(file,"- ");
 					break;
 				case SPIRIT:
 					fprintf(file,"S ");
