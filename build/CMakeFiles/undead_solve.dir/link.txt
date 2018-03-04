@@ -1,0 +1,1 @@
+/usr/bin/cc  -std=c99 -g -Wall -Werror   CMakeFiles/undead_solve.dir/src/undead_solve.c.o  -o undead_solve -rdynamic libgame.a 
