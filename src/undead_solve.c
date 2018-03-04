@@ -14,6 +14,7 @@ int nb_iterations = 0;
 
 //game is_valid(game g, int pos, content monster, int *nb_sol){
 game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
+
 	nb_iterations+=1;
 
 	int x = pos%game_width(g);//Convert pos parameters to x and y in order to use on some game.c functions
@@ -29,9 +30,7 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 	}
 
 
-
 	game g2 = (game) malloc(sizeof(game));
-
 	if(g2 == NULL){//if new board g2 doesnt allocate well
 		g2 =(game) realloc(g2, sizeof(g2) *2);//We retry to allocate him with double size
 		printf("pew pew pew\n");
@@ -40,14 +39,16 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 	}
 	g2 = copy_game(g);//I
 
-	if(get_content(g2,x,y) == EMPTY){	//If the cells is empty
-		add_monster(g2, monster, x, y);	//Then we place a monster
+	if(x >=0 && y >=0){
+		if(get_content(g2,x,y) == EMPTY){	//If the cells is empty
+			add_monster(g2, monster, x, y);	//Then we place a monster
+		}
 	}
 
-	display(g2);
+	//display(g2);
 
 	if(board_is_full(g2)){	//We check if the generated board is full of monsters (ie. no empty cells)
-		printf("INFO: board is full\n");
+		//printf("INFO: board is full\n");
 		if(is_game_over(g2)){	//Then if the game is over
 			printf("INFO:board is over\n");
 			if(!board_already_saved_as_solution(g2, res)){	//We check if this board hasnt already been saved
@@ -85,10 +86,12 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 		}
 	}
 
+/*
 	if(nb_null == 4){	//All the board from this pos are bullshit :s
 		printf("Olalala\n");
+		return NULL;
 	}
-
+*/
 	return NULL;
 }
 
@@ -110,13 +113,20 @@ int main(int argc, char * argv[]) {
 	if(g1 == NULL)	//If doesnt load well or something bad happens
 		return EXIT_FAILURE;
 
-	int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
+		printf("zombie:%d, ghost:%d, vampire:%d, spirit:%d\n",required_nb_monsters(g1,ZOMBIE),required_nb_monsters(g1,GHOST),required_nb_monsters(g1,VAMPIRE),required_nb_monsters(g1,SPIRIT));
+		int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
 
+		is_valid(g1, -1,EMPTY, res, &nb_solution);
+/*
+		printf("\nfirst mob is zombie\n");
 		is_valid(g1,0,ZOMBIE, res, &nb_solution);
-			is_valid(g1,0,SPIRIT, res, &nb_solution);
-				is_valid(g1,0,GHOST, res, &nb_solution);
-					is_valid(g1,0,VAMPIRE, res, &nb_solution);
-
+		printf("\nfirst mob is spirit\n");
+		is_valid(g1,0,SPIRIT, res, &nb_solution);
+		printf("\nfirst mob is ghost\n");
+		is_valid(g1,0,GHOST, res, &nb_solution);
+		printf("\nfirst mob is vampire\n");
+		is_valid(g1,0,VAMPIRE, res, &nb_solution);
+*/
 	delete_game(g1);	//We dont need anymore the game_board
 
 	printf("Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
