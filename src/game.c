@@ -209,6 +209,7 @@ game copy_game (cgame g_src){
 	copy_game->vampires = g_src->vampires;
 	copy_game->ghosts = g_src->ghosts;
 	copy_game->zombies = g_src->zombies;
+	copy_game->spirit = g_src->spirit;
 
 	for (int x = g_src->width-1; x >= 0; x--){
 		for(int y = 0; y < g_src->height; y++){

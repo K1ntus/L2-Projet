@@ -38,17 +38,18 @@ game is_valid(game g, int pos, content monster, game * res, int * nb_sol){
 		if(g2 == NULL)//Else we go back to previous recurrency call
 			return NULL;
 	}
-	g2 = copy_game(g);//If g2 well allocated, pouf, we copy the game from parameters on this new one
-
-
-
+	g2 = copy_game(g);//I
 
 	if(get_content(g2,x,y) == EMPTY){	//If the cells is empty
 		add_monster(g2, monster, x, y);	//Then we place a monster
 	}
 
+	display(g2);
+
 	if(board_is_full(g2)){	//We check if the generated board is full of monsters (ie. no empty cells)
+		printf("INFO: board is full\n");
 		if(is_game_over(g2)){	//Then if the game is over
+			printf("INFO:board is over\n");
 			if(!board_already_saved_as_solution(g2, res)){	//We check if this board hasnt already been saved
 				if(*nb_sol < 5)	//And if the number of board saved dont exceed 5 (too much files after LOL)
 					append_game_array(g2,res);	//Then we add the game board to the res array
@@ -111,7 +112,10 @@ int main(int argc, char * argv[]) {
 
 	int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
 
-	is_valid(g1,0,EMPTY, res, &nb_solution);
+		is_valid(g1,0,ZOMBIE, res, &nb_solution);
+			is_valid(g1,0,SPIRIT, res, &nb_solution);
+				is_valid(g1,0,GHOST, res, &nb_solution);
+					is_valid(g1,0,VAMPIRE, res, &nb_solution);
 
 	delete_game(g1);	//We dont need anymore the game_board
 

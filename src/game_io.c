@@ -92,7 +92,7 @@ for(int x = 0; x < game_width(g); x++){
 				case '/':
 					add_mirror_ext(g,MIRROR,x,y-1);
 					break;
-				case '_':
+				case '-':
 					add_mirror_ext(g,HMIRROR,x,y-1);
 					break;
 				case '|':
