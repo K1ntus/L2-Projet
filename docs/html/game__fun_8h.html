@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.11"/>
-<title>Undead: game_fun.h File Reference</title>
+<title>My Project: header/game_fun.h File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">Undead
+   <div id="projectname">My Project
    </div>
   </td>
  </tr>
@@ -79,9 +79,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </iframe>
 </div>
 
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_1ec98ce50fa6ec55b40b8ffb1df38c3c.html">header</a></li>  </ul>
+</div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
+<a href="#typedef-members">Typedefs</a> &#124;
+<a href="#enum-members">Enumerations</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
 <div class="title">game_fun.h File Reference</div>  </div>
@@ -99,8 +105,51 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div>
 <p><a href="game__fun_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
+Typedefs</h2></td></tr>
+<tr class="memitem:a244f4c8caa07af915d9abcb3980bfef6"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a244f4c8caa07af915d9abcb3980bfef6"></a>
+typedef enum <a class="el" href="game__fun_8h.html#ac4aa45cdba3466ecd01d690e326ed426">e_solve_mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a244f4c8caa07af915d9abcb3980bfef6">solve_mode</a></td></tr>
+<tr class="memdesc:a244f4c8caa07af915d9abcb3980bfef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">possible input mode for the solver FIND_ONE save file containing one solution of the board NB_SOL ssave a file with the number of solution for the game as parameters FIND_ALL save files (max. 5) with possible and differents solutions of the board <br /></td></tr>
+<tr class="separator:a244f4c8caa07af915d9abcb3980bfef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
+Enumerations</h2></td></tr>
+<tr class="memitem:ac4aa45cdba3466ecd01d690e326ed426"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="ac4aa45cdba3466ecd01d690e326ed426"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#ac4aa45cdba3466ecd01d690e326ed426">e_solve_mode</a> { <b>FIND_ONE</b>, 
+<b>NB_SOL</b>, 
+<b>FIND_ALL</b>
+ }<tr class="memdesc:ac4aa45cdba3466ecd01d690e326ed426"><td class="mdescLeft">&#160;</td><td class="mdescRight">possible input mode for the solver FIND_ONE save file containing one solution of the board NB_SOL ssave a file with the number of solution for the game as parameters FIND_ALL save files (max. 5) with possible and differents solutions of the board <br /></td></tr>
+</td></tr>
+<tr class="separator:ac4aa45cdba3466ecd01d690e326ed426"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:aadb97e6d30bb241f8adddda99db03900"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#aadb97e6d30bb241f8adddda99db03900">board_already_saved_as_solution</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> g1, <a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *array)</td></tr>
+<tr class="memdesc:aadb97e6d30bb241f8adddda99db03900"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: verify if the solution to compare already exist.  <a href="#aadb97e6d30bb241f8adddda99db03900">More...</a><br /></td></tr>
+<tr class="separator:aadb97e6d30bb241f8adddda99db03900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae91ae258c4098ed3279c4c5791d38ad0"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#ae91ae258c4098ed3279c4c5791d38ad0">potential_invalid_game</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> g)</td></tr>
+<tr class="memdesc:ae91ae258c4098ed3279c4c5791d38ad0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: working on, check if its worth to continue on this board.  <a href="#ae91ae258c4098ed3279c4c5791d38ad0">More...</a><br /></td></tr>
+<tr class="separator:ae91ae258c4098ed3279c4c5791d38ad0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa60f57c84e732ea41aa493eace3e15bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#aa60f57c84e732ea41aa493eace3e15bd">append_game_array</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> g, <a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res)</td></tr>
+<tr class="memdesc:aa60f57c84e732ea41aa493eace3e15bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: Add a solved board to a game * variable.  <a href="#aa60f57c84e732ea41aa493eace3e15bd">More...</a><br /></td></tr>
+<tr class="separator:aa60f57c84e732ea41aa493eace3e15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e80c93fe2eac2a584f0812779ce11b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e80c93fe2eac2a584f0812779ce11b5"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res)</td></tr>
+<tr class="separator:a7e80c93fe2eac2a584f0812779ce11b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48c49a6509e71ed33d27ed2b95c56cb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="game__fun_8h.html#a244f4c8caa07af915d9abcb3980bfef6">solve_mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a48c49a6509e71ed33d27ed2b95c56cb4">get_which_solve_mode_is_asked</a> (char *argv)</td></tr>
+<tr class="memdesc:a48c49a6509e71ed33d27ed2b95c56cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: return the wanted solve mode from input string.  <a href="#a48c49a6509e71ed33d27ed2b95c56cb4">More...</a><br /></td></tr>
+<tr class="separator:a48c49a6509e71ed33d27ed2b95c56cb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5dc26ded1e0e78061fa0c1fb5b5ef8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#aa5dc26ded1e0e78061fa0c1fb5b5ef8f">save_one_solution</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *resArray, char *prefix, int n)</td></tr>
+<tr class="memdesc:aa5dc26ded1e0e78061fa0c1fb5b5ef8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: save one game board which resolve the one as parameters.  <a href="#aa5dc26ded1e0e78061fa0c1fb5b5ef8f">More...</a><br /></td></tr>
+<tr class="separator:aa5dc26ded1e0e78061fa0c1fb5b5ef8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a4b10be424e57937646989310d60ac8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a6a4b10be424e57937646989310d60ac8">save_all_solutions</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res, char *prefix, int nbSol)</td></tr>
+<tr class="memdesc:a6a4b10be424e57937646989310d60ac8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: save all (max.5) game board which resolve the one as parameters.  <a href="#a6a4b10be424e57937646989310d60ac8">More...</a><br /></td></tr>
+<tr class="separator:a6a4b10be424e57937646989310d60ac8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4caf7b1f18828e68926b369904279b85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a4caf7b1f18828e68926b369904279b85">save_nb_sol</a> (int nbSol, char *prefix)</td></tr>
+<tr class="memdesc:a4caf7b1f18828e68926b369904279b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: save the number of solution on a file.  <a href="#a4caf7b1f18828e68926b369904279b85">More...</a><br /></td></tr>
+<tr class="separator:a4caf7b1f18828e68926b369904279b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5a5dba621e2a5f580c61cdece09dc59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#af5a5dba621e2a5f580c61cdece09dc59">saving_data_from_the_solver</a> (<a class="el" href="game__fun_8h.html#a244f4c8caa07af915d9abcb3980bfef6">solve_mode</a> s, int nbSol, <a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res, char *prefix)</td></tr>
+<tr class="memdesc:af5a5dba621e2a5f580c61cdece09dc59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: save the data from solver depending of the solving mode.  <a href="#af5a5dba621e2a5f580c61cdece09dc59">More...</a><br /></td></tr>
+<tr class="separator:af5a5dba621e2a5f580c61cdece09dc59"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a687babec2264dbc28c7448fbd66a4c77"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a687babec2264dbc28c7448fbd66a4c77">append</a> (char *s, char c)</td></tr>
 <tr class="memdesc:a687babec2264dbc28c7448fbd66a4c77"><td class="mdescLeft">&#160;</td><td class="mdescRight">add a char at the end of a string  <a href="#a687babec2264dbc28c7448fbd66a4c77">More...</a><br /></td></tr>
 <tr class="separator:a687babec2264dbc28c7448fbd66a4c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -113,6 +162,9 @@ Functions</h2></td></tr>
 <tr class="memitem:a99c4ef3080f2f518dba5efb4911cdd1d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="game_8h.html#a86c60adad00cfbd232795597bb3ccefb">content</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a99c4ef3080f2f518dba5efb4911cdd1d">convert_char_to_content</a> (char c)</td></tr>
 <tr class="memdesc:a99c4ef3080f2f518dba5efb4911cdd1d"><td class="mdescLeft">&#160;</td><td class="mdescRight">convert a char c to a content type  <a href="#a99c4ef3080f2f518dba5efb4911cdd1d">More...</a><br /></td></tr>
 <tr class="separator:a99c4ef3080f2f518dba5efb4911cdd1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a626bbe89ef67e503aac2267884abe030"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a626bbe89ef67e503aac2267884abe030">board_is_full</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> g)</td></tr>
+<tr class="memdesc:a626bbe89ef67e503aac2267884abe030"><td class="mdescLeft">&#160;</td><td class="mdescRight">verify if every cells aren't EMPTY  <a href="#a626bbe89ef67e503aac2267884abe030">More...</a><br /></td></tr>
+<tr class="separator:a626bbe89ef67e503aac2267884abe030"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>This file provides useful functions to manage the game. </p>
@@ -150,6 +202,103 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa60f57c84e732ea41aa493eace3e15bd"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void append_game_array </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a>&#160;</td>
+          <td class="paramname"><em>g</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *&#160;</td>
+          <td class="paramname"><em>res</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: Add a solved board to a game * variable. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game solved to verify </td></tr>
+    <tr><td class="paramname">res</td><td>vector which contain game_solved or NULL </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>add the game to the vector at the first NULL value (and if there's less than 5 solutions) </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aadb97e6d30bb241f8adddda99db03900"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool board_already_saved_as_solution </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a>&#160;</td>
+          <td class="paramname"><em>g1</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *&#160;</td>
+          <td class="paramname"><em>array</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: verify if the solution to compare already exist. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game solved to verify </td></tr>
+    <tr><td class="paramname">array</td><td>a vector containing all game solutions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if already saved, false sinon </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a626bbe89ef67e503aac2267884abe030"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool board_is_full </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a>&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>verify if every cells aren't EMPTY </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game board to check </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the board doesnt have any EMPTY cell, else false </dd></dl>
 
 </div>
 </div>
@@ -253,6 +402,230 @@ Functions</h2></td></tr>
   </dd>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>char* output </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a48c49a6509e71ed33d27ed2b95c56cb4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="game__fun_8h.html#a244f4c8caa07af915d9abcb3980bfef6">solve_mode</a> get_which_solve_mode_is_asked </td>
+          <td>(</td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>argv</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: return the wanted solve mode from input string. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">*argv</td><td>the string from input </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>'"FIND_ONE, FIND_ALL or NB_SOL"' </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="ae91ae258c4098ed3279c4c5791d38ad0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool potential_invalid_game </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a>&#160;</td>
+          <td class="paramname"><em>g</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: working on, check if its worth to continue on this board. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game solved to verify </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if invalid game </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a6a4b10be424e57937646989310d60ac8"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void save_all_solutions </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *&#160;</td>
+          <td class="paramname"><em>res</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbSol</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: save all (max.5) game board which resolve the one as parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">res</td><td>an array with all available solutions </td></tr>
+    <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
+    <tr><td class="paramname">nbSol</td><td>the numbers of solutions </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a4caf7b1f18828e68926b369904279b85"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void save_nb_sol </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbSol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>prefix</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: save the number of solution on a file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>the solving mode </td></tr>
+    <tr><td class="paramname">res</td><td>an array with all available solutions </td></tr>
+    <tr><td class="paramname">nbSol</td><td>the numbers of solutions </td></tr>
+    <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="aa5dc26ded1e0e78061fa0c1fb5b5ef8f"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void save_one_solution </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *&#160;</td>
+          <td class="paramname"><em>resArray</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>prefix</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>n</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: save one game board which resolve the one as parameters. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resArray</td><td>an array with all available solutions </td></tr>
+    <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
+    <tr><td class="paramname">n</td><td>should be set at 0 ! REALLY </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="af5a5dba621e2a5f580c61cdece09dc59"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void saving_data_from_the_solver </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game__fun_8h.html#a244f4c8caa07af915d9abcb3980bfef6">solve_mode</a>&#160;</td>
+          <td class="paramname"><em>s</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>nbSol</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *&#160;</td>
+          <td class="paramname"><em>res</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *&#160;</td>
+          <td class="paramname"><em>prefix</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Solver: save the data from solver depending of the solving mode. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>the solving mode </td></tr>
+    <tr><td class="paramname">nbSol</td><td>the numbers of solutions </td></tr>
+    <tr><td class="paramname">res</td><td>an array with all available solutions </td></tr>
+    <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>

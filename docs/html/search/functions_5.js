@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['load_5fgame',['load_game',['../game__io_8h.html#a7de64dbaa9f44019dac1a7b0ead1775b',1,'game_io.c']]]
+  ['is_5fgame_5fover',['is_game_over',['../game_8h.html#a5cddd252eb8797dd10e5de5a3bfeed67',1,'game.c']]]
 ];

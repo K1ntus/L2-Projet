@@ -1,4 +1,3 @@
-
 #include <stdlib.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -8,7 +7,7 @@
 #include "../header/game_io.h"
 #include "../header/game_fun.h"
 
-typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
+//typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
 
 
 

@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <assert.h>
+
 #include "../header/game.h"
 #include "../header/game_display.h"
 

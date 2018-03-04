@@ -8,8 +8,7 @@
 #include "../header/game_display.h"
 #include "../header/game_fun.h"
 
-#include "./game_solver_lib.c"
-#include "./game_util.c"
+//#include "./game_solver_lib.c"
 
 int nb_iterations = 0;
 

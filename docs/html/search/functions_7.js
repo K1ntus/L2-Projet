@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['required_5fnb_5fmonsters',['required_nb_monsters',['../game_8h.html#aca77e7a985fd0151b886d1269881be06',1,'game.c']]],
-  ['required_5fnb_5fseen',['required_nb_seen',['../game_8h.html#a2d1e79173e2a907dba55ec253d627184',1,'game.c']]],
-  ['restart_5fgame',['restart_game',['../game_8h.html#a40f53e850b410ed69485680714bdf50f',1,'game.c']]]
+  ['new_5fgame',['new_game',['../game_8h.html#aaf0650a68050e855dc81522f1e69dca1',1,'game.c']]],
+  ['new_5fgame_5fext',['new_game_ext',['../game_8h.html#aa3327a72af9b56487025f2be3f18417d',1,'game.c']]]
 ];

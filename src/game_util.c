@@ -7,7 +7,6 @@
 #include "../header/game_io.h"
 #include "../header/game_display.h"
 
-#include "../header/game_fun.h"
 
 
 bool board_is_full(game g){

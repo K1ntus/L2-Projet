@@ -5,7 +5,6 @@
 #include <string.h>
 #include <unistd.h>
 
-
 #include "../header/game_io.h"
 
 #define NB_MONSTERS 4
