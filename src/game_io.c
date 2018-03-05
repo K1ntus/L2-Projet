@@ -6,6 +6,7 @@
 #include <unistd.h>
 
 #include "../header/game_io.h"
+#include "game_io_util.c"
 
 #define NB_MONSTERS 4
 
@@ -23,123 +24,6 @@
 			<board[0][0]> <board[1][0]> ... <board[width-1][0]>
 */
 
-
-
-
-void string_filtering(char*str, int*res, FILE* f){
-	//get the numbers char on file
-	char * token;
-	token = strtok(str, " ");
-	int var=0;
-
-	int i = 0;
-//manage the numbers list in order to remove space
-	while (token != NULL) {
-			sscanf (token, "%d", &var);
-			res[i] = var;
-			token = strtok(NULL, " ");
-			i+=1;
-	}
-}
-
-
-void string_filtering_to_char(char*str, char*res, FILE* f){
-	//get the numbers char on file
-	char * token;
-	token = strtok(str, " ");
-	char var=0;
-
-	int i = 0;
-//manage the numbers list in order to remove space
-	while (token != NULL) {
-			sscanf (token, "%c", &var);
-			res[i] = var;
-			token = strtok(NULL, " ");
-			i+=1;
-	}
-}
-
-
-void error_while_loading_file(game g){
-
-}
-
-void apply_required_nb_monsters(game g, int * nbMonsters){
-	set_required_nb_monsters(g,GHOST, nbMonsters[0]);
-	set_required_nb_monsters(g,VAMPIRE, nbMonsters[1]);
-	set_required_nb_monsters(g,ZOMBIE, nbMonsters[2]);
-	set_required_nb_monsters(g,SPIRIT, nbMonsters[3]);
-}
-
-void apply_required_nb_seen(game g, int * north, int * south, int * east, int * west){
-	for(int pos = 0; pos < game_width(g); pos++){
-		set_required_nb_seen(g, N, pos, north[pos]);
-		set_required_nb_seen(g, S, pos, south[pos]);
-	}
-	for(int pos = 0; pos < game_height(g); pos++){
-		set_required_nb_seen(g, E, pos, east[pos]);
-		set_required_nb_seen(g, W, pos, west[pos]);
-	}
-}
-
-void apply_monsterAndMirror_cell_content(game g, char ** monsterArray){
-for(int x = 0; x < game_width(g); x++){
-	for(int y = game_height(g); y >0; y--){
-			switch(monsterArray[game_width(g) - (y)][x]){
-				case '\\':
-					add_mirror_ext(g,ANTIMIRROR,x,y-1);
-					break;
-				case '/':
-					add_mirror_ext(g,MIRROR,x,y-1);
-					break;
-				case '-':
-					add_mirror_ext(g,HMIRROR,x,y-1);
-					break;
-				case '|':
-					add_mirror_ext(g,VMIRROR,x,y-1);
-					break;
-
-				case 'Z':
-					add_monster(g,ZOMBIE,x,y-1);
-					break;
-				case 'G':
-					add_monster(g,GHOST,x,y-1);
-					break;
-				case 'V':
-					add_monster(g,VAMPIRE,x,y-1);
-					break;
-				case 'S':
-					add_monster(g,SPIRIT,x,y-1);
-					break;
-
-				default:
-					break;
-			}
-		}
-	}
-}
-
-
-char** init_matrice2(game g){
-	char **res	= (char **)malloc(sizeof(char *) * game_width(g)*100);
-	assert(res);
-	res[0] = (char *)malloc(sizeof(char) * game_height(g) * game_width(g)*100);
-	assert(res[0]);
-	for(int i = 1; i < game_width(g); i++)
-		 res[i] =(char*) malloc(sizeof(char)*game_height(g)*20);
-		 assert(res);
-
-	return res;
-}
-
-void free_matrice(game g, char ** matrice){
-	for(unsigned int i = game_width(g)-1; i > 0; i--){
-		free(matrice[i]);
-	}
-
-	free(matrice[0]);
-	free(matrice);
-}
 
 
 /// @{
@@ -177,9 +61,12 @@ game load_game(char* filename){
 	}
 
 	unsigned int height = widthAndHeight[1], width = widthAndHeight[0];
-	game g = new_game_ext(height,width);
+	printf("Width=%d and height=%d\n",width,height);
 
-	char ** monsterAndMirrorArray = init_matrice2(g);
+	game g = new_game_ext(width,height);	//We create the new game dude
+
+	char ** monsterAndMirrorArray = init_matrice2(g);	//Init a 2D array which is an array with array of each line content
+
 
 	//required nb monsters
 	if(!fgets(charBuffer, 35, file)){
@@ -227,8 +114,9 @@ game load_game(char* filename){
 		string_filtering(charBuffer, westLabel, file);
 	}
 
+
 	//Monster cells
-	for(unsigned int y = 0; y<height;y++){
+	for(int y = 0; y<game_height(g);y++){
 		if(!fgets(charBuffer, 35, file)){
 			fclose(file);
 			free_matrice(g, monsterAndMirrorArray);
@@ -237,6 +125,8 @@ game load_game(char* filename){
 			string_filtering_to_char(charBuffer, monsterAndMirrorArray[y], file);
 		}
 	}
+
+
 
 	apply_monsterAndMirror_cell_content(g,monsterAndMirrorArray);
 	apply_required_nb_monsters(g, nbMonsters);
@@ -250,17 +140,6 @@ game load_game(char* filename){
 }
 
 
-/**
- * @brief Save a game in a file
- *
- * File format to be defined (next semester)
- *
- * @param g game to save
- * @param filename
- **/
-void save_empty_line(FILE* file){
- 	fputc('\n',file);
-}
 
 
 void save_game(cgame g, char* filename){
@@ -316,9 +195,9 @@ void save_game(cgame g, char* filename){
 	save_empty_line(file);
 
 	//printf("INFO: Writing cells content\n");
-	for(int posY = game_height(g); posY > 0; posY--){
-		for(int posX = 0; posX < game_width(g); posX++){
-			content tick_content = get_content(g,posX,posY-1);
+	for(int x = game_height(g)-1; x >= 0; x--){
+		for(int y = 0; y < game_width(g) ; y++){
+			content tick_content = get_content(g,x,y);
 
 			//Graphic show of cells content
 			switch(tick_content){
@@ -353,6 +232,5 @@ void save_game(cgame g, char* filename){
 		}
 		save_empty_line(file);
 	}
-	save_empty_line(file);
 	fclose(file);
 }

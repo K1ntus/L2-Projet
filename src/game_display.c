@@ -58,7 +58,7 @@ void display_cellsContent_and_sideValues(game g){
 		//Left & right side of the board
 		printf("|   %d  ", required_nb_seen(g, W, x));
 		for(int y = 0; y < game_width(g) ; y++){
-			tick_content = get_content(g,y,x);
+			tick_content = get_content(g,x,y);
 
 			//Graphic show of cells content
 			switch(tick_content){

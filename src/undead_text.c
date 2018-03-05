@@ -251,6 +251,10 @@ int main(int argc, char *argv[]){
 		printf("Loading %s file\n",save_name);
 		if(file_exist(save_name)){
 			g = load_game(save_name);
+			nbMonsters[0] = required_nb_monsters(g, VAMPIRE);
+			nbMonsters[1] = required_nb_monsters(g, GHOST);
+			nbMonsters[2] = required_nb_monsters(g, ZOMBIE);
+			nbMonsters[3] = required_nb_monsters(g, SPIRIT);
 		}else{
 			fprintf(stderr,"File does not exist, sorry\n");
 			//g = new_game_ext(randomValue(4,10), randomValue(4,10));
