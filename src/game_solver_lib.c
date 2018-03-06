@@ -11,87 +11,129 @@
 
 bool next_pos_is_viable(game g, int pos, content mstr){
 	int x = pos%game_width(g), y=pos/game_width(g);
-
-	if(x%game_width(g) == 0){
+	if(get_content(g, x, y) != EMPTY){
+		return false;
+	}
+	if((x == 0 && y == 0)){
+		if((required_nb_seen(g, W, 0) - current_nb_seen(g, W, 0) <= 0) && (required_nb_seen(g, S, 0) - current_nb_seen(g, S, 0) <= 0) ){
+			switch (mstr) {
+				case ZOMBIE:
+				return false;
+				case VAMPIRE:
+				return false;
+				default:
+				return true;
+			}
+		}else{
+			switch (mstr) {
+				case ZOMBIE:
+				return true;
+				case VAMPIRE:
+				return true;
+				default:
+				return false;
+			}
+		}
+	}else if (x ==0 && y==game_height(g)-1){
+		if(required_nb_seen(g, W, game_height(g) -1) - current_nb_seen(g, W, game_height(g) -1) <= 0 && required_nb_seen(g, N, 0) - current_nb_seen(g, N,0) <= 0 ){
+			switch (mstr) {
+				case ZOMBIE:
+				return false;
+				case VAMPIRE:
+				return false;
+				default:
+				return true;
+			}
+		}else{
+			switch (mstr) {
+				case ZOMBIE:
+				return true;
+				case VAMPIRE:
+				return true;
+				default:
+				return false;
+			}
+		}
+	}else if (x ==0 && y==game_height(g)-1){
+		if(required_nb_seen(g, W, game_height(g) -1) - current_nb_seen(g, W, game_height(g) -1) <= 0 && required_nb_seen(g, N, 0) - current_nb_seen(g, N,0) <= 0 ){
+			switch (mstr) {
+				case ZOMBIE:
+				return false;
+				case VAMPIRE:
+				return false;
+				default:
+				return true;
+			}
+		}else{
+			switch (mstr) {
+				case ZOMBIE:
+				return true;
+				case VAMPIRE:
+				return true;
+				default:
+				return false;
+			}
+		}
+	}else if (x ==game_width(g)-1 && y==game_height(g) -1){
+		if(required_nb_seen(g, E, game_height(g) -1) - current_nb_seen(g, E, game_height(g) -1) <= 0 && required_nb_seen(g, S, game_width(g)-1) - current_nb_seen(g, S,game_width(g)-1) <= 0 ){
+			switch (mstr) {
+				case ZOMBIE:
+				return false;
+				case VAMPIRE:
+				return false;
+				default:
+				return true;
+			}
+		}else{
+			switch (mstr) {
+				case ZOMBIE:
+				return true;
+				case VAMPIRE:
+				return true;
+				default:
+				return false;
+			}
+		}
+	}else	if(x%game_width(g) == 0){
 		if(required_nb_seen(g, W, y) - current_nb_seen(g, W, y) <= 0){
 			switch (mstr) {
 				case ZOMBIE:
-					return false;
+				return false;
 				case VAMPIRE:
-					return false;
+				return false;
 				default:
-					return true;
+				return true;
 			}
 		}else{
-				switch (mstr) {
-					case ZOMBIE:
-						return true;
-					case VAMPIRE:
-						return true;
-					default:
-						return false;
-				}
+			switch (mstr) {
+				case ZOMBIE:
+				return true;
+				case VAMPIRE:
+				return true;
+				default:
+				return false;
+			}
 		}
 
 	} else if((x+1)%game_width(g)+1 == 0){
 		if(required_nb_seen(g, E, y) - current_nb_seen(g, E, y) <= 0){
 			switch (mstr) {
 				case ZOMBIE:
-					return false;
+				return false;
 				case VAMPIRE:
-					return false;
+				return false;
 				default:
-					return true;
+				return true;
 			}
 		}else{
-				switch (mstr) {
-					case ZOMBIE:
-						return true;
-					case VAMPIRE:
-						return true;
-					default:
-						return false;
-				}
-		}
-	} else if(x < game_width(g)-1 && x >1){
-		if(required_nb_seen(g, S, x) - current_nb_seen(g, S, x) <= 0){
 			switch (mstr) {
 				case ZOMBIE:
-					return false;
+				return true;
 				case VAMPIRE:
-					return false;
+				return true;
 				default:
-					return true;
+				return false;
 			}
-		}else{
-				switch (mstr) {
-					case ZOMBIE:
-						return true;
-					case VAMPIRE:
-						return true;
-					default:
-						return false;
-				}
-		}
-	}else if(x >(game_width(g)*game_height(g)-game_width(g)) && x < game_width(g)* game_height(g)){
-		if(required_nb_seen(g, N, x) - current_nb_seen(g, N, x) <= 0){
-			switch (mstr) {
-				case ZOMBIE:
-					return false;
-				case VAMPIRE:
-					return false;
-				default:
-					return true;
-			}
-		}else{
-				switch (mstr) {
-					case ZOMBIE:
-						return true;
-					case VAMPIRE:
-						return true;
-					default:
-						return false;
-				}
 		}
 	}
 	return true;
