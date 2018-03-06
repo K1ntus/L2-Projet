@@ -13,7 +13,7 @@
 
 /** Change save file sample to match :
 			<width> <height>
-			<required_nb_ghosts>	<required_nb_vampires> <required_nb_zombies> <required_nb_spirits>
+			<required_nb_vampires> <required_nb_ghosts>	 <required_nb_zombies> <required_nb_spirits>
 			<labels[n][0]> <labels[n][1]> ... <labels[n][width-1]>
 			<labels[s][0]> <labels[s][1]> ... <labels[s][width-1]>
 			<labels[e][0]> <labels[e][1]> ... <labels[e][height-1]>
@@ -187,8 +187,8 @@ void save_game(cgame g, char* filename){
 	fputs(tmp, file);
 
 	//printf("INFO: Writing monsters available\n");
-	fprintf(file, "%d ", required_nb_monsters(g,GHOST));
 	fprintf(file, "%d ", required_nb_monsters(g,VAMPIRE));
+	fprintf(file, "%d ", required_nb_monsters(g,GHOST));
 	fprintf(file, "%d ", required_nb_monsters(g,ZOMBIE));
 	fprintf(file, "%d ", required_nb_monsters(g,SPIRIT));
 	save_empty_line(file);

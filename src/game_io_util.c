@@ -150,8 +150,8 @@ void error_while_loading_file(game g){
 }
 
 void apply_required_nb_monsters(game g, int * nbMonsters){
-	set_required_nb_monsters(g,GHOST, nbMonsters[0]);
-	set_required_nb_monsters(g,VAMPIRE, nbMonsters[1]);
+	set_required_nb_monsters(g,VAMPIRE, nbMonsters[0]);
+	set_required_nb_monsters(g,GHOST, nbMonsters[1]);
 	set_required_nb_monsters(g,ZOMBIE, nbMonsters[2]);
 	set_required_nb_monsters(g,SPIRIT, nbMonsters[3]);
 }
