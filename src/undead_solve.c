@@ -56,7 +56,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		if(board_is_full(g)){
 			//display(g);
 			if(is_game_over(g)){
-				return g;
 			}else{
 				delete_game(g);
 				return NULL;
@@ -77,7 +76,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		if(g != NULL)
 			solution = copy_game(g);
 		else{
-			delete_game(solution);
 			continue;
 		}
 
