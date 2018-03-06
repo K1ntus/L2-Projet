@@ -94,7 +94,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			is_solution(solution, res, nb_sol);
 			return solution;
 		}else{
-			delete_game(solution);
+			//delete_game(solution);
 			continue;
 		}
 
