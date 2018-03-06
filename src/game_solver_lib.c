@@ -10,6 +10,14 @@
 //typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
 
 
+void copy_string(char *target, char *source) {
+   while (*source) {
+      *target = *source;
+      source++;
+      target++;
+   }
+   *target = '\0';
+}
 
 bool board_already_saved_as_solution(game g1, game * array){
 	int nb_identical_cells=0;
@@ -90,32 +98,12 @@ solve_mode get_which_solve_mode_is_asked (char * argv){
 }
 void save_one_solution (game * resArray, char * prefix, int n){
 
-  char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix));
-	char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + n/10));
-	char * res = (char*) malloc(sizeof(char) * (strlen(prefix) + n/10 + strlen(".sol") +1));
-	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")));
+  char * savePrefix = (char*) malloc(sizeof(char) * (strlen(prefix)+strlen(".sol") +strlen("\n")) );
 
+	copy_string(savePrefix, prefix);
+	strcat(savePrefix, ".sol");
 
-	strcpy(suffix,".sol");
-	strcpy(savePrefix,prefix);
-
-
-	if(n == 0){
-		strcpy(savePrefix,prefix);
-
-	  strcat(savePrefix, suffix);
-	}else{
-		convert_int_to_string(suffixRes, suffix,n);
-			res = concat(prefix,suffixRes);
-				if(resArray[n]!= NULL)
-			  	save_game(resArray[n], res);
-
-
-	}
-
-
-	if(resArray[n]!= NULL)
-  	save_game(resArray[n], savePrefix);
+	save_game(resArray[n], savePrefix);
 
 	free(savePrefix);
 }
@@ -126,8 +114,11 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")));
 
 	for(int i = 1; i < 5; i++){
-		if(res[i] == NULL)
+		if(res[i] == NULL){
+			free(suffix);
 			return;
+		}
+
 
 		char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix));
 		char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + 10));
@@ -149,6 +140,7 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 		free(savePrefix);
 		free(filename_res);
 	}
+	free(suffix);
 }
 
 
