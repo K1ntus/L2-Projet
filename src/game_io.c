@@ -61,7 +61,6 @@ game load_game(char* filename){
 	}
 
 	unsigned int height = widthAndHeight[1], width = widthAndHeight[0];
-	printf("Width=%d and height=%d\n",width,height);
 
 	game g = new_game_ext(width,height);	//We create the new game dude
 
@@ -116,7 +115,7 @@ game load_game(char* filename){
 
 
 	content monsterToPlace = EMPTY;
-	char * monsterToPlaceString = (char*) malloc(sizeof(char)*game_width(g)*20);
+	char * monsterToPlaceString = (char*) malloc(sizeof(char)*game_width(g)*200);
 
 
 
@@ -133,7 +132,6 @@ game load_game(char* filename){
 			return NULL;
 		} else {
 			string_filtering_to_char(charBuffer, monsterToPlaceString, file);
-			printf("string:%s\n\n",monsterToPlaceString);
 			for(int x = 0;x<game_width(g);x++){
 				int posX = x;
 				monsterToPlace=convert_char_to_content_io(monsterToPlaceString[x]);
@@ -156,11 +154,12 @@ game load_game(char* filename){
 	apply_required_nb_monsters(g, nbMonsters);
 	apply_required_nb_seen(g, northLabel, southLabel, eastLabel, westLabel);
 
+	free(monsterToPlaceString);
+
 	fclose(file);
 	//free_matrice(g, monsterAndMirrorArray);
 
-	printf("width:%d, height:%d\n",game_width(g), game_height(g));
-	printf("MIRROR:%d, ANTIMIRROR:%d\n\n",MIRROR,ANTIMIRROR);
+
 	return g;
 }
 
@@ -220,10 +219,10 @@ void save_game(cgame g, char* filename){
 	save_empty_line(file);
 
 	//printf("INFO: Writing cells content\n");
-	for(int x = 0; x <width; x++){
-		for(int y = 0; y < height ; y++){
+		for(int y = height-1; y >=0; y--){
+		for(int x = 0; x <width; x++){
 
-			content tick_content = get_content(g,x,height - y -1);
+			content tick_content = get_content(g,x,y);
 
 			//Graphic show of cells content
 			switch(tick_content){
