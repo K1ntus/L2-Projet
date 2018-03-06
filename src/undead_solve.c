@@ -43,27 +43,34 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	nb_iterations +=1;
 	int x = pos%game_width(g), y=pos/game_width(g);
 
+	if(nb_iterations >=50000){
+		delete_game(g);
+		return NULL;
+
+
+	}
 	//display(g);
 	if(g == NULL)
 		return NULL;
 
 	if(is_game_over(g)){
-		is_solution(g, res, nb_sol);
+		res[*nb_sol] = g;
+		*nb_sol +=1;
+		//is_solution(g, res, nb_sol);
 		return g;
 	}
 
-	if(pos >= game_height(g)*game_width(g)){
-		if(board_is_full(g)){
-			//display(g);
+	if(pos >= game_height(g)*game_width(g)-1 && get_content(g,game_width(g)-1,game_height(g)-1) != EMPTY){
 			if(is_game_over(g)){
+				return g;
 			}else{
 				delete_game(g);
 				return NULL;
 			}
 		}
-	}
 
-	if(is_solution(g, res, nb_sol)){
+	if(is_game_over(g)){
+		is_solution(g, res, nb_sol);
 		return g;
 	}
 
@@ -76,7 +83,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		if(g != NULL)
 			solution = copy_game(g);
 		else{
-			continue;
+			return NULL;
 		}
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
@@ -142,7 +149,7 @@ int main(int argc,char* argv[]){
 	} else{
 		printf("There's %d solutions! \n",nb_solution);
 		saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
-		printf("SALUT LES REYS !\n\n");
+
 		display(res[0]);
 	}
 
