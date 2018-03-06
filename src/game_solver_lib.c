@@ -9,6 +9,53 @@
 
 //typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
 
+bool next_pos_is_viable(game g, int pos, content mstr){
+	int x = pos%game_width(g), y=pos/game_width(g);
+
+	if(x%game_width(g) == 0){
+		if(required_nb_seen(g, W, y) - current_nb_seen(g, W, y) <= 0){
+			switch (mstr) {
+				case ZOMBIE:
+					return false;
+				case VAMPIRE:
+					return false;
+				default:
+					return true;
+			}
+		}else{
+				switch (mstr) {
+					case ZOMBIE:
+						return true;
+					case VAMPIRE:
+						return true;
+					default:
+						return false;
+				}
+		}
+
+	} else if(x%game_width(g)+1 == 0){
+		if(required_nb_seen(g, E, y) - current_nb_seen(g, E, y) <= 0){
+			switch (mstr) {
+				case ZOMBIE:
+					return false;
+				case VAMPIRE:
+					return false;
+				default:
+					return true;
+			}
+		}else{
+				switch (mstr) {
+					case ZOMBIE:
+						return true;
+					case VAMPIRE:
+						return true;
+					default:
+						return false;
+				}
+		}
+	}
+	return true;
+}
 
 void copy_string(char *target, char *source) {
    while (*source) {

@@ -9,6 +9,8 @@
 #include "../header/game_display.h"
 #include "../header/game_fun.h"
 
+#include "game_solver_lib.c"
+
 //#include "./game_solver_lib.c"
 #define NB_MONSTERS 4
 
@@ -61,10 +63,11 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return NULL;
 	}
 
-	if(pos >= game_height(g)*game_width(g)-1 && get_content(g,game_width(g)-1,game_height(g)-1) != EMPTY){
+	if(pos >= game_height(g)*game_width(g)){
+		//display(g);
 	//display(g);
 		if(is_game_over(g)){
-			return NULL;
+			return g;
 		}else{
 			delete_game(g);
 			return NULL;
@@ -83,7 +86,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
 
-	int nb_nulled = 0;
 
 
 
@@ -97,7 +99,12 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		}
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
-			add_monster(solution, monster[i], x, y);	//Then we place a monster
+				if(next_pos_is_viable(g, pos, monster[i])){
+					add_monster(solution, monster[i], x, y);	//Then we place a monster
+				}else{
+					delete_game(solution);
+					continue;
+				}
 		}else{
 			delete_game(solution);
 			continue;
@@ -109,14 +116,10 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			is_solution(solution, res, nb_sol);
 			return solution;
 		}else{
-			nb_nulled +=1;
 			continue;
 		}
 
 
-		if(nb_nulled >= 4){
-			return NULL;
-		}
 	}
 
 	return NULL;
