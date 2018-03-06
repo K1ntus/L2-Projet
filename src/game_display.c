@@ -76,7 +76,7 @@ void display_cellsContent_and_sideValues(game g){
 					printf("| ");
 					break;
 				case HMIRROR:
-					printf("_ ");
+					printf("- ");
 					break;
 				case SPIRIT:
 					printf("S ");

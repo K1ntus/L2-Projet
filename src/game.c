@@ -525,13 +525,17 @@ int current_nb_seen(cgame game, direction side, int pos){
 			if(!mirror_seen)
 				mirror_seen=true;
 		}else if(game->matrice[posTab[0]][posTab[1]] == VMIRROR){
-			side = direction_after_vmirror(side);//Switching side
-			if(!mirror_seen)
-				mirror_seen=true;
+			if(side != N && side != S){
+				side = direction_after_vmirror(side);//Switching side
+				if(!mirror_seen)
+					mirror_seen=true;
+			}
 		}else if(game->matrice[posTab[0]][posTab[1]] == HMIRROR){
-			side = direction_after_hmirror(side);//Switching side
-			if(!mirror_seen)
-				mirror_seen=true;
+			if(side != E && side != W){
+				side = direction_after_hmirror(side);//Switching side
+				if(!mirror_seen)
+					mirror_seen=true;
+			}
 		}
 
 		posTab=next_pos(posTab, side);//Calculate the next position
