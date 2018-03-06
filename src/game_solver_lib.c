@@ -122,8 +122,33 @@ void save_one_solution (game * resArray, char * prefix, int n){
 
 void save_all_solutions(game * res, char*prefix, int nbSol){
 	save_one_solution(res, prefix,0);
-	for(int i = 1; i < nbSol; i++)
-		save_one_solution(res, prefix, i);
+
+	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")));
+
+	for(int i = 1; i < 5; i++){
+		if(res[i] == NULL)
+			return;
+
+		char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix));
+		char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + 10));
+		char * filename_res = (char*) malloc(sizeof(char) * (strlen(prefix) + 10 + strlen(".sol") +1));
+
+		strcpy(savePrefix,prefix);
+		strcpy(suffix,".sol");
+
+		strcat(savePrefix, suffix);
+
+		strcpy(filename_res, savePrefix);
+
+		sprintf(filename_res, "%s%d",filename_res,i);
+		if(res[i]!= NULL)
+			save_game(res[i+1], filename_res);
+
+
+		free(suffixRes);
+		free(savePrefix);
+		free(filename_res);
+	}
 }
 
 
