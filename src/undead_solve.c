@@ -43,27 +43,21 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	nb_iterations +=1;
 	int x = pos%game_width(g), y=pos/game_width(g);
 
-	if(pos == game_width(g) * game_height(g)){
-		//display(g);
-		for(int i = 0; i < pos;i++){
-			if(get_content(g, i%game_width(g), i/game_width(g)) == EMPTY){
-				printf("x:%d, y:%d, content:%d\n",i%game_width(g), i/game_width(g), get_content(g,i%game_width(g),i/game_width(g)));
-							display(g);
-							is_valid(g, i, res, nb_sol);
-
-
-			}
-
-		}
-		if(is_game_over(g)){
-			return g;
-		}else{
-			return NULL;
-		}
+	if(is_game_over(g)){
+		is_solution(g, res, nb_sol);
+		return g;
 	}
 
-
-	//display(g);
+	if(pos >= game_height(g)*game_width(g)){
+		if(board_is_full(g)){
+			if(is_game_over(g)){
+				return g;
+			}else{
+				delete_game(g);
+				return NULL;
+			}
+		}
+	}
 
 	if(is_solution(g, res, nb_sol)){
 		return g;
@@ -100,45 +94,52 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 
 int main(int argc,char* argv[]){
 
-    if (argc != 4){
-        fprintf(stderr,"wrong parameters!\n");
-        exit(EXIT_FAILURE);
-    }
+	if (argc != 4){
+		fprintf(stderr,"wrong parameters!\n");
+		exit(EXIT_FAILURE);
+	}
 
 
-			game * res= (game*) malloc(sizeof(game) *5);	//We create an array which will contain (at maximum) 5 solution board
-			result_array_init(res);	//Init. it with few things
+	game * res= (game*) malloc(sizeof(game) *5);	//We create an array which will contain (at maximum) 5 solution board
+	result_array_init(res);	//Init. it with few things
 
-			if(argc != 4){	//If wrong number of args from launch
-				fprintf(stderr, "Unvalid number of parameters\n");
-				return EXIT_FAILURE;
-			}
+	if(argc != 4){	//If wrong number of args from launch
+		fprintf(stderr, "Unvalid number of parameters\n");
+		return EXIT_FAILURE;
+	}
 
-			printf("params: %s; %s; %s; %s\n",argv[0], argv[1],argv[2],argv[3]);	//Just informative
-			solve_mode solving_result = get_which_solve_mode_is_asked(argv[1]);	//Get the solving mode wanted (ie. NB_SOL, FIND_ONE, *_ALL,)
-
-
-
-			game g1 = load_game(argv[2]);	//We try to load the file from parameters
-			if(g1 == NULL)	//If doesnt load well or something bad happens
-				return EXIT_FAILURE;
-
-				printf("zombie:%d, ghost:%d, vampire:%d, spirit:%d\n",required_nb_monsters(g1,ZOMBIE),required_nb_monsters(g1,GHOST),required_nb_monsters(g1,VAMPIRE),required_nb_monsters(g1,SPIRIT));
-				int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
-
-				is_valid(g1, 0, res, &nb_solution);
-
-				delete_game(g1);	//We dont need anymore the game_board
-
-				printf("Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
-
-				if(res[0] == NULL){
-					printf("No solution has been found\n");
-				} else{
-					printf("There's %d solutions! \n",nb_solution);
-					saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
-				}
+	printf("params: %s; %s; %s; %s\n",argv[0], argv[1],argv[2],argv[3]);	//Just informative
+	solve_mode solving_result = get_which_solve_mode_is_asked(argv[1]);	//Get the solving mode wanted (ie. NB_SOL, FIND_ONE, *_ALL,)
 
 
 
+	game g1 = load_game(argv[2]);	//We try to load the file from parameters
+	if(g1 == NULL){	//If doesnt load well or something bad happens
+		return EXIT_FAILURE;
+	}
+
+	printf("zombie:%d, ghost:%d, vampire:%d, spirit:%d\n",required_nb_monsters(g1,ZOMBIE),required_nb_monsters(g1,GHOST),required_nb_monsters(g1,VAMPIRE),required_nb_monsters(g1,SPIRIT));
+	int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
+
+	is_valid(g1, 0, res, &nb_solution);
+
+	delete_game(g1);	//We dont need anymore the game_board
+
+	printf("INFO: Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
+
+	if(res[0] == NULL){
+		printf("No solution has been found\n");
+	} else{
+		printf("There's %d solutions! \n",nb_solution);
+		saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
+	}
+
+
+	for(unsigned int i = 0; i < 5; i++){
+		if(res[i] != NULL)
+		delete_game(res[i]);
+	}
+	free(res);
+
+	return EXIT_SUCCESS;
 }
