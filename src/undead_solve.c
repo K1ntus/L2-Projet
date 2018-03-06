@@ -18,6 +18,7 @@ int nb_iterations = 0;
 
 bool is_solution(game g2, game*res, int*nb_sol){
 	if(board_is_full(g2)){	//We check if the generated board is full of monsters (ie. no empty cells)
+		display(g2);
 		//printf("INFO: board is full\n");
 		if(is_game_over(g2)){	//Then if the game is over
 			//printf("INFO:board is over\n");
@@ -42,6 +43,8 @@ bool cell_is_mirror(game g, int x, int y){
 game is_valid(game g, int pos, game * res, int * nb_sol){
 	nb_iterations +=1;
 	int x = pos%game_width(g), y=pos/game_width(g);
+
+	//display(g);
 
 	if(is_game_over(g)){
 		is_solution(g, res, nb_sol);

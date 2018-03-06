@@ -54,10 +54,11 @@ void display_required_nb_seen_north(game g){
 
 void display_cellsContent_and_sideValues(game g){
 	int tick_content;
-	for(int x = game_width(g)-1; x >= 0; x--){
-		//Left & right side of the board
-		printf("|   %d  ", required_nb_seen(g, W, x));
-		for(int y = 0; y < game_height(g) ; y++){
+
+	for( int y = game_height(g)-1; y >= 0; y--){
+		printf("|   %d  ",required_nb_seen(g, W,y));
+		for( int x = 0; x < game_width(g); x++){
+			//printf("(%d,%d) ",x,y);
 			tick_content = get_content(g,x,y);
 
 			//Graphic show of cells content
@@ -92,7 +93,7 @@ void display_cellsContent_and_sideValues(game g){
 			}
 		}
 //Right side && number of monsters to be seen
-	printf(" %d   |\n",required_nb_seen (g, E, x));
+	printf(" %d   |\n",required_nb_seen (g, E, y));
 	}
 }
 
