@@ -18,7 +18,6 @@ int nb_iterations = 0;
 
 bool is_solution(game g2, game*res, int*nb_sol){
 	if(board_is_full(g2)){	//We check if the generated board is full of monsters (ie. no empty cells)
-		display(g2);
 		//printf("INFO: board is full\n");
 		if(is_game_over(g2)){	//Then if the game is over
 			//printf("INFO:board is over\n");
@@ -45,6 +44,8 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	int x = pos%game_width(g), y=pos/game_width(g);
 
 	//display(g);
+	if(g == NULL)
+		return NULL;
 
 	if(is_game_over(g)){
 		is_solution(g, res, nb_sol);
@@ -52,6 +53,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	}
 
 	if(pos >= game_height(g)*game_width(g)){
+		//display(g);
 		if(board_is_full(g)){
 			if(is_game_over(g)){
 				return g;
@@ -71,11 +73,18 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	}
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
-		game solution = copy_game(g);
+		game solution;
+		if(g != NULL)
+			solution = copy_game(g);
+		else{
+			delete_game(solution);
+			continue;
+		}
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
-			add_monster(solution, monster[i], x, y);	//Then we place a monster
+				add_monster(solution, monster[i], x, y);	//Then we place a monster
 		}else{
+			delete_game(solution);
 			continue;
 		}
 
@@ -85,11 +94,11 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			is_solution(solution, res, nb_sol);
 			return solution;
 		}else{
+			//delete_game(solution);
 			continue;
 		}
 
 	}
-
 	return NULL;
 }
 
@@ -135,6 +144,8 @@ int main(int argc,char* argv[]){
 	} else{
 		printf("There's %d solutions! \n",nb_solution);
 		saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
+		printf("SALUT LES REYS !\n\n");
+		display(res[0]);
 	}
 
 
