@@ -42,6 +42,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 #include "../header/game.h"
 
 
+
 #define clear() printf("\033[H\033[y")
 
 //Creation of a new map containing the new monster
@@ -272,7 +273,7 @@ int main(int argc, char *argv[]){
 	display(g);
 
 	while(is_game_over(g) != true){
-		save_game(g, save_name);	//Autosaving game board
+		//save_game(g, save_name);	//Autosaving game board
 		//User Entry
 		if(is_game_over(g)){
 			break;	//Safety like

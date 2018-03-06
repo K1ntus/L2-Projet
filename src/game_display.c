@@ -54,10 +54,10 @@ void display_required_nb_seen_north(game g){
 
 void display_cellsContent_and_sideValues(game g){
 	int tick_content;
-	for(int x = game_height(g)-1; x >= 0; x--){
+	for(int x = game_width(g)-1; x >= 0; x--){
 		//Left & right side of the board
 		printf("|   %d  ", required_nb_seen(g, W, x));
-		for(int y = 0; y < game_width(g) ; y++){
+		for(int y = 0; y < game_height(g) ; y++){
 			tick_content = get_content(g,x,y);
 
 			//Graphic show of cells content

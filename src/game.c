@@ -138,9 +138,10 @@ void add_mirror_ext(game game, content mirror_type, int col, int line){
 		assert(game);
 
 		if (col < 0 || col >= game->width){		//If x isnt a valid position
-			fprintf(stderr, "Wrong x parameter on get_content call\n");
+			printf("width = %d & x=:%d\n",game->width,col);
+			fprintf(stderr, "Wrong x parameter on add_mirror_ext call\n");
 		} else if (line < 0 || line >= game->height){	//If y isnt a valid position
-			fprintf(stderr, "Wrong y parameter on get_content call\n");
+			fprintf(stderr, "Wrong y parameter on add_mirror_ext call\n");
 		}
 
 		if (mirror_type != MIRROR && mirror_type != ANTIMIRROR && mirror_type != VMIRROR && mirror_type != HMIRROR){
@@ -283,6 +284,7 @@ int required_nb_seen(cgame game, direction side, int pos){
 
 content get_content(cgame game, int col, int line){
 	if (col < 0 || col >= game->width){		//	If col is invalid
+		printf("2width = %d & x=:%d\n",game->width,col);
 		fprintf(stderr, "Wrong x parameter on get_content call\n");
 	} else if (line < 0 || line >= game->height){	//	If line is invalid
 		fprintf(stderr, "Wrong y parameter on get_content call\n");

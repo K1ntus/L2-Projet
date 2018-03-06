@@ -25,41 +25,84 @@ void save_empty_line(FILE* file){
 
 
 void apply_monsterAndMirror_cell_content(game g, char ** monsterArray){
-	for(int x = 0; x < game_width(g); x++){
-		for(int y = 0; y <game_height(g); y++){
-			switch(monsterArray[game_height(g)-y-1][x]){
+for(int x = 0; x <game_width(g); x++){
+	printf("1width = %d & x=:%d\n",game_width(g),x);
+	for(int y = 0; y < game_height(g) ; y++){
+		printf("***** y=%d\n",y);
+		int posY=game_height(g)-(y+1);
+		int posX = game_width(g)-(x+1);
+			switch(monsterArray[game_height(g)-(y+1)][x]){
 				case '\\':
-					add_mirror_ext(g,ANTIMIRROR,y,x);
+					add_mirror_ext(g,ANTIMIRROR,posX,posY);
 					break;
 				case '/':
-					add_mirror_ext(g,MIRROR,y,x);
+					add_mirror_ext(g,MIRROR,posX,posY);
 					break;
 				case '-':
-					add_mirror_ext(g,HMIRROR,y,x);
+					add_mirror_ext(g,HMIRROR,posX,posY);
 					break;
 				case '|':
-					add_mirror_ext(g,VMIRROR,y,x);
+					add_mirror_ext(g,VMIRROR,posX,posY);
 					break;
 
 				case 'Z':
-					add_monster(g,ZOMBIE,y,x);
+					add_monster(g,ZOMBIE,posX,posY);
 					break;
 				case 'G':
-					add_monster(g,GHOST,y,x);
+					add_monster(g,GHOST,posX,posY);
 					break;
 				case 'V':
-					add_monster(g,VAMPIRE,y,x);
+					add_monster(g,VAMPIRE,posX,posY);
 					break;
 				case 'S':
-					add_monster(g,SPIRIT,y,x);
+					add_monster(g,SPIRIT,posX,posY);
 					break;
 
 				default:
 					break;
 			}
 		}
+		printf("\n");
 	}
 }
+
+
+content convert_char_to_content_io(char c){
+	switch(c){
+		case '\\':
+			return ANTIMIRROR;
+			break;
+		case '/':
+			return MIRROR;
+			break;
+		case '-':
+			return HMIRROR;
+			break;
+		case '|':
+			return VMIRROR;
+			break;
+
+		case 'Z':
+			return ZOMBIE;
+			break;
+		case 'G':
+			return GHOST;
+			break;
+		case 'V':
+			return VAMPIRE;
+			break;
+		case 'S':
+			return SPIRIT;
+			break;
+
+
+		default:
+			return EMPTY;
+			break;
+	}
+	return EMPTY;
+}
+
 
 
 
@@ -133,7 +176,7 @@ char** init_matrice2(game g){
 }
 
 void free_matrice(game g, char ** matrice){
-	for(unsigned int i = game_width(g)-1; i > 0; i--){
+	for(unsigned int i = game_height(g)-1; i > 0; i--){
 		free(matrice[i]);
 	}
 
