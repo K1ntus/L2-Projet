@@ -43,31 +43,28 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	nb_iterations +=1;
 	int x = pos%game_width(g), y=pos/game_width(g);
 
-	if(nb_iterations >=50000){
-		delete_game(g);
-		return NULL;
 
-
-	}
 	//display(g);
 	if(g == NULL)
 		return NULL;
 
 	if(is_game_over(g)){
-		res[*nb_sol] = g;
-		*nb_sol +=1;
-		//is_solution(g, res, nb_sol);
-		return g;
+		if(!board_already_saved_as_solution(g,res)){
+			res[*nb_sol] = copy_game(g);
+			*nb_sol +=1;
+		}
+		return NULL;
 	}
 
 	if(pos >= game_height(g)*game_width(g)-1 && get_content(g,game_width(g)-1,game_height(g)-1) != EMPTY){
-			if(is_game_over(g)){
-				return g;
-			}else{
-				delete_game(g);
-				return NULL;
-			}
+	//display(g);
+		if(is_game_over(g)){
+			return NULL;
+		}else{
+			delete_game(g);
+			return NULL;
 		}
+	}
 
 	if(is_game_over(g)){
 		is_solution(g, res, nb_sol);
@@ -80,9 +77,10 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
 		game solution;
-		if(g != NULL)
+
+		if(g != NULL){
 			solution = copy_game(g);
-		else{
+		}else{
 			return NULL;
 		}
 
@@ -117,7 +115,7 @@ int main(int argc,char* argv[]){
 	}
 
 
-	game * res= (game*) malloc(sizeof(game) *5);	//We create an array which will contain (at maximum) 5 solution board
+	game * res= (game*) malloc(sizeof(game) *25);	//We create an array which will contain (at maximum) 5 solution board
 	result_array_init(res);	//Init. it with few things
 
 	if(argc != 4){	//If wrong number of args from launch

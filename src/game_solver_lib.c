@@ -113,34 +113,42 @@ void save_one_solution (game * resArray, char * prefix, int n){
 void save_all_solutions(game * res, char*prefix, int nbSol){
 	save_one_solution(res, prefix,0);
 
-	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")));
+	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")) *100);
 
 	for(int i = 1; i < 5; i++){
 		if(res[i] == NULL){
+			printf("Res[%d] is nulled\n",i);
 			free(suffix);
 			return;
 		}
 
 
-		char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix));
-		char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + 10));
-		char * filename_res = (char*) malloc(sizeof(char) * (strlen(prefix) + 10 + strlen(".sol") +1));
+		char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix)*100);
+		char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + 10)*5);
+		char * filename_res = (char*) malloc(sizeof(char) * (strlen(prefix) + 10 + strlen(".sol") +1) * 25);
 
 		strcpy(savePrefix,prefix);
-		strcpy(suffix,".sol");
 
-		strcat(savePrefix, suffix);
+		strcat(savePrefix, ".sol");
 
-		strcpy(filename_res, savePrefix);
+		sprintf(filename_res, "%s%d",savePrefix,i);
 
-		sprintf(filename_res, "%s%d",filename_res,i);
-		if(res[i]!= NULL)
-			save_game(res[i+1], filename_res);
+		printf("Saving...\n");
 
+		if(res[i]!= NULL){
+			save_game(res[i], filename_res);
+		}else{
+			free(suffix);
+			free(suffixRes);
+			free(savePrefix);
+			free(filename_res);
+			return;
+		}
 
 		free(suffixRes);
 		free(savePrefix);
 		free(filename_res);
+
 	}
 	free(suffix);
 }
