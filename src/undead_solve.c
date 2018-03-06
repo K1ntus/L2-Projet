@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "../header/game.h"
 #include "../header/game_io.h"
@@ -39,8 +40,21 @@ bool cell_is_mirror(game g, int x, int y){
 }
 
 game is_valid(game g, int pos, game * res, int * nb_sol){
+	nb_iterations +=1;
+	int x = pos%game_width(g), y=pos/game_width(g);
 
-	if(pos == game_width(g) * game_height(g) - 1){
+	if(pos == game_width(g) * game_height(g)){
+		//display(g);
+		for(int i = 0; i < pos;i++){
+			if(get_content(g, i%game_width(g), i/game_width(g)) == EMPTY){
+				printf("x:%d, y:%d, content:%d\n",i%game_width(g), i/game_width(g), get_content(g,i%game_width(g),i/game_width(g)));
+							display(g);
+							is_valid(g, i, res, nb_sol);
+
+
+			}
+
+		}
 		if(is_game_over(g)){
 			return g;
 		}else{
@@ -48,10 +62,8 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		}
 	}
 
-	nb_iterations +=1;
-	int x = pos%game_width(g), y=pos/game_width(g);
 
-	display(g);
+	//display(g);
 
 	if(is_solution(g, res, nb_sol)){
 		return g;
@@ -66,6 +78,8 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
 			add_monster(solution, monster[i], x, y);	//Then we place a monster
+		}else{
+			continue;
 		}
 
 		solution = is_valid(solution, pos+1, res, nb_sol);
@@ -73,6 +87,8 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		if(solution != NULL){
 			is_solution(solution, res, nb_sol);
 			return solution;
+		}else{
+			continue;
 		}
 
 	}
