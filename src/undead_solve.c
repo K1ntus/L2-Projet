@@ -41,12 +41,17 @@ bool cell_is_mirror(game g, int x, int y){
 
 game is_valid(game g, int pos, game * res, int * nb_sol){
 	nb_iterations +=1;
+
+	if(nb_iterations >= 250000)
+		return NULL;
+
+
 	int x = pos%game_width(g), y=pos/game_width(g);
 
 
-	//display(g);
 	if(g == NULL)
 		return NULL;
+
 
 	if(is_game_over(g)){
 		if(!board_already_saved_as_solution(g,res)){
@@ -71,9 +76,16 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return g;
 	}
 
+	if(x >= game_width(g) || y >= game_height(g))
+		return NULL;
+
 	if(get_content(g, x, y) != EMPTY){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
+
+	int nb_nulled = 0;
+
+
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
 		game solution;
@@ -85,7 +97,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		}
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
-				add_monster(solution, monster[i], x, y);	//Then we place a monster
+			add_monster(solution, monster[i], x, y);	//Then we place a monster
 		}else{
 			delete_game(solution);
 			continue;
@@ -97,11 +109,16 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			is_solution(solution, res, nb_sol);
 			return solution;
 		}else{
-			//delete_game(solution);
+			nb_nulled +=1;
 			continue;
 		}
 
+
+		if(nb_nulled >= 4){
+			return NULL;
+		}
 	}
+
 	return NULL;
 }
 

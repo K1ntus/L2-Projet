@@ -20,11 +20,9 @@ void copy_string(char *target, char *source) {
 }
 
 bool board_already_saved_as_solution(game g1, game * array){
-	int nb_identical_cells=0;
 
 	for(unsigned int i = 0; i < 5; i ++){
-		nb_identical_cells=0;
-
+		int nb_identical_cells=0;
 		if(array[i] == NULL){
 			return false;
 		}
@@ -34,8 +32,10 @@ bool board_already_saved_as_solution(game g1, game * array){
 
 				if(get_content(g1,x,y) == get_content(array[i],x,y)){
 					nb_identical_cells +=1;
+				}else{
+					return false;
 				}
-				if(nb_identical_cells == (game_height(g1)*game_height(g1) -1))
+				if(nb_identical_cells == (game_width(g1)*game_height(g1) -1))
 					return true;
 
 			}
