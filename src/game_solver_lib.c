@@ -33,8 +33,48 @@ bool next_pos_is_viable(game g, int pos, content mstr){
 				}
 		}
 
-	} else if(x%game_width(g)+1 == 0){
+	} else if((x+1)%game_width(g)+1 == 0){
 		if(required_nb_seen(g, E, y) - current_nb_seen(g, E, y) <= 0){
+			switch (mstr) {
+				case ZOMBIE:
+					return false;
+				case VAMPIRE:
+					return false;
+				default:
+					return true;
+			}
+		}else{
+				switch (mstr) {
+					case ZOMBIE:
+						return true;
+					case VAMPIRE:
+						return true;
+					default:
+						return false;
+				}
+		}
+	} else if(x < game_width(g)-1 && x >1){
+		if(required_nb_seen(g, S, x) - current_nb_seen(g, S, x) <= 0){
+			switch (mstr) {
+				case ZOMBIE:
+					return false;
+				case VAMPIRE:
+					return false;
+				default:
+					return true;
+			}
+		}else{
+				switch (mstr) {
+					case ZOMBIE:
+						return true;
+					case VAMPIRE:
+						return true;
+					default:
+						return false;
+				}
+		}
+	}else if(x >(game_width(g)*game_height(g)-game_width(g)) && x < game_width(g)* game_height(g)){
+		if(required_nb_seen(g, N, x) - current_nb_seen(g, N, x) <= 0){
 			switch (mstr) {
 				case ZOMBIE:
 					return false;

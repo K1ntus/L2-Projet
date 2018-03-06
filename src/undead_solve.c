@@ -14,7 +14,7 @@
 //#include "./game_solver_lib.c"
 #define NB_MONSTERS 4
 
-content monster[4] = {VAMPIRE, GHOST, ZOMBIE,SPIRIT};
+content monster[4] = {ZOMBIE, GHOST, VAMPIRE,SPIRIT};
 int nb_iterations = 0;
 
 
@@ -65,7 +65,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 
 	if(pos >= game_height(g)*game_width(g)){
 		//display(g);
-	//display(g);
 		if(is_game_over(g)){
 			return g;
 		}else{
