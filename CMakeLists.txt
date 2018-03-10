@@ -10,7 +10,18 @@ cmake_minimum_required(VERSION 2.8)
 project(undead_game_text)
 
 include(CTest)
+
+# pkg-config --list-all  | grep -i sdl2
+include(FindPkgConfig)
+pkg_search_module(SDL2 REQUIRED sdl2)
+pkg_search_module(SDL2_IMG REQUIRED SDL2_image)
+pkg_search_module(SDL2_TTF REQUIRED SDL2_ttf)
+set(SDL2_ALL_LIBS ${SDL2_LIBRARIES} ${SDL2_IMG_LIBRARIES} ${SDL2_TTF_LIBRARIES})
+set(SDL2_ALL_INC ${SDL2_INCLUDE_DIRS} ${SDL2_IMG_INCLUDE_DIRS} ${SDL2_TTF_INCLUDE_DIRS})
+
 include_directories(./header)
+
+
 
 option(BUILD_QTAPPS "Build Qt based application." OFF)
 option(BUILD_OPTIMIZED_DEBUG "Set optimization level -O1 or -Og for debug build" OFF)
@@ -50,6 +61,13 @@ add_executable(undead_solve src/undead_solve.c)
 #lien entre executable et la bibliotheque
 target_link_libraries(undead_text game)
 target_link_libraries(undead_solve game)
+
+
+
+
+include_directories(${SDL2_ALL_INC})
+add_executable(undead_sdl src/main_sdl.c src/undead_sdl.c)
+target_link_libraries(undead_sdl ${SDL2_ALL_LIBS} m)
 
 
 ###########################################################################
