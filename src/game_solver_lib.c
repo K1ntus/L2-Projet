@@ -296,7 +296,7 @@ void save_nb_sol(int nbSol, char * prefix){
 	printf("%s !\n", prefix);
 	FILE * f = fopen(prefix, "w");
 
-	fprintf(f,"NB_SOL = %d",nbSol);
+	fprintf(f,"NB_SOL = %d\n",nbSol);
 
 	fclose(f);
 }
