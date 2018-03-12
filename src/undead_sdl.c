@@ -11,6 +11,8 @@
 #include "model.h"
 
 /* **************************************************************** */
+#define WIDTH 4
+#define HEIGHT 4
 
 #define FONT "../ressources/Arial.ttf"
 #define FONTSIZE 36
@@ -139,6 +141,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   /* end required nb monster display */
 
   /* labels value */
+  for(unsigned int x = 0; x < WIDTH; x++)
   SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
   rect.x = windowWidth/4 - windowWidth /8; rect.y = windowHeight/3;
   SDL_RenderCopy(ren, env->text, NULL, &rect);

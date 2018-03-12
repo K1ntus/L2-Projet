@@ -44,8 +44,6 @@ bool cell_is_mirror(game g, int x, int y){
 game is_valid(game g, int pos, game * res, int * nb_sol){
 	nb_iterations +=1;
 
-	if(nb_iterations >= 250000)
-		return NULL;
 
 
 	int x = pos%game_width(g), y=pos/game_width(g);

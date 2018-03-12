@@ -455,14 +455,14 @@ int *current_nb_seen_init(cgame g, int pos, int *posTab, direction side){
 	int posX=0, posY=0;
 	if(side == N){
 			posX=pos;
-			posY=g->width-1;
+			posY=g->height-1;
 
 	}else if (side == S){
 			posX=pos;
 			posY=0;
 
 	}else if (side == E){
-			posX=g->height-1;
+			posX=g->width-1;
 			posY=pos;
 
 	}else if (side == W){
