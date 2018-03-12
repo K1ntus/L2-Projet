@@ -165,12 +165,10 @@ int main(int argc,char* argv[]){
 
 	if(res[0] == NULL){
 		printf("No solution has been found\n");
-	} else{
+	}
 		printf("There's %d solutions! \n",nb_solution);
 		saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
 
-		display(res[0]);
-	}
 
 
 	for(unsigned int i = 0; i < 5; i++){

@@ -257,7 +257,6 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 			return;
 		}
 
-
 		char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix)*100);
 		char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + 10)*5);
 		char * filename_res = (char*) malloc(sizeof(char) * (strlen(prefix) + 10 + strlen(".sol") +1) * 25);
