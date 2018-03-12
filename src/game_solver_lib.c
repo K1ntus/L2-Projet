@@ -229,12 +229,16 @@ solve_mode get_which_solve_mode_is_asked (char * argv){
 }
 void save_one_solution (game * resArray, char * prefix, int n){
 
+
   char * savePrefix = (char*) malloc(sizeof(char) * (strlen(prefix)+strlen(".sol") +strlen("\n")) );
 
 	copy_string(savePrefix, prefix);
 	strcat(savePrefix, ".sol");
 
-	save_game(resArray[n], savePrefix);
+	if(res[0]!= NULL)
+		save_game(resArray[n], savePrefix);
+	else
+		fprintf(f,"NO SOLUTION\n");
 
 	free(savePrefix);
 }
@@ -291,7 +295,7 @@ void save_nb_sol(int nbSol, char * prefix){
 	printf("%s !\n", prefix);
 	FILE * f = fopen(prefix, "w");
 
-	fprintf(f,"%d",nbSol);
+	fprintf(f,"NB_SOL = %d",nbSol);
 
 	fclose(f);
 }
