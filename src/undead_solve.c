@@ -137,6 +137,7 @@ int main(int argc,char* argv[]){
 
 	if(argc != 4){	//If wrong number of args from launch
 		fprintf(stderr, "Unvalid number of parameters\n");
+		free(res);
 		return EXIT_FAILURE;
 	}
 
@@ -147,6 +148,7 @@ int main(int argc,char* argv[]){
 
 	game g1 = load_game(argv[2]);	//We try to load the file from parameters
 	if(g1 == NULL){	//If doesnt load well or something bad happens
+		free(res);
 		return EXIT_FAILURE;
 	}
 

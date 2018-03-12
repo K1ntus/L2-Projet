@@ -244,9 +244,8 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 
 	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")) *100);
 
-	for(int i = 1; i < 5; i++){
+	for(int i = 1; i < 50; i++){
 		if(res[i] == NULL){
-			printf("Res[%d] is nulled\n",i);
 			free(suffix);
 			return;
 		}
