@@ -83,7 +83,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
 
-	if(nb_iterations >= 350000){
+	if(nb_iterations >= 3500000){
 		return NULL;
 	}
 
