@@ -20,7 +20,7 @@ struct game_s{
  *	Misc.
 **/
 
-void memory_test(game g){
+static void memory_test(game g){
 	if(g==NULL){
 		fprintf(stderr,"Not enough memory!\n");
 		exit(EXIT_FAILURE);
@@ -138,7 +138,6 @@ void add_mirror_ext(game game, content mirror_type, int col, int line){
 		assert(game);
 
 		if (col < 0 || col >= game->width){		//If x isnt a valid position
-			printf("width = %d & x=:%d\n",game->width,col);
 			fprintf(stderr, "Wrong x parameter on add_mirror_ext call\n");
 		} else if (line < 0 || line >= game->height){	//If y isnt a valid position
 			fprintf(stderr, "Wrong y parameter on add_mirror_ext call\n");
