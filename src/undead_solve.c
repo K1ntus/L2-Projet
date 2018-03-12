@@ -14,7 +14,7 @@
 #define NB_MONSTERS 4
 
 content monster[4] = {ZOMBIE, GHOST, VAMPIRE,SPIRIT};
-int nb_iterations = 0;
+//int nb_iterations = 0;
 
 
 bool is_solution(game g2, game*res, int*nb_sol){
@@ -60,20 +60,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return NULL;
 	}
 
-	if(pos >= game_height(g)*game_width(g)){
-		if(is_game_over(g)){
-			return g;
-		}else{
-			delete_game(g);
-			return NULL;
-		}
-	}
-
-	if(is_game_over(g)){
-		is_solution(g, res, nb_sol);
-		return g;
-	}
-
 	if(x >= game_width(g) || y >= game_height(g))
 		return NULL;
 
@@ -81,9 +67,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
 
-	//if(nb_iterations >= 1000000){
-	//	return NULL;
-	//}
 
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
@@ -95,14 +78,11 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			return NULL;
 		}
 
-		if(solution == NULL)
-			continue;
+		if(!solution)
+			return NULL;
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
 				if(next_pos_is_viable(g, pos, monster[i])){
-					if(!solution)
-						continue;
-					else
 						add_monster(solution, monster[i], x, y);	//Then we place a monster
 				}else{
 					delete_game(solution);
@@ -113,15 +93,8 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			continue;
 		}
 
-		solution = is_valid(solution, pos+1, res, nb_sol);
-
-		if(solution != NULL){
-			is_solution(solution, res, nb_sol);
-			return solution;
-		}else{
-			continue;
-		}
-
+		if(solution != NULL)
+			solution = is_valid(solution, pos+1, res, nb_sol);
 
 	}
 
@@ -131,23 +104,16 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 
 
 int main(int argc,char* argv[]){
-
-	if (argc != 4){
-		fprintf(stderr,"wrong parameters!\n");
-		exit(EXIT_FAILURE);
+	if(argc != 4){	//If wrong number of args from launch
+		fprintf(stderr, "Unvalid number of parameters\n");
+		return EXIT_FAILURE;
 	}
 
 
 	game * res= (game*) malloc(sizeof(game) *25);	//We create an array which will contain (at maximum) 5 solution board
 	result_array_init(res);	//Init. it with few things
 
-	if(argc != 4){	//If wrong number of args from launch
-		fprintf(stderr, "Unvalid number of parameters\n");
-		free(res);
-		return EXIT_FAILURE;
-	}
 
-	printf("params: %s; %s; %s; %s\n",argv[0], argv[1],argv[2],argv[3]);	//Just informative
 	solve_mode solving_result = get_which_solve_mode_is_asked(argv[1]);	//Get the solving mode wanted (ie. NB_SOL, FIND_ONE, *_ALL,)
 
 
@@ -157,21 +123,17 @@ int main(int argc,char* argv[]){
 		return EXIT_FAILURE;
 	}
 
-	printf("zombie:%d, ghost:%d, vampire:%d, spirit:%d\n",required_nb_monsters(g1,ZOMBIE),required_nb_monsters(g1,GHOST),required_nb_monsters(g1,VAMPIRE),required_nb_monsters(g1,SPIRIT));
 	int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
 
 	is_valid(g1, 0, res, &nb_solution);
 
 	delete_game(g1);	//We dont need anymore the game_board
 
-	printf("INFO: Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
+	//printf("INFO: Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
 
-	if(res[0] == NULL){
-		printf("No solution has been found\n");
-	}
 
 	display(res[0]);
-	printf("There's %d solutions! \n",nb_solution);
+	//printf("There's %d solutions! \n",nb_solution);
 	saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
 
 

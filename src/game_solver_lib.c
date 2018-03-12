@@ -266,7 +266,7 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 
 		sprintf(filename_res, "%s%d",savePrefix,i+1);
 
-		printf("Saving...\n");
+		//printf("Saving...\n");
 
 		if(res[i]!= NULL){
 			save_game(res[i], filename_res);
@@ -288,7 +288,7 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 
 
 void save_nb_sol(int nbSol, char * prefix){
-	printf("Saving the number of solutions !\n");
+	//printf("Saving the number of solutions !\n");
 
 	char suffix[]=".nbsol";
 

@@ -39,7 +39,7 @@ void memory_test(game g){
  * @param height number of lines of the board
  * @return the created game
  **/
- void init_matrice(game g, int width, int height){
+ static void init_matrice(game g, int width, int height){
  	g->matrice	= (int **)malloc(sizeof(int *) * width);
  	g->matrice[0] = (int *)malloc(sizeof(int) * height * width);
  	for(int i = 0; i < width; i++)
@@ -265,6 +265,8 @@ int required_nb_seen(cgame game, direction side, int pos){
 				return EXIT_FAILURE;
 		}
 	}
+
+
 	switch (side){
 		case N:
 			return game->valuesNorth[pos];
@@ -365,7 +367,7 @@ bool add_monster(game game, content monster, int col, int line){
 
 
 
-direction direction_after_antimirror(direction side) {
+static direction direction_after_antimirror(direction side) {
 	switch(side){
 		case N:
 			return W;
@@ -381,7 +383,7 @@ direction direction_after_antimirror(direction side) {
 	}
 }
 
-direction direction_after_mirror(direction side) {
+static direction direction_after_mirror(direction side) {
 	switch(side){
 		case N:
 			return E;
@@ -397,7 +399,7 @@ direction direction_after_mirror(direction side) {
 	}
 }
 
-direction direction_after_vmirror(direction side) {
+static direction direction_after_vmirror(direction side) {
 	switch(side){
 		case N:
 			return N;
@@ -413,7 +415,7 @@ direction direction_after_vmirror(direction side) {
 	}
 }
 
-direction direction_after_hmirror(direction side) {
+static direction direction_after_hmirror(direction side) {
 	switch(side){
 		case N:
 			return S;
@@ -431,7 +433,7 @@ direction direction_after_hmirror(direction side) {
 
 
 
-int *next_pos(int * pos, direction side){
+static int *next_pos(int * pos, direction side){
 	switch(side){
 		case N:
 			pos[1]--;
@@ -451,7 +453,7 @@ int *next_pos(int * pos, direction side){
 	}
 }
 
-int *current_nb_seen_init(cgame g, int pos, int *posTab, direction side){
+static int *current_nb_seen_init(cgame g, int pos, int *posTab, direction side){
 	int posX=0, posY=0;
 	if(side == N){
 			posX=pos;
@@ -572,24 +574,24 @@ bool is_game_over (cgame g){
 
 
 	//check numbers of monsters seen
-		for(int pos = 0; pos < g->width; pos++){
-			if(current_nb_seen(g, S, pos) != required_nb_seen(g,S,pos)){
-				return false;
-			}
-				if(current_nb_seen(g, N, pos) != required_nb_seen(g,N,pos)){
-					return false;
-				}
+	for(int pos = 0; pos < g->width; pos++){
+		if(current_nb_seen(g, S, pos) != required_nb_seen(g,S,pos)){
+			return false;
 		}
+		if(current_nb_seen(g, N, pos) != required_nb_seen(g,N,pos)){
+			return false;
+		}
+	}
 
 
-			for(int pos = 0; pos < g->height; pos++){
-				if(current_nb_seen(g, E, pos) != required_nb_seen(g,E,pos)){
-					return false;
-				}
-					if(current_nb_seen(g, W, pos) != required_nb_seen(g,W,pos)){
-						return false;
-					}
-			}
+	for(int pos = 0; pos < g->height; pos++){
+		if(current_nb_seen(g, E, pos) != required_nb_seen(g,E,pos)){
+			return false;
+		}
+		if(current_nb_seen(g, W, pos) != required_nb_seen(g,W,pos)){
+			return false;
+		}
+	}
 	return true;
 }
 
