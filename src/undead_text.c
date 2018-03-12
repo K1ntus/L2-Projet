@@ -93,20 +93,20 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 		if(mstr == 'E' || mstr == 'e'){//If the user have enter 'E' (or 'e') for Empty
 			int mstr = get_content(g, x, y);
 			if(mstr == VAMPIRE){
-				nbMonsters[0]++;
-				set_required_nb_monsters (g, VAMPIRE,	nbMonsters[0]);
+				nbMonsters[0]+=1;
+				//set_required_nb_monsters (g, VAMPIRE,	nbMonsters[0]);
 			}
 			if(mstr == ZOMBIE){
-				nbMonsters[2]++;
-				set_required_nb_monsters (g, ZOMBIE,	nbMonsters[2]);
+				nbMonsters[2]+=1;
+				//set_required_nb_monsters (g, ZOMBIE,	nbMonsters[2]);
 			}
 			if(mstr == GHOST){
-				nbMonsters[1]++;
-				set_required_nb_monsters (g, GHOST,	nbMonsters[1]);
+				nbMonsters[1]+=1;
+				//set_required_nb_monsters (g, GHOST,	nbMonsters[1]);
 			}
 			if(mstr == SPIRIT){
-				nbMonsters[3]++;
-				set_required_nb_monsters (g, SPIRIT,	nbMonsters[3]);
+				nbMonsters[3]+=1;
+				//set_required_nb_monsters (g, SPIRIT,	nbMonsters[3]);
 			}
 			add_monster(g, EMPTY, x, y);
 			printf("\n");
@@ -115,38 +115,38 @@ void entry(game g, int x, int y, char mstr, int * nbMonsters){
 		//Event if we want to place a monster
 		if(get_content (g, x, y) == EMPTY){
 			if(mstr == 'V' || mstr == 'v'){	 //If the user wrote 'V' (or 'v') for a vampire
-				if(nbMonsters[0] == 0){				//If there's not enought Vampire to place
+				if(nbMonsters[0] <= 0){				//If there's not enought Vampire to place
 				printf("Vous avez dÃ©jÃ	 placÃ© tous les Vampires\n");
 			}else{
-				nbMonsters[0]--;
+				nbMonsters[0]-=1;
 				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
 
 		if(mstr == 'G' || mstr == 'g'){//If the user wrote 'G' (or 'g') for a ghost
-			if(nbMonsters[1] == 0){
+			if(nbMonsters[1] <=0){
 				printf("\nVous avez dÃ©jÃ	placÃ© tous les FantÃ´mes\n");
 			}else{
-				nbMonsters[1]--;
+				nbMonsters[1]-=1;
 				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
 		if(mstr == 'Z' || mstr == 'z'){//If the user wrote 'Z' (or 'z') for a zombie
-			if(nbMonsters[2] == 0){
+			if(nbMonsters[2] <= 0){
 				printf("Vous avez dÃ©jÃ	placÃ© tous les Zombies\n");
 			}else{
-				nbMonsters[2]--;
+				nbMonsters[2]-=1;
 				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}
 		}
 		if(mstr == 'S' || mstr == 's'){//If the user wrote 'G' (or 'g') for a ghost
-			if(nbMonsters[3] == 0){//If there s not enought spirit to place
+			if(nbMonsters[3] <= 0){//If there s not enought spirit to place
 				printf("Vous avez dÃ©jÃ	placÃ© tous les Spirits\n");
 			}else{
-				nbMonsters[3]--;
+				nbMonsters[3]-=1;
 				add_monster(g, convert_char_to_content(mstr), x, y);
 				printf("\n");
 			}

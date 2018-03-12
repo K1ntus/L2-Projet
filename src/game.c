@@ -572,13 +572,24 @@ bool is_game_over (cgame g){
 
 
 	//check numbers of monsters seen
-	for(int dir = 0; dir < NB_DIR; dir++){
 		for(int pos = 0; pos < g->width; pos++){
-			if(current_nb_seen(g, dir, pos) != required_nb_seen(g,dir,pos)){
+			if(current_nb_seen(g, S, pos) != required_nb_seen(g,S,pos)){
 				return false;
 			}
+				if(current_nb_seen(g, N, pos) != required_nb_seen(g,N,pos)){
+					return false;
+				}
 		}
-	}
+
+
+			for(int pos = 0; pos < g->height; pos++){
+				if(current_nb_seen(g, E, pos) != required_nb_seen(g,E,pos)){
+					return false;
+				}
+					if(current_nb_seen(g, W, pos) != required_nb_seen(g,W,pos)){
+						return false;
+					}
+			}
 	return true;
 }
 
