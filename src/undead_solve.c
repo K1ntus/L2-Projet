@@ -83,7 +83,9 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
 
-
+	if(nb_iterations >= 350000){
+		return NULL;
+	}
 
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
