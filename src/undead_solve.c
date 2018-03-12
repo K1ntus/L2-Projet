@@ -43,8 +43,8 @@ bool cell_is_mirror(game g, int x, int y){
 game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	//nb_iterations +=1;
 
-	if(solve_type == FIND_ONE && is_game_over(g))
-		return g;
+	if(solve_type == FIND_ONE && *nb_sol>=1)
+		return NULL;
 
 	int x = pos%game_width(g), y=pos/game_width(g);
 
