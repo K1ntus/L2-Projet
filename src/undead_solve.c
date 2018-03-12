@@ -11,7 +11,6 @@
 
 #include "game_solver_lib.c"
 
-//#include "./game_solver_lib.c"
 #define NB_MONSTERS 4
 
 content monster[4] = {ZOMBIE, GHOST, VAMPIRE,SPIRIT};
@@ -62,7 +61,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 	}
 
 	if(pos >= game_height(g)*game_width(g)){
-		//display(g);
 		if(is_game_over(g)){
 			return g;
 		}else{
@@ -83,7 +81,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
 
-	if(nb_iterations >= 3500000){
+	if(nb_iterations >= 3000000){
 		return NULL;
 	}
 
@@ -97,9 +95,15 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 			return NULL;
 		}
 
+		if(solution == NULL)
+			continue;
+
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
 				if(next_pos_is_viable(g, pos, monster[i])){
-					add_monster(solution, monster[i], x, y);	//Then we place a monster
+					if(!solution)
+						continue;
+					else
+						add_monster(solution, monster[i], x, y);	//Then we place a monster
 				}else{
 					delete_game(solution);
 					continue;
@@ -145,7 +149,6 @@ int main(int argc,char* argv[]){
 
 	printf("params: %s; %s; %s; %s\n",argv[0], argv[1],argv[2],argv[3]);	//Just informative
 	solve_mode solving_result = get_which_solve_mode_is_asked(argv[1]);	//Get the solving mode wanted (ie. NB_SOL, FIND_ONE, *_ALL,)
-
 
 
 	game g1 = load_game(argv[2]);	//We try to load the file from parameters

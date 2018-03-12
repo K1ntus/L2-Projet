@@ -150,7 +150,7 @@ void copy_string(char *target, char *source) {
 
 bool board_already_saved_as_solution(game g1, game * array){
 
-	for(unsigned int i = 0; i < 5; i ++){
+	for(unsigned int i = 0; i < 50; i ++){
 		int nb_identical_cells=0;
 		if(array[i] == NULL){
 			return false;
@@ -197,7 +197,7 @@ bool potential_invalid_game(game g){
 
 
 void append_game_array(game g, game * res){
-	for(unsigned int i = 0; i < 5; i++){
+	for(unsigned int i = 0; i < 25; i++){
 		if(res[i] == NULL){
 			res[i] = copy_game(g);
 			break;
@@ -207,7 +207,7 @@ void append_game_array(game g, game * res){
 
 
 void result_array_init(game * res){
-	for(unsigned int i = 0; i < 5; i++)	//5 parce qu'après c chiant pour les files
+	for(unsigned int i = 0; i < 25; i++)	//5 parce qu'après c chiant pour les files
 		res[i] = NULL;
 }
 
@@ -313,7 +313,6 @@ void saving_data_from_the_solver (solve_mode s, int nbSol, game * res, char * pr
 			break;
 		case FIND_ALL:
 			save_all_solutions(res, prefix, nbSol);
-			//printf("ET OUAIS IL EST PAS FAIT ENCORE\n");
 			break;
 		default:
 			break;
