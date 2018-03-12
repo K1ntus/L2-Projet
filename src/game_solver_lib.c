@@ -7,7 +7,7 @@
 #include "../header/game_io.h"
 #include "../header/game_fun.h"
 
-//typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode;
+//typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode; //ON game_fun.h
 
 bool next_pos_is_viable(game g, int pos, content mstr){
 	int x = pos%game_width(g), y=pos/game_width(g);
@@ -227,9 +227,9 @@ solve_mode get_which_solve_mode_is_asked (char * argv){
 	return FIND_ONE;
 
 }
+
+
 void save_one_solution (game * resArray, char * prefix, int n){
-
-
   char * savePrefix = (char*) malloc(sizeof(char) * (strlen(prefix)+strlen(".sol") +strlen("\n")) );
 
 	copy_string(savePrefix, prefix);
@@ -246,8 +246,8 @@ void save_one_solution (game * resArray, char * prefix, int n){
 	free(savePrefix);
 }
 
-void save_all_solutions(game * res, char*prefix, int nbSol){
 
+void save_all_solutions(game * res, char*prefix, int nbSol){
 	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")) *100);
 
 	for(int i = 0; i < 50; i++){

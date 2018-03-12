@@ -40,10 +40,11 @@ bool cell_is_mirror(game g, int x, int y){
 	return false;
 }
 
-game is_valid(game g, int pos, game * res, int * nb_sol){
+game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	//nb_iterations +=1;
 
-
+	if(solve_type == FIND_ONE && is_game_over(g))
+		return g;
 
 	int x = pos%game_width(g), y=pos/game_width(g);
 
@@ -67,7 +68,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return NULL;
 
 	if(get_content(g, x, y) != EMPTY){
-		return is_valid(g, pos+1, res, nb_sol);
+		return is_valid(g, pos+1, res, nb_sol, solve_type);
 	}
 
 
@@ -97,7 +98,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		}
 
 		if(solution != NULL)
-			solution = is_valid(solution, pos+1, res, nb_sol);
+			solution = is_valid(solution, pos+1, res, nb_sol, solve_type);
 
 	}
 
@@ -128,7 +129,7 @@ int main(int argc,char* argv[]){
 
 	int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
 
-	is_valid(g1, 0, res, &nb_solution);
+	is_valid(g1, 0, res, &nb_solution, solving_result);
 
 	delete_game(g1);	//We dont need anymore the game_board
 
