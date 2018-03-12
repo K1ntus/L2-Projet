@@ -60,6 +60,9 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return NULL;
 	}
 
+	if(potential_invalid_game(g))
+		return NULL;
+
 	if(x >= game_width(g) || y >= game_height(g))
 		return NULL;
 

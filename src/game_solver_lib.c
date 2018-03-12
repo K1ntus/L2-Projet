@@ -179,20 +179,20 @@ bool board_already_saved_as_solution(game g1, game * array){
 bool potential_invalid_game(game g){
 	for(int x = 0; x < game_width(g);x++){
 		if(required_nb_seen(g, N, x) - current_nb_seen(g,N,x) < 0)
-			return false;
+			return true;
 		if(required_nb_seen(g,S,x) - current_nb_seen(g,S,x) < 0)
-			return false;
+			return true;
 	}
 
 
 	for(int x = 0; x < game_height(g);x++){
 		if(required_nb_seen(g, E, x) - current_nb_seen(g, E,x) < 0)
-		return false;
+		return true;
 		if(required_nb_seen(g,W,x) - current_nb_seen(g,W,x) < 0)
-		return false;
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 
