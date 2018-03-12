@@ -41,7 +41,7 @@ bool cell_is_mirror(game g, int x, int y){
 }
 
 game is_valid(game g, int pos, game * res, int * nb_sol){
-	nb_iterations +=1;
+	//nb_iterations +=1;
 
 
 
@@ -81,9 +81,9 @@ game is_valid(game g, int pos, game * res, int * nb_sol){
 		return is_valid(g, pos+1, res, nb_sol);
 	}
 
-	if(nb_iterations >= 3000000){
-		return NULL;
-	}
+	//if(nb_iterations >= 1000000){
+	//	return NULL;
+	//}
 
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
