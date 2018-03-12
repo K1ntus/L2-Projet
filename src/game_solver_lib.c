@@ -235,10 +235,13 @@ void save_one_solution (game * resArray, char * prefix, int n){
 	copy_string(savePrefix, prefix);
 	strcat(savePrefix, ".sol");
 
-	if(res[0]!= NULL)
+	if(resArray[0]!= NULL)
 		save_game(resArray[n], savePrefix);
-	else
+	else{
+		FILE * f = fopen(prefix, "w");
 		fprintf(f,"NO SOLUTION\n");
+		fclose(f);
+	}
 
 	free(savePrefix);
 }
