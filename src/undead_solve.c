@@ -14,7 +14,7 @@
 #define NB_MONSTERS 4
 
 content monster[4] = {ZOMBIE, GHOST, VAMPIRE,SPIRIT};
-//int nb_iterations = 0;
+int nb_iterations = 0;
 
 
 bool is_solution(game g2, game*res, int*nb_sol){
@@ -41,7 +41,7 @@ bool cell_is_mirror(game g, int x, int y){
 }
 
 game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
-	//nb_iterations +=1;
+	nb_iterations +=1;
 
 	if(solve_type == FIND_ONE && *nb_sol>=1)
 		return NULL;
@@ -133,7 +133,7 @@ int main(int argc,char* argv[]){
 
 	delete_game(g1);	//We dont need anymore the game_board
 
-	//printf("INFO: Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
+	printf("INFO: Prog. stopped after %d iterations!\n",nb_iterations);	//Debug purpose
 
 
 	//display(res[0]);

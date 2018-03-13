@@ -61,6 +61,11 @@ game load_game(char* filename){
 	}
 
 	unsigned int height = widthAndHeight[1], width = widthAndHeight[0];
+	if(width <= 0 ||height <= 0){
+		fclose(file);
+		return NULL;
+	}
+
 
 	game g = new_game_ext(width,height);	//We create the new game dude
 

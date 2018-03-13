@@ -1,22 +1,29 @@
-Répartition :
-
-Jordan : undead_solve -> fonction qui reset la grille si la solution est pas trouvée (=> restart_game) + aide pour le game_io.c
-Amir : undead_solve -> verifier si les coups sont valides (cad si le solveur a le droit de placer les monstres etc...) + fonction qui vérifie s'il existe une solution
-Athman : load_game + sous fonctions solver (voir ce qu'on rajoute au fur et à mesure)
-Sarah : save_game + sous fonctions solver + fonction qui retourne la liste des pos de chaque cotés parcourant au moins une cell
-
-	-> ptete une func qui calcule et retourne le path parcouru par chaque pos de chaque side
-	-> ajouter commande pour save en jeu (exemple: save nom_du_fichier)
-	-> redécomposer le projet avec une lib supplémentaire contenant les fcts display, etc d'undead_text.c dans un nouveau header
-	-> Commande d'undead_text.c pour le chargement/génération des soluces
-	-> (later) fct. pour la génération aléatoire du board
-
-
-
-
 	FOR NOW:
--> corriger fuite mémoire game_io.c
--> corriger bug function load de game_io.c
 -> fuite mémoire solver !
--> corriger nom du fichier save du solver
 -> optimiser le solver
+-> Rajouter des tests
+
+
+
+
+
+
+	FOR LATER:
+-> S'occuper de SDL2:
+	* Board du jeu (taille dynamique)
+		+ Cellules
+		+ Labels
+		+ Monstres en haut et leurs valeurs
+		+ Bouton pour solve, etc ?
+-> cas d'erreur, taille du board (width/height) et pas assez de value pour chaque side ou inversement, etc
+
+	THEN:
+	* Sélection du mob
+	* Placement/Supression du mob
+	* Display si 'is_game_over'
+	* Menu ? (ie. options (fullscreen, son, ... ?), générer new bord, générer la solution, etc) => VRAIMENT LATER J'PENSE
+-> Commenter le code solver/solver_lib
+-> Rajouter des commentaires sur game/_io.c
+-> Passer certaines functions en static dans les libs
+-> Finir la doc des sous-libs
+-> fct. pour la génération aléatoire du board
