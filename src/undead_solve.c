@@ -72,7 +72,6 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	}
 
 
-
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
 		game solution;
 

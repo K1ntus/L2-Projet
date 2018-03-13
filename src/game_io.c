@@ -120,7 +120,7 @@ game load_game(char* filename){
 
 
 	content monsterToPlace = EMPTY;
-	char * monsterToPlaceString = (char*) malloc(sizeof(char)*game_width(g)*200);
+	char * monsterToPlaceString = (char*) malloc(sizeof(char)*game_width(g)*2);
 
 
 
@@ -128,7 +128,7 @@ game load_game(char* filename){
 	if(game_height(g) != game_width(g))
 		width = width +1;
 
-	for(int y = 0; y < width; y++){
+	for(int y = 0; y < height; y++){
 		//int posY = game_height(g)-y-1;
 		int posY = game_height(g)-y-1;
 		if(!fgets(charBuffer, 35, file)){
