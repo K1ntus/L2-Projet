@@ -61,10 +61,6 @@ game load_game(char* filename){
 	}
 
 	unsigned int height = widthAndHeight[1], width = widthAndHeight[0];
-	if(width <= 0 ||height <= 0){
-		fclose(file);
-		return NULL;
-	}
 
 
 	game g = new_game_ext(width,height);	//We create the new game dude
@@ -123,17 +119,12 @@ game load_game(char* filename){
 	char * monsterToPlaceString = (char*) malloc(sizeof(char)*game_width(g)*2);
 
 
-
-	//Monster cells
-	if(game_height(g) != game_width(g))
-		width = width +1;
-
-	for(int y = 0; y < height; y++){
+	for(int y = height-1; y >= 0; y--){
 		//int posY = game_height(g)-y-1;
-		int posY = game_height(g)-y-1;
+		int posY = y;
 		if(!fgets(charBuffer, 35, file)){
 			fclose(file);
-			//free_matrice(g, monsterAndMirrorArray);
+			free(monsterToPlaceString);
 			return NULL;
 		} else {
 			string_filtering_to_char(charBuffer, monsterToPlaceString, file);
