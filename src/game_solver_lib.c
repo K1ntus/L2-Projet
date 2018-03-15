@@ -278,8 +278,8 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 		free(suffixRes);
 		free(savePrefix);
 		free(filename_res);
-
 	}
+	
 	free(suffix);
 }
 

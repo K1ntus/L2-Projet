@@ -33,27 +33,37 @@
 /* **************************************************************** */
 
 /* PUT YOUR VARIABLES HERE */
-struct Env_t {
-  SDL_Texture * background;
+typedef struct required_nb_seen{
+  SDL_Texture * west;
+  SDL_Texture * east;
+  SDL_Texture * south;
+  SDL_Texture * north;
+} * s_required_nb_seen;
 
+typedef struct monster_type{
+  SDL_Texture * zombie;
+  SDL_Texture * ghost;
+  SDL_Texture * spirit;
+  SDL_Texture * vampire;
   SDL_Texture * empty;
+} * s_monster_type;
 
+typedef struct mirror_type{
   SDL_Texture * mirror;
   SDL_Texture * antimirror;
   SDL_Texture * vmirror;
   SDL_Texture * hmirror;
+} * s_mirror_type;
 
-  SDL_Texture * zombie;
-  SDL_Texture * spirit;
-  SDL_Texture * ghost;
-  SDL_Texture * vampire;
+struct Env_t {
+  SDL_Texture * background;
+
+  s_mirror_type mirror_type;
+  s_monster_type monster_type;
+
+  s_required_nb_seen required_nb_seen;
 
   SDL_Texture * text;
-
-  SDL_Texture * required_nb_seen_north;
-  SDL_Texture * required_nb_seen_south;
-  SDL_Texture * required_nb_seen_east;
-  SDL_Texture * required_nb_seen_west;
 
   //int bomb_x, bomb_y;
   //int mario_x, mario_y;
@@ -63,46 +73,49 @@ struct Env_t {
 
 Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   Env * env = malloc(sizeof(struct Env_t));
+  env-> required_nb_seen = malloc(sizeof(struct required_nb_seen));
+  env-> mirror_type = malloc(sizeof(struct mirror_type));
+  env-> monster_type = malloc(sizeof(struct monster_type));
 
   /* init background texture from PNG image */
   env->background = IMG_LoadTexture(ren, BACKGROUND);
   if(!env->background) ERROR("IMG_LoadTexture: %s\n", BACKGROUND);
 
   /* init empty cell texture from PNG image */
-  env->empty = IMG_LoadTexture(ren, EMPTY);
-  if(!env->empty) ERROR("IMG_LoadTexture: %s\n", EMPTY);
+  env->monster_type->empty = IMG_LoadTexture(ren, EMPTY);
+  if(!env->monster_type->empty) ERROR("IMG_LoadTexture: %s\n", EMPTY);
 
   /* init mirrors texture from PNG image */
-  env->mirror = IMG_LoadTexture(ren, MIRROR);
-  if(!env->mirror) ERROR("IMG_LoadTexture: %s\n", MIRROR);
+  env->mirror_type->mirror = IMG_LoadTexture(ren, MIRROR);
+  if(!env->mirror_type->mirror) ERROR("IMG_LoadTexture: %s\n", MIRROR);
 
   /* init antimirrors texture from PNG image */
-  env->antimirror = IMG_LoadTexture(ren, ANTIMIRROR);
-  if(!env->antimirror) ERROR("IMG_LoadTexture: %s\n", ANTIMIRROR);
+  env->mirror_type->antimirror = IMG_LoadTexture(ren, ANTIMIRROR);
+  if(!env->mirror_type->antimirror) ERROR("IMG_LoadTexture: %s\n", ANTIMIRROR);
 
   /* init vmirrors texture from PNG image */
-  env->vmirror = IMG_LoadTexture(ren, VMIRROR);
-  if(!env->vmirror) ERROR("IMG_LoadTexture: %s\n", VMIRROR);
+  env->mirror_type->vmirror = IMG_LoadTexture(ren, VMIRROR);
+  if(!env->mirror_type->vmirror) ERROR("IMG_LoadTexture: %s\n", VMIRROR);
 
   /* init hmirrors texture from PNG image */
-  env->hmirror = IMG_LoadTexture(ren, HMIRROR);
-  if(!env->hmirror) ERROR("IMG_LoadTexture: %s\n", HMIRROR);
+  env->mirror_type->hmirror = IMG_LoadTexture(ren, HMIRROR);
+  if(!env->mirror_type->hmirror) ERROR("IMG_LoadTexture: %s\n", HMIRROR);
 
   /* init zombie texture from PNG image */
-  env->zombie = IMG_LoadTexture(ren, ZOMBIE);
-  if(!env->zombie) ERROR("IMG_LoadTexture: %s\n", ZOMBIE);
+  env->monster_type->zombie = IMG_LoadTexture(ren, ZOMBIE);
+  if(!env->monster_type->zombie) ERROR("IMG_LoadTexture: %s\n", ZOMBIE);
 
   /* init spirit texture from PNG image */
-  env->spirit = IMG_LoadTexture(ren, SPIRIT);
-  if(!env->spirit) ERROR("IMG_LoadTexture: %s\n", SPIRIT);
+  env->monster_type->spirit = IMG_LoadTexture(ren, SPIRIT);
+  if(!env->monster_type->spirit) ERROR("IMG_LoadTexture: %s\n", SPIRIT);
 
   /* init ghost texture from PNG image */
-  env->ghost = IMG_LoadTexture(ren, GHOST);
-  if(!env->ghost) ERROR("IMG_LoadTexture: %s\n", GHOST);
+  env->monster_type->ghost = IMG_LoadTexture(ren, GHOST);
+  if(!env->monster_type->ghost) ERROR("IMG_LoadTexture: %s\n", GHOST);
 
   /* init vampire texture from PNG image */
-  env->vampire = IMG_LoadTexture(ren, VAMPIRE);
-  if(!env->vampire) ERROR("IMG_LoadTexture: %s\n", VAMPIRE);
+  env->monster_type->vampire = IMG_LoadTexture(ren, VAMPIRE);
+  if(!env->monster_type->vampire) ERROR("IMG_LoadTexture: %s\n", VAMPIRE);
 
 
   /* init text texture using Arial font */
@@ -113,7 +126,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
   TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
   SDL_Surface * surf = TTF_RenderText_Blended(font, "0", color); // blended rendering for ultra nice text
-  env->required_nb_seen_west = SDL_CreateTextureFromSurface(ren, surf);
+  env->required_nb_seen->west = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
   TTF_CloseFont(font);
 
@@ -134,27 +147,27 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
   /* required nb monster display */
-  SDL_QueryTexture(env->zombie, NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->monster_type->zombie, NULL, NULL, &rect.w, &rect.h);
   rect.x = rect.w/4 + 0; rect.y = rect.h/5;
-  SDL_RenderCopy(ren, env->zombie, NULL, &rect);
+  SDL_RenderCopy(ren, env->monster_type->zombie, NULL, &rect);
 
-  SDL_QueryTexture(env->ghost, NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->monster_type->ghost, NULL, NULL, &rect.w, &rect.h);
   rect.x = rect.w/4 + windowWidth/4; rect.y = rect.h/5;
-  SDL_RenderCopy(ren, env->ghost, NULL, &rect);
+  SDL_RenderCopy(ren, env->monster_type->ghost, NULL, &rect);
 
-  SDL_QueryTexture(env->vampire, NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->monster_type->vampire, NULL, NULL, &rect.w, &rect.h);
   rect.x = rect.w/4 + windowWidth/3 + windowWidth/6; rect.y = rect.h/5;
-  SDL_RenderCopy(ren, env->vampire, NULL, &rect);
+  SDL_RenderCopy(ren, env->monster_type->vampire, NULL, &rect);
 
-  SDL_QueryTexture(env->spirit, NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->monster_type->spirit, NULL, NULL, &rect.w, &rect.h);
   rect.x = rect.w/4 + windowWidth/2 + windowWidth/4; rect.y = rect.h/5;
-  SDL_RenderCopy(ren, env->spirit, NULL, &rect);
+  SDL_RenderCopy(ren, env->monster_type->spirit, NULL, &rect);
   /* end required nb monster display */
 
   /* labels value */
-  SDL_QueryTexture(env->required_nb_seen_west, NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->required_nb_seen->west, NULL, NULL, &rect.w, &rect.h);
   rect.x = windowWidth/4 - windowWidth /8; rect.y = windowHeight/3;
-  SDL_RenderCopy(ren, env->required_nb_seen_west, NULL, &rect);
+  SDL_RenderCopy(ren, env->required_nb_seen->west, NULL, &rect);
 
 
 
@@ -183,17 +196,19 @@ bool process(SDL_Window* window, SDL_Renderer* ren, Env * env, SDL_Event * e){
 /* **************************************************************** */
 
 void clean(SDL_Window* win, SDL_Renderer* ren, Env * env){
-  SDL_DestroyTexture(env->mirror);
-  SDL_DestroyTexture(env->antimirror);
-  SDL_DestroyTexture(env->hmirror);
-  SDL_DestroyTexture(env->vmirror);
+  SDL_DestroyTexture(env->mirror_type->mirror);
+  SDL_DestroyTexture(env->mirror_type->antimirror);
+  SDL_DestroyTexture(env->mirror_type->hmirror);
+  SDL_DestroyTexture(env->mirror_type->vmirror);
 
-  SDL_DestroyTexture(env->empty);
+  SDL_DestroyTexture(env->monster_type->empty);
 
-  SDL_DestroyTexture(env->zombie);
-  SDL_DestroyTexture(env->spirit);
-  SDL_DestroyTexture(env->ghost);
-  SDL_DestroyTexture(env->vampire);
+  SDL_DestroyTexture(env->monster_type->zombie);
+  SDL_DestroyTexture(env->monster_type->spirit);
+  SDL_DestroyTexture(env->monster_type->ghost);
+  SDL_DestroyTexture(env->monster_type->vampire);
+
+  SDL_DestroyTexture(env->required_nb_seen->west);
 
   SDL_DestroyTexture(env->background);
   SDL_DestroyTexture(env->text);
