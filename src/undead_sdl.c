@@ -50,10 +50,10 @@ struct Env_t {
 
   SDL_Texture * text;
 
-  SLD_Texture ** required_nb_seen_north;
-  SLD_Texture ** required_nb_seen_south;
-  SLD_Texture ** required_nb_seen_east;
-  SLD_Texture ** required_nb_seen_west;
+  SDL_Texture * required_nb_seen_north;
+  SDL_Texture * required_nb_seen_south;
+  SDL_Texture * required_nb_seen_east;
+  SDL_Texture * required_nb_seen_west;
 
   //int bomb_x, bomb_y;
   //int mario_x, mario_y;
@@ -113,7 +113,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
   TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
   SDL_Surface * surf = TTF_RenderText_Blended(font, "0", color); // blended rendering for ultra nice text
-  env->required_nb_seen_west[0] = SDL_CreateTextureFromSurface(ren, surf);
+  env->required_nb_seen_west = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
   TTF_CloseFont(font);
 
@@ -152,9 +152,9 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   /* end required nb monster display */
 
   /* labels value */
-  SDL_QueryTexture(env->required_nb_seen_west[0], NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->required_nb_seen_west, NULL, NULL, &rect.w, &rect.h);
   rect.x = windowWidth/4 - windowWidth /8; rect.y = windowHeight/3;
-  SDL_RenderCopy(ren, env->required_nb_seen_west[0], NULL, &rect);
+  SDL_RenderCopy(ren, env->required_nb_seen_west, NULL, &rect);
 
 
 
