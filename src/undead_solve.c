@@ -37,10 +37,8 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 
 
 	if(is_game_over(g)){
-		if(!board_already_saved_as_solution(g,res)){
-			res[*nb_sol] = copy_game(g);
-			*nb_sol +=1;
-		}
+		res[*nb_sol] = copy_game(g);
+		*nb_sol +=1;
 		return NULL;
 	}
 
@@ -50,9 +48,9 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	if(x >= game_width(g) || y >= game_height(g))
 		return NULL;
 
-	if(get_content(g, x, y) != EMPTY){
+	if(get_content(g, x, y) != EMPTY)
 		return is_valid(g, pos+1, res, nb_sol, solve_type);
-	}
+
 
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
