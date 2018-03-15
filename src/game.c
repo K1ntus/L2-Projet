@@ -28,8 +28,8 @@ static void memory_test(game g){
 	if (g->matrice == NULL){
 		fprintf(stderr,"Not enough memory!\n");
 		exit(EXIT_FAILURE);
-
 	}
+	return;
 }
 
 
@@ -134,40 +134,39 @@ int game_width(cgame game){
 
 
 void add_mirror_ext(game game, content mirror_type, int col, int line){
-		memory_test(game);
-		assert(game);
+	memory_test(game);
+	assert(game);
 
-		if (col < 0 || col >= game->width){		//If x isnt a valid position
-			fprintf(stderr, "Wrong x parameter on add_mirror_ext call\n");
-		} else if (line < 0 || line >= game->height){	//If y isnt a valid position
-			fprintf(stderr, "Wrong y parameter on add_mirror_ext call\n");
-		}
+	if (col < 0 || col >= game->width){		//If x isnt a valid position
+		fprintf(stderr, "Wrong x parameter on add_mirror_ext call\n");
+	} else if (line < 0 || line >= game->height){	//If y isnt a valid position
+		fprintf(stderr, "Wrong y parameter on add_mirror_ext call\n");
+	}
 
-		if (mirror_type != MIRROR && mirror_type != ANTIMIRROR && mirror_type != VMIRROR && mirror_type != HMIRROR){
-			fprintf(stderr,"Error while placing mirror\n");
-			return;
-		}
-		game->matrice[col][line] = mirror_type;
+	if (mirror_type != MIRROR && mirror_type != ANTIMIRROR && mirror_type != VMIRROR && mirror_type != HMIRROR){
+		fprintf(stderr,"Error while placing mirror\n");
+		return;
+	}
+
+	game->matrice[col][line] = mirror_type;
 }
 
 
 
 void set_required_nb_seen(game game, direction side, int pos, int value){
 	memory_test(game);
-	if(value < 0 || pos < 0 || pos > game->width){
+	if(value < 0 || pos < 0 ){
 		fprintf(stderr, "Wrong value or pos in fct set_required_nb_seen2 for pos : %d\n", pos);
 		return;
 	}
-	if(side == N){
+
+	if(side == N && pos < game->width){
 		game->valuesNorth[pos] = value;
-	}
-	else if(side == S){
+	}	else if(side == S && pos < game->width){
 		game->valuesSouth[pos] = value;
-	}
-	else if(side == E){
+	}	else if(side == E && pos < game->height){
 		game->valuesEast[pos] = value;
-	}
-	else if(side == W){
+	}	else if(side == W && pos < game->height){
 		game->valuesWest[pos] = value;
 	} else {
 		fprintf(stderr, "Wrong side given in fct set_required_nb_seen for side :%c\n", side);
@@ -184,6 +183,8 @@ void set_required_nb_monsters(game game, content monster, int value){
 		fprintf(stderr, "Wrong value	in fct set_required_nb_monsters2 for value : %d\n", value);
 		return;
 	}
+
+
 	if(monster == ZOMBIE){
 		game->zombies = value;
 	} else if (monster == VAMPIRE){
@@ -204,16 +205,20 @@ game copy_game (cgame g_src){
 		fprintf(stderr, "Error in Function copy_game : Invalid parameters");
 		return NULL;
 	}
+
 	game copy_game = new_game_ext(g_src->width, g_src->height);
+
+	if(copy_game == 0x0)
+		return NULL;
 
 	copy_game->vampires = g_src->vampires;
 	copy_game->ghosts = g_src->ghosts;
 	copy_game->zombies = g_src->zombies;
 	copy_game->spirit = g_src->spirit;
 
-	for (int x = g_src->width-1; x >= 0; x--){
+	for (int x = 0; x <g_src->width; x++){
 		for(int y = 0; y < g_src->height; y++){
-			copy_game -> matrice[x][y] = g_src -> matrice [x][y];
+			copy_game -> matrice[x][y] = g_src -> matrice[x][y];
 		}
 	}
 
@@ -234,15 +239,23 @@ game copy_game (cgame g_src){
 
 
 void delete_game (game g){
-	memory_test(g);
+	if(!g)
+		return;
 
-	free(g->matrice[0]);
-	free(g->matrice);
-	free(g->valuesNorth);
-	free(g->valuesSouth);
-	free(g->valuesEast);
-	free(g->valuesWest);
-	free(g);
+	if(g->matrice){
+		free(g->matrice[0]);
+		free(g->matrice);
+	}
+
+	if(g->valuesNorth){
+		free(g->valuesNorth);
+		free(g->valuesSouth);
+		free(g->valuesEast);
+		free(g->valuesWest);
+	}
+
+	if(g)
+		free(g);
 }
 
 
@@ -254,14 +267,14 @@ int required_nb_seen(cgame game, direction side, int pos){
 	}
 
 	if(side == N || side == S){
-			if(pos >= game->width){
-				fprintf(stderr, "Wrong pos in fct required_nb_seen for posz : %d && side: %d\n", pos, side);
-				return EXIT_FAILURE;
+		if(pos >= game->width){
+			fprintf(stderr, "Wrong pos in fct required_nb_seen for posz : %d && side: %d\n", pos, side);
+			return EXIT_FAILURE;
 		}
 	}else{
 		if(pos >= game->height){
 			fprintf(stderr, "Wrong pos in fct required_nb_seen for pos : %d && side: %d\n", pos, side);
-				return EXIT_FAILURE;
+			return EXIT_FAILURE;
 		}
 	}
 
@@ -285,7 +298,6 @@ int required_nb_seen(cgame game, direction side, int pos){
 
 content get_content(cgame game, int col, int line){
 	if (col < 0 || col >= game->width){		//	If col is invalid
-		printf("2width = %d & x=:%d\n",game->width,col);
 		fprintf(stderr, "Wrong x parameter on get_content call\n");
 	} else if (line < 0 || line >= game->height){	//	If line is invalid
 		fprintf(stderr, "Wrong y parameter on get_content call\n");
@@ -354,7 +366,7 @@ bool add_monster(game game, content monster, int col, int line){
 																|| game->matrice[col][line] == HMIRROR){
 		return false;
 	} else if(col >=game->width || col < 0 || line < 0 || line >= game->height){	//If the position x OR y is out of the matrice
-				return false;
+		return false;
 	} else {//If everything is ok
 		game->matrice[col][line] = monster;
 	}

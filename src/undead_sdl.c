@@ -49,6 +49,12 @@ struct Env_t {
   SDL_Texture * vampire;
 
   SDL_Texture * text;
+
+  SLD_Texture ** required_nb_seen_north;
+  SLD_Texture ** required_nb_seen_south;
+  SLD_Texture ** required_nb_seen_east;
+  SLD_Texture ** required_nb_seen_west;
+
   //int bomb_x, bomb_y;
   //int mario_x, mario_y;
 };
@@ -62,49 +68,54 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   env->background = IMG_LoadTexture(ren, BACKGROUND);
   if(!env->background) ERROR("IMG_LoadTexture: %s\n", BACKGROUND);
 
-  /* init mario texture from PNG image */
+  /* init empty cell texture from PNG image */
   env->empty = IMG_LoadTexture(ren, EMPTY);
   if(!env->empty) ERROR("IMG_LoadTexture: %s\n", EMPTY);
 
-  /* init bomb texture from PNG image */
+  /* init mirrors texture from PNG image */
   env->mirror = IMG_LoadTexture(ren, MIRROR);
   if(!env->mirror) ERROR("IMG_LoadTexture: %s\n", MIRROR);
-  /* init bomb texture from PNG image */
+
+  /* init antimirrors texture from PNG image */
   env->antimirror = IMG_LoadTexture(ren, ANTIMIRROR);
   if(!env->antimirror) ERROR("IMG_LoadTexture: %s\n", ANTIMIRROR);
-  /* init bomb texture from PNG image */
+
+  /* init vmirrors texture from PNG image */
   env->vmirror = IMG_LoadTexture(ren, VMIRROR);
   if(!env->vmirror) ERROR("IMG_LoadTexture: %s\n", VMIRROR);
-  /* init bomb texture from PNG image */
+
+  /* init hmirrors texture from PNG image */
   env->hmirror = IMG_LoadTexture(ren, HMIRROR);
   if(!env->hmirror) ERROR("IMG_LoadTexture: %s\n", HMIRROR);
 
-
-  /* init bomb texture from PNG image */
+  /* init zombie texture from PNG image */
   env->zombie = IMG_LoadTexture(ren, ZOMBIE);
   if(!env->zombie) ERROR("IMG_LoadTexture: %s\n", ZOMBIE);
-  /* init bomb texture from PNG image */
+
+  /* init spirit texture from PNG image */
   env->spirit = IMG_LoadTexture(ren, SPIRIT);
   if(!env->spirit) ERROR("IMG_LoadTexture: %s\n", SPIRIT);
-  /* init bomb texture from PNG image */
+
+  /* init ghost texture from PNG image */
   env->ghost = IMG_LoadTexture(ren, GHOST);
   if(!env->ghost) ERROR("IMG_LoadTexture: %s\n", GHOST);
-  /* init bomb texture from PNG image */
+
+  /* init vampire texture from PNG image */
   env->vampire = IMG_LoadTexture(ren, VAMPIRE);
   if(!env->vampire) ERROR("IMG_LoadTexture: %s\n", VAMPIRE);
 
 
   /* init text texture using Arial font */
+    //If required_nb_monster-current_nb_monster == 0 couleur = rouge sinon couleur = noir
   SDL_Color color = { 0, 0, 255, 255 }; /* blue color in RGBA */
+
   TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
   if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
   TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
   SDL_Surface * surf = TTF_RenderText_Blended(font, "0", color); // blended rendering for ultra nice text
-  env->text = SDL_CreateTextureFromSurface(ren, surf);
+  env->required_nb_seen_west[0] = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
   TTF_CloseFont(font);
-
-
 
   return env;
 }
@@ -141,10 +152,9 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   /* end required nb monster display */
 
   /* labels value */
-  for(unsigned int x = 0; x < WIDTH; x++)
-  SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
+  SDL_QueryTexture(env->required_nb_seen_west[0], NULL, NULL, &rect.w, &rect.h);
   rect.x = windowWidth/4 - windowWidth /8; rect.y = windowHeight/3;
-  SDL_RenderCopy(ren, env->text, NULL, &rect);
+  SDL_RenderCopy(ren, env->required_nb_seen_west[0], NULL, &rect);
 
 
 
