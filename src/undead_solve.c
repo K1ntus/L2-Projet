@@ -43,7 +43,7 @@ bool cell_is_mirror(game g, int x, int y){
 game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	//nb_iterations +=1;
 
-	if(solve_type == FIND_ONE && *nb_sol>=1)
+	if(solve_type == FIND_ONE && *nb_sol>0)
 		return NULL;
 
 	int x = pos%game_width(g), y=pos/game_width(g);
@@ -77,12 +77,13 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 
 		if(g != NULL){
 			solution = copy_game(g);
+			if(!solution)
+				return NULL;
 		}else{
+			solution = NULL;
 			return NULL;
 		}
 
-		if(!solution)
-			return NULL;
 
 		if(required_nb_monsters(solution, monster[i]) - current_nb_monsters(solution, monster[i]) > 0){
 				if(next_pos_is_viable(g, pos, monster[i])){

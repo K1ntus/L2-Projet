@@ -16,6 +16,8 @@
 		+ Monstres en haut et leurs valeurs
 		+ Bouton pour solve, etc ?
 -> cas d'erreur, taille du board (width/height) et pas assez de value pour chaque side ou inversement, etc
+-> Redondance de code entre undead_text.c et undead_sdl.c
+	->Créer un toolbox
 
 	THEN:
 	* Sélection du mob
