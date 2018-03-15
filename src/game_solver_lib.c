@@ -7,7 +7,7 @@
 #include "../header/game_io.h"
 #include "../header/game_fun.h"
 
-//typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode; //ON game_fun.h
+//typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode; //on game_fun.h
 
 bool next_pos_is_viable(game g, int pos, content mstr){
 	int x = pos%game_width(g), y=pos/game_width(g);
@@ -149,8 +149,7 @@ void copy_string(char *target, char *source) {
 }
 
 bool board_already_saved_as_solution(game g1, game * array){
-
-	for(unsigned int i = 0; i < 50; i ++){
+	for(unsigned int i = 0; i < 50; i ++){	//Arbitrary value (50) to change
 		int nb_identical_cells=0;
 		if(array[i] == NULL){
 			return false;
@@ -266,8 +265,6 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 
 		sprintf(filename_res, "%s%d",savePrefix,i+1);
 
-		//printf("Saving...\n");
-
 		if(res[i]!= NULL){
 			save_game(res[i], filename_res);
 		}else{
@@ -288,8 +285,6 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 
 
 void save_nb_sol(int nbSol, char * prefix){
-	//printf("Saving the number of solutions !\n");
-
 	char suffix[]=".nbsol";
 
 	strcat(prefix, suffix);
