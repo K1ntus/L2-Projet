@@ -29,3 +29,10 @@
 -> Passer certaines functions en static dans les libs
 -> Finir la doc des sous-libs
 -> fct. pour la génération aléatoire du board
+
+
+
+HOW SHOULD WE DO FOR SDL:
+	-> Probablement stocker le game du jeu dans la struct Env
+	-> Faire les entrées users, etc dans la partie process du fichier SDL
+	-> On transmet les valeurs de pos, etc à un fichier C, qui transforme les informations (ie. entrées clavier, position de la souris quand on clique, etc)
