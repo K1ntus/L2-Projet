@@ -46,6 +46,19 @@ void get_required_nb_seen(game g, unsigned int pos, direction dir, char* res){
 	convert_int_to_string(res,val);
 }
 
+char convert_int_to_content(int mstr){
+	switch(mstr){
+		case 0:	return VAMPIRE; break;
+		case 1:	return ZOMBIE; break;
+		case 2:	return GHOST; break;
+		case 3:	return SPIRIT; break;
+		case 4:	return EMPTY; break;
+		default:	return EMPTY; break;
+	}
+	return MIRROR;//Error case ?
+}
+
+
 char convert_content_to_char(content mstr){
 	switch(mstr){
 		case VAMPIRE:	return 'V'; break;

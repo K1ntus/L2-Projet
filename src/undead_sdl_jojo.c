@@ -19,6 +19,8 @@
 #define WIDTH_SHIFT 100
 #define HEIGHT_SHIFT 250
 
+#define NB_MONSTERS 4
+
 #define BACKGROUND "../ressources/background.png"
 
 #define EMPTY "../ressources/empty.png"
@@ -159,46 +161,101 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   int windowWidth, windowHeight;
   SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
+	//int y_upset = windowHeight/10;
+	//int x_upset = windowHeight/5;
+	int last_img_width;
+
   /* required nb monster display */
   SDL_QueryTexture(env->monster_type->zombie, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + 0; rect.y = rect.h/5;
+  rect.x = rect.w/4 + 0; rect.y = 0;
+	last_img_width = rect.w;
   SDL_RenderCopy(ren, env->monster_type->zombie, NULL, &rect);
 
   SDL_QueryTexture(env->monster_type->ghost, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + windowWidth/4; rect.y = rect.h/5;
+  rect.x = rect.w/4 + windowWidth/4; rect.y = 0;
   SDL_RenderCopy(ren, env->monster_type->ghost, NULL, &rect);
 
   SDL_QueryTexture(env->monster_type->vampire, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + windowWidth/3 + windowWidth/6; rect.y = rect.h/5;
+  rect.x = rect.w/4 + 3*windowWidth/6; rect.y = 0;
   SDL_RenderCopy(ren, env->monster_type->vampire, NULL, &rect);
 
   SDL_QueryTexture(env->monster_type->spirit, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + windowWidth/2 + windowWidth/4; rect.y = rect.h/5;
+  rect.x = rect.w/4 + 3*windowWidth/4; rect.y = 0;
   SDL_RenderCopy(ren, env->monster_type->spirit, NULL, &rect);
   /* end required nb monster display */
 
-  /* labels value north (and south)*/
+	/* required nb monster*/
+	for(unsigned int x = 1; x < NB_MONSTERS+1; x++){
+		int value = required_nb_monsters(env->game, convert_int_to_content(x-1));
+		SDL_Surface * label_value = sdl_text_from_string(convert_int_to_string("", value));
+
+		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
+		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
+		rect.x = (last_img_width/2)+ (x*windowWidth/6) - windowWidth /8+ ((last_img_width/2)*x); rect.y = last_img_width/2; //Monster are 100*100px, so print at half way
+		SDL_RenderCopy(ren, label, NULL, &rect);
+	}
+
+	/* labels value north (and south)*/
 	for(unsigned int x = 1; x < game_width(env->game)+1; x++){
+
+		//NORTH
 		int value = required_nb_seen(env->game,N, x-1);
 		SDL_Surface * label_value = sdl_text_from_string(convert_int_to_string("", value));
 
 		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
-	  SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-	  rect.x = WIDTH_SHIFT+ (x*windowWidth/6) - windowWidth /8; rect.y = windowHeight/3;
-	  SDL_RenderCopy(ren, label, NULL, &rect);
+		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
+		rect.x = (2*windowWidth/10)+(x*windowWidth/6) - windowWidth /8; rect.y = 125; //Monster have a height of 100px
+		SDL_RenderCopy(ren, label, NULL, &rect);
+
+
+		//SOUTH
+		value = required_nb_seen(env->game,S, x-1);
+		label_value = sdl_text_from_string(convert_int_to_string("", value));
+
+		label = SDL_CreateTextureFromSurface(ren, label_value);
+		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
+		rect.x =  (2*windowWidth/10)+(x*windowWidth/6) - windowWidth /8; rect.y = windowHeight - 100; //Monster have a height of 100px
+		SDL_RenderCopy(ren, label, NULL, &rect);
+	}
+
+
+
+	/* labels value east (and west)*/
+	for(unsigned int x = 0; x < game_height(env->game); x++){
+
+		//EAST
+		int value = required_nb_seen(env->game,E, x);
+		SDL_Surface * label_value = sdl_text_from_string(convert_int_to_string("", value));
+
+		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
+		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
+		rect.x = windowWidth - windowWidth/10; rect.y = 150+x*100; //Monster have a height of 100px
+		SDL_RenderCopy(ren, label, NULL, &rect);
+
+
+		//WEST
+		value = required_nb_seen(env->game, W, x);
+		label_value = sdl_text_from_string(convert_int_to_string("", value));
+
+		label = SDL_CreateTextureFromSurface(ren, label_value);
+		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
+		rect.x = windowWidth/10; rect.y = 150+x*100;  //Monster have a height of 100px
+		last_img_width = rect.w;
+		SDL_RenderCopy(ren, label, NULL, &rect);
 	}
 
   //Try to make a board
   SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* red */
-  int cell_width = 50;
-  for(int i=0; i<WIDTH; i++){
-    SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(WIDTH*cell_width), HEIGHT_SHIFT+10+(i*cell_width), WIDTH_SHIFT+10+(WIDTH*cell_width), HEIGHT_SHIFT+60+(i*cell_width));
-  	for(int j=0; j<HEIGHT; j++){
-    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+10+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), HEIGHT_SHIFT+10+(j*cell_width));
-    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+60+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), HEIGHT_SHIFT+60+(j*cell_width));
-    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+10+(j*cell_width), WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+60+(j*cell_width));
-      }
-    }
+	int cell_width = (windowWidth - ((windowWidth/10 + last_img_width)*2)) / game_width(env->game);
+
+  for(int x=0; x<game_width(env->game); x++){
+    SDL_RenderDrawLine(ren, last_img_width+   windowWidth/10+ x*cell_width, HEIGHT_SHIFT+10+(x*cell_width),  last_img_width+   windowWidth/10+ (x+1)*cell_width, HEIGHT_SHIFT+60+(x*cell_width));//(x1,y1),(x2,y2)
+  	for(int y=0; y<game_height(env->game); y++){
+    	SDL_RenderDrawLine(ren, last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+10+(y*cell_width), last_img_width+  60+(x*cell_width), HEIGHT_SHIFT+10+(y*cell_width));
+    	SDL_RenderDrawLine(ren, last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+60+(y*cell_width), last_img_width+  60+(x*cell_width), HEIGHT_SHIFT+60+(y*cell_width));
+    	SDL_RenderDrawLine(ren, last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+10+(y*cell_width), last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+60+(y*cell_width));
+		}
+	}
 
 
 
@@ -248,6 +305,7 @@ bool process(SDL_Window* window, SDL_Renderer* ren, Env * env, SDL_Event * e){
     case SDLK_g:  printf("key g pressed - add a ghost\n"); break;
     case SDLK_s:  printf("key s pressed - add a spirit\n"); break;
     case SDLK_e:  printf("key e pressed - clear the cell\n"); break;
+    case SDLK_f:  printf("key f pressed - fullscreen\n"); break;
     case SDLK_ESCAPE:  return true; break;
     }
   }
