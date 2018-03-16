@@ -12,6 +12,8 @@
 #define INIT_WIDTH_REQ_MSTRS 100
 #define INIT_HEIGHT 100
 
+#define FONT "../ressources/Arial.ttf"
+#define FONTSIZE 36
 
 #ifndef _CONVERT_
 char* convert_int_to_string(char*str, int val){
@@ -20,6 +22,19 @@ char* convert_int_to_string(char*str, int val){
 	return res;
 }
 #endif //	CONVERT
+
+SDL_Surface * sdl_text_from_string(char * str){
+
+	SDL_Color color = { 0, 0, 255, 255 };//Blue color in RBG
+
+	TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
+	if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
+		TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
+
+	SDL_Surface * surf = TTF_RenderText_Blended(font, str, color); // blended rendering for ultra nice text
+	TTF_CloseFont(font);
+	return surf;
+}
 
 void get_required_nb_monsters(game g, content monster, char* res){
 	int val = required_nb_monsters(g, monster);

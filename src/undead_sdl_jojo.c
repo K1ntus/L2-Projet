@@ -11,14 +11,14 @@
 #include "model.h"
 
 #include "./game_sdl.c"
+#include "../header/game.h"
 /* **************************************************************** */
 #define WIDTH 4
 #define HEIGHT 4
 
 #define WIDTH_SHIFT 100
+#define HEIGHT_SHIFT 250
 
-#define FONT "../ressources/Arial.ttf"
-#define FONTSIZE 36
 #define BACKGROUND "../ressources/background.png"
 
 #define EMPTY "../ressources/empty.png"
@@ -127,15 +127,21 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
 
   /* init text texture using Arial font */
     //If required_nb_monster-current_nb_monster == 0 couleur = rouge sinon couleur = noir
-  SDL_Color color = { 0, 0, 255, 255 }; /* blue color in RGBA */
+
+/*
+  SDL_Color color = { 0, 0, 255, 255 };//Blue color in RBG
 
   TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
   if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
   TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
+
   SDL_Surface * surf = TTF_RenderText_Blended(font, "0", color); // blended rendering for ultra nice text
   env->required_nb_seen->west = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
+
   TTF_CloseFont(font);
+*/
+
 
   return env;
 }
@@ -171,20 +177,26 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   SDL_RenderCopy(ren, env->monster_type->spirit, NULL, &rect);
   /* end required nb monster display */
 
-  /* labels value */
-  SDL_QueryTexture(env->required_nb_seen->west, NULL, NULL, &rect.w, &rect.h);
-  rect.x = windowWidth/4 - windowWidth /8; rect.y = windowHeight/3;
-  SDL_RenderCopy(ren, env->required_nb_seen->west, NULL, &rect);
+  /* labels value north (and south)*/
+	for(unsigned int x = 1; x < game_width(env->game)+1; x++){
+		int value = required_nb_seen(env->game,N, x-1);
+		SDL_Surface * label_value = sdl_text_from_string(convert_int_to_string("", value));
+
+		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
+	  SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
+	  rect.x = WIDTH_SHIFT+ (x*windowWidth/6) - windowWidth /8; rect.y = windowHeight/3;
+	  SDL_RenderCopy(ren, label, NULL, &rect);
+	}
 
   //Try to make a board
   SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* red */
   int cell_width = 50;
   for(int i=0; i<WIDTH; i++){
-    SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(WIDTH*cell_width), 10+(i*cell_width), WIDTH_SHIFT+10+(WIDTH*cell_width), 60+(i*cell_width));
+    SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(WIDTH*cell_width), HEIGHT_SHIFT+10+(i*cell_width), WIDTH_SHIFT+10+(WIDTH*cell_width), HEIGHT_SHIFT+60+(i*cell_width));
   	for(int j=0; j<HEIGHT; j++){
-    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), 10+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), 10+(j*cell_width));
-    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), 60+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), 60+(j*cell_width));
-    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), 10+(j*cell_width), WIDTH_SHIFT+10+(i*cell_width), 60+(j*cell_width));
+    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+10+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), HEIGHT_SHIFT+10+(j*cell_width));
+    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+60+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), HEIGHT_SHIFT+60+(j*cell_width));
+    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+10+(j*cell_width), WIDTH_SHIFT+10+(i*cell_width), HEIGHT_SHIFT+60+(j*cell_width));
       }
     }
 
@@ -262,10 +274,10 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env){
   SDL_DestroyTexture(env->monster_type->ghost);
   SDL_DestroyTexture(env->monster_type->vampire);
 
-  SDL_DestroyTexture(env->required_nb_seen->west);
-
   SDL_DestroyTexture(env->background);
   SDL_DestroyTexture(env->text);
+
+	delete_game(env->game);
 
   free(env);
 }
