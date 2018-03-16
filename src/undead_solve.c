@@ -16,23 +16,6 @@
 content monster[4] = {ZOMBIE, GHOST, VAMPIRE,SPIRIT};
 //int nb_iterations = 0;
 
-
-bool is_solution(game g2, game*res, int*nb_sol){
-	if(board_is_full(g2)){	//We check if the generated board is full of monsters (ie. no empty cells)
-		//printf("INFO: board is full\n");
-		if(is_game_over(g2)){	//Then if the game is over
-			//printf("INFO:board is over\n");
-			if(!board_already_saved_as_solution(g2, res)){	//We check if this board hasnt already been saved
-				if(*nb_sol < 5)	//And if the number of board saved dont exceed 5 (too much files after LOL)
-					append_game_array(g2,res);	//Then we add the game board to the res array
-				*nb_sol +=1;	//We increment the total number of solutions
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
 bool cell_is_mirror(game g, int x, int y){
 	content cell = get_content(g, x, y);
 	if(cell == MIRROR || cell == ANTIMIRROR || cell == VMIRROR || cell == HMIRROR)
@@ -40,8 +23,12 @@ bool cell_is_mirror(game g, int x, int y){
 	return false;
 }
 
+
 game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	//nb_iterations +=1;
+
+	if(g == NULL)
+		return NULL;
 
 	if(solve_type == FIND_ONE && *nb_sol>0)
 		return NULL;
@@ -49,15 +36,9 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	int x = pos%game_width(g), y=pos/game_width(g);
 
 
-	if(g == NULL)
-		return NULL;
-
-
 	if(is_game_over(g)){
-		if(!board_already_saved_as_solution(g,res)){
-			res[*nb_sol] = copy_game(g);
-			*nb_sol +=1;
-		}
+		res[*nb_sol] = copy_game(g);
+		*nb_sol +=1;
 		return NULL;
 	}
 
@@ -67,9 +48,9 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 	if(x >= game_width(g) || y >= game_height(g))
 		return NULL;
 
-	if(get_content(g, x, y) != EMPTY){
+	if(get_content(g, x, y) != EMPTY)
 		return is_valid(g, pos+1, res, nb_sol, solve_type);
-	}
+
 
 
 	for(unsigned int i = 0; i < NB_MONSTERS; i++){
@@ -114,7 +95,7 @@ int main(int argc,char* argv[]){
 	}
 
 
-	game * res= (game*) malloc(sizeof(game) *25);	//We create an array which will contain (at maximum) 5 solution board
+	game * res= (game*) malloc(sizeof(game) *50);	//We create an array which will contain (maximum) 50 solution board
 	result_array_init(res);	//Init. it with few things
 
 
