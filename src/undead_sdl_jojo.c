@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include <math.h>
 #include "model.h"
+
+#include "./game_sdl.c"
 /* **************************************************************** */
 #define WIDTH 4
 #define HEIGHT 4
@@ -195,12 +197,48 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 bool process(SDL_Window* window, SDL_Renderer* ren, Env * env, SDL_Event * e){
 
   /* get current window size */
-  int windowWidth, windowHeight;
-  SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+	int windowWidth, windowHeight;
+	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
 
-  if (e->type == SDL_QUIT) {
-    return true;
+	/* generic events */
+	if (e->type == SDL_QUIT){
+		return true;
+	}
+
+
+#ifdef __ANDROID__
+  else if (e->type == SDL_FINGERDOWN) {
+    env->mario_x = e->tfinger.x * w; /* tfinger.x, normalized in [0..1] */
+    env->mario_y = e->tfinger.y * h; /* tfinger.y, normalized in [0..1] */
   }
+  /* other events */
+#else
+  else if (e->type == SDL_MOUSEBUTTONDOWN) {
+    SDL_Point mouse;
+    SDL_GetMouseState(&mouse.x, &mouse.y);
+		/*
+    env->mario_x = mouse.x;
+    env->mario_y = mouse.y;
+		*/
+	}
+  else if (e->type == SDL_KEYDOWN) {
+    switch (e->key.keysym.sym) {
+		/*
+    case SDLK_LEFT:  env->bomb_x -= 10; break;
+    case SDLK_RIGHT: env->bomb_x += 10; break;
+    case SDLK_UP:    env->bomb_y -= 10; break;
+    case SDLK_DOWN:  env->bomb_y += 10; break;
+		*/
+    case SDLK_v:  printf("key v pressed - add a vampire\n"); break;
+    case SDLK_z:  printf("key z pressed - add a zombie\n"); break;
+    case SDLK_g:  printf("key g pressed - add a ghost\n"); break;
+    case SDLK_s:  printf("key s pressed - add a spirit\n"); break;
+    case SDLK_e:  printf("key e pressed - clear the cell\n"); break;
+    case SDLK_ESCAPE:  return true; break;
+    }
+  }
+#endif
+
 
   /* PUT YOUR CODE HERE TO PROCESS EVENTS */
 
