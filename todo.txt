@@ -34,5 +34,7 @@
 
 HOW SHOULD WE DO FOR SDL:
 	-> Probablement stocker le game du jeu dans la struct Env
-	-> Faire les entrées users, etc dans la partie process du fichier SDL
-	-> On transmet les valeurs de pos, etc à un fichier C, qui transforme les informations (ie. entrées clavier, position de la souris quand on clique, etc)
+	-> Charger les images dans les variables de la struct Env dans la fonction init()
+	-> Afficher les éléments graphiques dans la partie render()
+	-> Faire les entrées users, etc dans la partie process() du fichier SDL
+		* On transmet les valeurs de pos, etc à un fichier C, qui transforme les informations (ie. entrées clavier, position de la souris quand on clique, etc)

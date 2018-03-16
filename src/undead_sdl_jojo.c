@@ -15,6 +15,8 @@
 #define WIDTH 4
 #define HEIGHT 4
 
+#define WIDTH_SHIFT 100
+
 #define FONT "../ressources/Arial.ttf"
 #define FONTSIZE 36
 #define BACKGROUND "../ressources/background.png"
@@ -61,26 +63,26 @@ typedef struct mirror_type{
 } * s_mirror_type;
 
 struct Env_t {
+	game game;
+
   SDL_Texture * background;
 
   s_mirror_type mirror_type;
   s_monster_type monster_type;
 
-  s_required_nb_seen required_nb_seen;
-
   SDL_Texture * text;
 
-  //int bomb_x, bomb_y;
-  //int mario_x, mario_y;
+  content monster_selected;	//Save the last pos when we
+	int cell_selected;	//Save the cell pointed by a position with the mouse, use convert_sdl_input_to_position(pos_src,x,y) on game_sdl.c
 };
 
 /* **************************************************************** */
 
 Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   Env * env = malloc(sizeof(struct Env_t));
-  env-> required_nb_seen = malloc(sizeof(struct required_nb_seen));
   env-> mirror_type = malloc(sizeof(struct mirror_type));
   env-> monster_type = malloc(sizeof(struct monster_type));
+  env-> game = new_game_ext(4,4);
 
   /* init background texture from PNG image */
   env->background = IMG_LoadTexture(ren, BACKGROUND);
@@ -178,11 +180,11 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* red */
   int cell_width = 50;
   for(int i=0; i<WIDTH; i++){
-    SDL_RenderDrawLine(ren, 10+(WIDTH*cell_width), 10+(i*cell_width), 10+(WIDTH*cell_width), 60+(i*cell_width));
+    SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(WIDTH*cell_width), 10+(i*cell_width), WIDTH_SHIFT+10+(WIDTH*cell_width), 60+(i*cell_width));
   	for(int j=0; j<HEIGHT; j++){
-    	SDL_RenderDrawLine(ren, 10+(i*cell_width), 10+(j*cell_width), 60+(i*cell_width), 10+(j*cell_width));
-    	SDL_RenderDrawLine(ren, 10+(i*cell_width), 60+(j*cell_width), 60+(i*cell_width), 60+(j*cell_width));
-    	SDL_RenderDrawLine(ren, 10+(i*cell_width), 10+(j*cell_width), 10+(i*cell_width), 60+(j*cell_width));
+    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), 10+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), 10+(j*cell_width));
+    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), 60+(j*cell_width), WIDTH_SHIFT+60+(i*cell_width), 60+(j*cell_width));
+    	SDL_RenderDrawLine(ren, WIDTH_SHIFT+10+(i*cell_width), 10+(j*cell_width), WIDTH_SHIFT+10+(i*cell_width), 60+(j*cell_width));
       }
     }
 
