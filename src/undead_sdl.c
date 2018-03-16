@@ -9,7 +9,6 @@
 #include <stdbool.h>
 #include <math.h>
 #include "model.h"
-
 /* **************************************************************** */
 #define WIDTH 4
 #define HEIGHT 4
@@ -156,6 +155,17 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   rect.x = windowWidth/4 - windowWidth /8; rect.y = windowHeight/3;
   SDL_RenderCopy(ren, env->required_nb_seen_west, NULL, &rect);
 
+  //Try to make a board 
+  SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* red */
+  int cell_width = 50;
+  for(int i=0; i<WIDTH; i++){
+    SDL_RenderDrawLine(ren, 10+(WIDTH*cell_width), 10+(i*cell_width), 10+(WIDTH*cell_width), 60+(i*cell_width));
+  	for(int j=0; j<HEIGHT; j++){
+    	SDL_RenderDrawLine(ren, 10+(i*cell_width), 10+(j*cell_width), 60+(i*cell_width), 10+(j*cell_width));
+    	SDL_RenderDrawLine(ren, 10+(i*cell_width), 60+(j*cell_width), 60+(i*cell_width), 60+(j*cell_width));
+    	SDL_RenderDrawLine(ren, 10+(i*cell_width), 10+(j*cell_width), 10+(i*cell_width), 60+(j*cell_width));
+      }
+    }
 
 
 
@@ -202,3 +212,4 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env){
 }
 
 /* **************************************************************** */
+
