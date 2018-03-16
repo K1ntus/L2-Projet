@@ -30,8 +30,8 @@
 #define VMIRROR "../ressources/vmirror.png"
 #define HMIRROR "../ressources/hmirror.png"
 
-#define VAMPIRE "../ressources/vampire.png"
-#define GHOST "../ressources/ghost.png"
+#define VAMPIRE "../ressources/vampire.gif"
+#define GHOST "../ressources/ghost.gif"
 #define SPIRIT "../ressources/spirit.png"
 #define ZOMBIE "../ressources/zombie.png"
 
@@ -245,22 +245,22 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 	}
 
   //Try to make a board
-  SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* red */
-	int cell_width = (windowWidth - ((windowWidth/10 + last_img_width)*2)) / game_width(env->game);
-	//int cell_height = (windowHeight) - (150);
+  SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* dark */
+	int cell_width = (windowWidth - ((windowWidth/10 + last_img_width))) / (game_width(env->game)+1);
+	int cell_height = (windowHeight) - (windowHeight/10+last_img_width) / game_height(env->game);
 
-  for(int x=0; x<game_width(env->game); x++){
-    SDL_RenderDrawLine(ren, last_img_width+   windowWidth/10+ x*cell_width, HEIGHT_SHIFT+10+(x*cell_width),  last_img_width+   windowWidth/10+ (x+1)*cell_width, HEIGHT_SHIFT+60+(x*cell_width));//(x1,y1),(x2,y2)
-  	for(int y=0; y<game_height(env->game); y++){
-    	SDL_RenderDrawLine(ren, last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+10+(y*cell_width), last_img_width+  60+(x*cell_width), HEIGHT_SHIFT+10+(y*cell_width));
-    	SDL_RenderDrawLine(ren, last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+60+(y*cell_width), last_img_width+  60+(x*cell_width), HEIGHT_SHIFT+60+(y*cell_width));
-    	SDL_RenderDrawLine(ren, last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+10+(y*cell_width), last_img_width+  10+(x*cell_width), HEIGHT_SHIFT+60+(y*cell_width));
+  for(int x=0; x<=game_width(env->game); x++){
+		int posX = last_img_width+ (3*windowWidth/25)+ x*cell_width;
+  	for(int y=0; y<=game_height(env->game); y++){
+			int posY = 200 +(y*cell_height);
+	    SDL_RenderDrawLine(ren, posX, posY, windowWidth - 2*(windowWidth/10), posY);//(x1,y1),(x2,y2)	//Horizontal line render
+
+    	SDL_RenderDrawLine(ren, posX, posY, posX, ((y+1)*cell_height)+25);
 		}
 	}
 
 
 
-  /* PUT YOUR CODE HERE TO RENDER TEXTURES, ... */
 }
 
 /* **************************************************************** */
@@ -301,13 +301,13 @@ bool process(SDL_Window* window, SDL_Renderer* ren, Env * env, SDL_Event * e){
     case SDLK_UP:    env->bomb_y -= 10; break;
     case SDLK_DOWN:  env->bomb_y += 10; break;
 		*/
-    case SDLK_v:  printf("key v pressed - add a vampire\n"); break;
-    case SDLK_z:  printf("key z pressed - add a zombie\n"); break;
-    case SDLK_g:  printf("key g pressed - add a ghost\n"); break;
-    case SDLK_s:  printf("key s pressed - add a spirit\n"); break;
-    case SDLK_e:  printf("key e pressed - clear the cell\n"); break;
-    case SDLK_f:  printf("key f pressed - fullscreen\n"); break;
-    case SDLK_ESCAPE:  return true; break;
+    case SDLK_v:  printf("key v pressed - add a vampire\n"); break;		//Function TODO
+    case SDLK_z:  printf("key z pressed - add a zombie\n"); break;		//Function TODO
+    case SDLK_g:  printf("key g pressed - add a ghost\n"); break;			//Function TODO
+    case SDLK_s:  printf("key s pressed - add a spirit\n"); break;		//Function TODO
+    case SDLK_e:  printf("key e pressed - clear the cell\n"); break;	//Function TODO
+    case SDLK_f:  toggle_fullscreen(window,0); break;									//Function TODO
+    case SDLK_ESCAPE:  return true; break;	//Exit the program
     }
   }
 #endif

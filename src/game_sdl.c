@@ -102,3 +102,7 @@ void add_monster_sdl(int pos, char mstr){
 	add_monster(g, convert_char_to_content(mstr), x, y);
 
 }
+bool toggle_fullscreen(SDL_Window* window,unsigned int flags){
+
+	return true;
+}
