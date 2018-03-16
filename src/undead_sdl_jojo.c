@@ -247,6 +247,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   //Try to make a board
   SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* red */
 	int cell_width = (windowWidth - ((windowWidth/10 + last_img_width)*2)) / game_width(env->game);
+	//int cell_height = (windowHeight) - (150);
 
   for(int x=0; x<game_width(env->game); x++){
     SDL_RenderDrawLine(ren, last_img_width+   windowWidth/10+ x*cell_width, HEIGHT_SHIFT+10+(x*cell_width),  last_img_width+   windowWidth/10+ (x+1)*cell_width, HEIGHT_SHIFT+60+(x*cell_width));//(x1,y1),(x2,y2)
