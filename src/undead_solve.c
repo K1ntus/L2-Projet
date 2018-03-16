@@ -122,10 +122,12 @@ int main(int argc,char* argv[]){
 	saving_data_from_the_solver(solving_result, nb_solution, res, argv[3]);
 
 
-
-	for(unsigned int i = 0; i < 5; i++){
-		if(res[i] != NULL)
-		delete_game(res[i]);
+	int i = 0;
+	while(res[i] != NULL){
+		if(res[i] != NULL){
+			delete_game(res[i]);
+			i++;
+		}
 	}
 	free(res);
 
