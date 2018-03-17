@@ -321,9 +321,11 @@ int required_nb_monsters(cgame game, content monster){
 		case SPIRIT:
 			return game->spirit;
 		default:
-			fprintf(stderr, "Wrong monster type in fct required_nb_monsters2 for type : %c\n", monster);
-			return EXIT_FAILURE;
+			//fprintf(stderr, "Wrong monster type in fct required_nb_monsters2 for type : %c\n", monster);
+			//return EXIT_FAILURE;
+			break;
 	}
+	return 0;
 }
 
 
@@ -365,7 +367,11 @@ bool add_monster(game game, content monster, int col, int line){
 																|| game->matrice[col][line] == VMIRROR
 																|| game->matrice[col][line] == HMIRROR){
 		return false;
-	} else if(col >=game->width || col < 0 || line < 0 || line >= game->height){	//If the position x OR y is out of the matrice
+	} else if(required_nb_monsters(game,monster)-current_nb_monsters(game, monster) == 0){
+
+		return false;
+
+	}else if(col >=game->width || col < 0 || line < 0 || line >= game->height){	//If the position x OR y is out of the matrice
 		return false;
 	} else {//If everything is ok
 		game->matrice[col][line] = monster;

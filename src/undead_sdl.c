@@ -9,6 +9,8 @@
 #include <stdbool.h>
 #include <math.h>
 #include "model.h"
+
+
 /* **************************************************************** */
 #define WIDTH 4
 #define HEIGHT 4

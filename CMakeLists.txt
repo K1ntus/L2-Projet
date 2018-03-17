@@ -66,7 +66,7 @@ target_link_libraries(undead_solve game)
 
 
 include_directories(${SDL2_ALL_INC})
-add_executable(undead_sdl src/main_sdl.c src/undead_sdl_jojo.c)
+add_executable(undead_sdl src/main_sdl.c src/undead_sdl_jojo.c )
 target_link_libraries(undead_sdl ${SDL2_ALL_LIBS} m)
 target_link_libraries(undead_sdl game)
 
