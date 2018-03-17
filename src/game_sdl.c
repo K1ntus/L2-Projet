@@ -192,9 +192,18 @@ void get_which_cells_is_selected(int posX, int posY, Env* env){
   int topCorner_y=env->top_corner.y;
   int cell_width=env->cell_size.width;
   int cell_height=env->cell_size.height;
+  int valX=(posX-topCorner_x)/cell_width;
+  int valY=game_height(env->game)-(posY-topCorner_y)/cell_height -1;
 
-  env->cell_selected.x = (posX-topCorner_x)/cell_width;
-  env->cell_selected.y = game_height(env->game)-(posY-topCorner_y)/cell_height -1;
+  if(valX >=0 && valX < game_width(env->game))
+    env->cell_selected.x = valX;
+  else
+    env->cell_selected.x = 0;
+
+  if(valY >=0 && valY< game_width(env->game))
+    env->cell_selected.y = valY;
+  else
+    env->cell_selected.y = 0;
 
   printf("DEBUG: pos selected is: (%d;%d)\n", env->cell_selected.x,env->cell_selected.y);
 
@@ -269,9 +278,34 @@ void place_assets(int x, int y, content mstr, SDL_Window* window, SDL_Renderer* 
 void display_monsters_on_board(int topCorner_x, int topCorner_y, SDL_Window* window, SDL_Renderer* ren, Env * env, int cell_width, int cell_height){
   	for( int y = game_height(env->game)-1; y >= 0; y--){
   		for( int x = 0; x < game_width(env->game); x++){
-      place_assets(topCorner_x+cell_width*x,topCorner_y+cell_height*y,get_content(env->game,x,game_height(env->game)-y-1),window,ren,env, cell_width,cell_height);
+        place_assets(topCorner_x+cell_width*x,topCorner_y+cell_height*y,get_content(env->game,x,game_height(env->game)-y-1),window,ren,env, cell_width,cell_height);
 
     }
   }
 
+}
+
+
+void display_on_win(SDL_Window* window, SDL_Renderer* ren, Env * env){
+  SDL_Rect rect;
+
+  /* get current window size */
+  int w, h;
+  SDL_GetWindowSize(window, &w, &h);
+  SDL_RenderCopy(ren, env->background, NULL, NULL); /* stretch it */
+
+  /* init text texture 0 Arial font */
+  SDL_Color color = { 255, 255, 0, 255 }; /* blue color in RGBA */  //color.r, color.g, color.b
+  TTF_Font * font = TTF_OpenFont(FONT, FONTSIZE);
+  if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
+  TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
+  SDL_Surface * surf = TTF_RenderText_Blended(font, "Congratulations !", color); // blended rendering for ultra nice text
+  env->text = SDL_CreateTextureFromSurface(ren, surf);
+  SDL_FreeSurface(surf);
+  TTF_CloseFont(font);
+
+
+  SDL_QueryTexture(env->text, NULL, NULL, &rect.w, &rect.h);
+  rect.x = w/2 - rect.w/2; rect.y = h/2 - rect.h/2;
+  SDL_RenderCopy(ren, env->text, NULL, &rect);
 }

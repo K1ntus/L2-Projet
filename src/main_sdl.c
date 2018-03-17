@@ -17,7 +17,7 @@ int main(int argc, char * argv[])
   if(TTF_Init() != 0) ERROR("Error: TTF_Init (%s)", SDL_GetError());
 
   /* create window and renderer */
-  SDL_Window * win = SDL_CreateWindow(APP_NAME, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
+  SDL_Window * win = SDL_CreateWindow("Undead - TM6H", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
     				      SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
   if(!win) ERROR("Error: SDL_CreateWindow (%s)", SDL_GetError());
   SDL_Renderer * ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);

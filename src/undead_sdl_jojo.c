@@ -131,6 +131,8 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
 void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   SDL_Rect rect;
 
+
+
   /* render background texture */
   SDL_RenderCopy(ren, env->background, NULL, NULL); /* stretch it */
 
@@ -259,6 +261,8 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   display_monsters_on_board(topCorner_x, topCorner_y,  window,  ren, env, cell_width, cell_height);
 
 
+  if(is_game_over(env->game))
+    display_on_win(window, ren, env);
 
 }
 
@@ -272,6 +276,7 @@ bool process(SDL_Window* window, SDL_Renderer* ren, Env * env, SDL_Event * e){
   /* get current window size */
 	int windowWidth, windowHeight;
 	SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+
 
 	/* generic events */
 	if (e->type == SDL_QUIT){
