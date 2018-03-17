@@ -84,7 +84,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   Env * env = malloc(sizeof(struct Env_t));
   env-> mirror_type = malloc(sizeof(struct mirror_type));
   env-> monster_type = malloc(sizeof(struct monster_type));
-  env-> game = new_game_ext(4,4);
+  env-> game = new_game_ext(5,4);
 
   /* init background texture from PNG image */
   env->background = IMG_LoadTexture(ren, BACKGROUND);
@@ -167,36 +167,42 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
   /* required nb monster display */
   SDL_QueryTexture(env->monster_type->zombie, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + 0; rect.y = 0;
+  rect.x = 0; rect.y = 0;
 	last_img_width = rect.w;
   SDL_RenderCopy(ren, env->monster_type->zombie, NULL, &rect);
 
   SDL_QueryTexture(env->monster_type->ghost, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + windowWidth/4; rect.y = 0;
+  rect.x =  windowWidth/4; rect.y = 0;
   SDL_RenderCopy(ren, env->monster_type->ghost, NULL, &rect);
 
   SDL_QueryTexture(env->monster_type->vampire, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + 3*windowWidth/6; rect.y = 0;
+  rect.x =  windowWidth/2; rect.y = 0;
   SDL_RenderCopy(ren, env->monster_type->vampire, NULL, &rect);
 
   SDL_QueryTexture(env->monster_type->spirit, NULL, NULL, &rect.w, &rect.h);
-  rect.x = rect.w/4 + 3*windowWidth/4; rect.y = 0;
+  rect.x = 3*windowWidth/4; rect.y = 0;
   SDL_RenderCopy(ren, env->monster_type->spirit, NULL, &rect);
-  /* end required nb monster display */
+  /* end required nb monster display */ //0;  1/4;  1/2;  3/4
 
 	/* required nb monster*/
+  //Each mobs icon are 64*64
 	for(unsigned int x = 1; x < NB_MONSTERS+1; x++){
 		int value = required_nb_monsters(env->game, convert_int_to_content(x-1));
 		SDL_Surface * label_value = sdl_text_from_string(convert_int_to_string("", value));
 
 		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x = (last_img_width/2)+ (x*windowWidth/6) - windowWidth /8+ ((last_img_width/2)*x); rect.y = last_img_width/2; //Monster are 100*100px, so print at half way
+		rect.x = 64+ ((x-1)*windowWidth/4); rect.y = rect.h/2; //Monster are 64*64px, so print at half way
 		SDL_RenderCopy(ren, label, NULL, &rect);
 	}
 
+  int cell_width = (windowWidth - ((windowWidth/10 + last_img_width))) / (game_width(env->game)+1);
+  int cell_height = (windowHeight- ((windowHeight/10+last_img_width))) / (game_height(env->game)+1);
+  int last_img_y_position;
+
 	/* labels value north (and south)*/
 	for(unsigned int x = 1; x < game_width(env->game)+1; x++){
+		int posX = last_img_width+ (3*windowWidth/25)+ x*cell_width;
 
 		//NORTH
 		int value = required_nb_seen(env->game,N, x-1);
@@ -204,8 +210,9 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x = (2*windowWidth/10)+(x*windowWidth/6) - windowWidth /8; rect.y = 125; //Monster have a height of 100px
+		rect.x = posX-(last_img_width) - windowWidth/20; rect.y = windowHeight/6;//Monster have a height of 100px
 		SDL_RenderCopy(ren, label, NULL, &rect);
+    last_img_y_position = rect.y;
 
 
 		//SOUTH
@@ -214,10 +221,9 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 		label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x =  (2*windowWidth/10)+(x*windowWidth/6) - windowWidth /8; rect.y = windowHeight - 100; //Monster have a height of 100px
+		rect.x = posX-(last_img_width) - windowWidth/20; rect.y = windowHeight - windowHeight/10 - rect.h/2; //Monster have a height of 100px
 		SDL_RenderCopy(ren, label, NULL, &rect);
 	}
-
 
 
 	/* labels value east (and west)*/
@@ -229,7 +235,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x = windowWidth - windowWidth/10; rect.y = 150+x*100; //Monster have a height of 100px
+		rect.x = windowWidth - windowWidth/10; rect.y = 2*windowHeight/8 +  (windowHeight/10+rect.h)*x; //Monster have a height of 100px
 		SDL_RenderCopy(ren, label, NULL, &rect);
 
 
@@ -239,23 +245,23 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 		label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x = windowWidth/10; rect.y = 150+x*100;  //Monster have a height of 100px
+		rect.x = windowWidth/10; rect.y = 2*windowHeight/8+ (windowHeight/10+rect.h)*x;  //Monster have a height of 100px
 		last_img_width = rect.w;
 		SDL_RenderCopy(ren, label, NULL, &rect);
 	}
 
   //Try to make a board
   SDL_SetRenderDrawColor(ren, 0, 0, 0, SDL_ALPHA_OPAQUE); /* dark */
-	int cell_width = (windowWidth - ((windowWidth/10 + last_img_width))) / (game_width(env->game)+1);
-	int cell_height = (windowHeight) - (windowHeight/10+last_img_width) / game_height(env->game);
 
+  int posY = last_img_y_position+rect.h;
+  int posX=windowWidth/10 + 2*last_img_width;
   for(int x=0; x<=game_width(env->game); x++){
-		int posX = last_img_width+ (3*windowWidth/25)+ x*cell_width;
+    SDL_RenderDrawLine(ren, posX+x*cell_width, posY, posX+x*cell_width, posY+(game_height(env->game)*cell_height)); //Vertical lines render
   	for(int y=0; y<=game_height(env->game); y++){
-			int posY = 200 +(y*cell_height);
-	    SDL_RenderDrawLine(ren, posX, posY, windowWidth - 2*(windowWidth/10), posY);//(x1,y1),(x2,y2)	//Horizontal line render
+      SDL_RenderDrawLine(ren, posX, posY+y*cell_height, posX+game_width(env->game) * cell_width, posY+y*cell_height);//(x1,y1),(x2,y2)	//Horizontal line render
 
-    	SDL_RenderDrawLine(ren, posX, posY, posX, ((y+1)*cell_height)+25);
+			//posY = last_img_y_position+ (3*windowWidth/25) + (y*cell_width);
+      printf("posY:%d, cell_height:%d,cell_width:%d\n",posY,cell_height,cell_width);
 		}
 	}
 
