@@ -1,1 +1,2 @@
-./executable/undead_text autosave
+cd executable/
+./undead_sdl

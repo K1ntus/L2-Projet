@@ -11,6 +11,7 @@
 #include "model.h"
 
 #include "./game_sdl.c"
+#include "./undead_generation.c"
 #include "../header/game.h"
 #include "../header/game_io.h"
 /* **************************************************************** */
@@ -254,6 +255,8 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 		}
 	}
 
+
+
   env->cell_size.width = cell_width;
   env->cell_size.height = cell_height;
   env->top_corner.x = topCorner_x;
@@ -261,8 +264,11 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   display_monsters_on_board(topCorner_x, topCorner_y,  window,  ren, env, cell_width, cell_height);
 
 
-  if(is_game_over(env->game))
+  if(is_game_over(env->game)){
     display_on_win(window, ren, env);
+    sleep(1);
+    env->game = new_game_generation();
+  }
 
 }
 

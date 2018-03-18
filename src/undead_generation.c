@@ -1,14 +1,17 @@
+#include <SDL.h>
+#include <SDL_image.h>  // required to load transparent texture from PNG
+#include <SDL_ttf.h>    // required to use TTF fonts
 
-#include <stdlib.h>
 #include <stdio.h>
-#include <unistd.h> //access() fun + chdir
+#include <stdlib.h>
+#include <stdbool.h>
+#include <math.h>
+#include "model.h"
 
-#include "../header/game_display.h"
-#include "../header/game_io.h"
-#include "../header/game_fun.h"
 #include "../header/game.h"
+#include "../header/game_io.h"
 
-game generation(void){
-  game g = new_game_ext(4,4);
+game new_game_generation(void){
+  game g = load_game("../executable/saves/autosave");;
   return g;
 }
