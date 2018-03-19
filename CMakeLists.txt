@@ -50,7 +50,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-option(LIBGAME_TEACHER "teacher version of libgame" ON)
+option(LIBGAME_TEACHER "teacher version of libgame" OFF)
 if(LIBGAME_TEACHER)
 	add_library(game src/teacher/game.o src/teacher/game_io.o src/game_display.c src/game_util.c src/game_solver_lib.c src/game_io_util.c)
 else()
