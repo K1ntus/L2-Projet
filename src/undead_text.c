@@ -243,7 +243,7 @@ int main(int argc, char *argv[]){
 	//nbMonsters[0] => Vampire; nbMonsters[1] => Ghost; nbMonsters[2] => Zombie; nbMonsters[3] => Spirits
 	int nbMonsters[] = {2,2,5,0};
 
-	chdir("executable/saves");
+	//chdir("executable/saves");
 	char *save_name;
 
 	//Check if we want to load a file at beginning, else generate board
