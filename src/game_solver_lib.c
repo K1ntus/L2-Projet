@@ -346,14 +346,6 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 /**
  * @brief called if the solve mode is NB_SOL, will save a file which will containt the number of solution for a board
  * @param nbSol the int value to print on the file
-
- /**
-  * @brief called if the solve mode is FIND_ONE, and will save only ONE file
-  * @param resArray the result array containing all game_board which solve the one as parameters
-  * @param prefix the name of the file before the extension
-  * @param n unused parameters
-  * @return void
-  **/
  * @param prefix the name of the file before the extension
  * @return void
  **/

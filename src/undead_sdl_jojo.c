@@ -276,7 +276,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 
 bool process(SDL_Window* window, SDL_Renderer* ren, Env * env, SDL_Event * e){
-  SDL_SetWindowResizable(window,true);//Can(not) change the size of the window
+  //SDL_SetWindowResizable(window,true);//Can(not) change the size of the window
 
 
   /* get current window size */
