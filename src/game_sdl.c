@@ -4,8 +4,10 @@
 #include <stdbool.h>
 #include <math.h>
 
+#include "../header/game_display.h"
 #include "../header/game_io.h"
 #include "../header/game.h"
+#include "../header/model.h"
 
 #define INIT_WIDTH_REQ_MSTRS 100
 #define INIT_HEIGHT 100
@@ -51,7 +53,21 @@ typedef struct{
   int height;
 } s_cell_size;
 
-struct Env_t {
+
+
+/**
+ * @brief struct needed for SDL2
+ * @param game variable which contain the game
+ * @param background a SDL_Texture with the background img path
+ * @param mirror_type redirect to another struct with all existing mirror_type and their path to the img
+ * @param monster_type same as mirror_type but for monsters
+ * @param text text to display on board, could be the required_nb_monsters, labels, etc
+ * @param cell_size redirect to a struct with labels x and y which are the dynamical size of a cell on board
+ * @param top_corner redirect to a struct with the x and y value equals to the top left corner of the game_board
+ * @param monster_selected contain the monster we want to place
+ * @param cell_selected contain the x and y value of the cell which has been convert to be readable by game.c
+ **/
+typedef struct Env_t {
 	game game;
 
   SDL_Texture * background;
@@ -65,7 +81,7 @@ struct Env_t {
   s_top_corner top_corner;
   content monster_selected;	//Save the last pos when we
 	s_cell_selected cell_selected;	//Save the cell pointed by a position with the mouse, use convert_sdl_input_to_position(pos_src,x,y) on game_sdl.c
-};
+}Env;
 
 
 #ifndef _CONVERT_
