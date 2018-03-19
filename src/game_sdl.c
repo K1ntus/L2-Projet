@@ -4,10 +4,8 @@
 #include <stdbool.h>
 #include <math.h>
 
-#include "../header/game_display.h"
 #include "../header/game_io.h"
 #include "../header/game.h"
-#include "../header/model.h"
 
 #define INIT_WIDTH_REQ_MSTRS 100
 #define INIT_HEIGHT 100

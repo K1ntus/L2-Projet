@@ -9,6 +9,15 @@
 
 //typedef enum e_solve_mode {FIND_ONE,NB_SOL,FIND_ALL} solve_mode; //on game_fun.h
 
+
+
+/**
+ * @brief check the next position to the labels in order to optimise the processing of the solver
+ * @param g the game board to analyse
+ * @param pos the position on the game board ( 0<= pos <= width*heght-1)
+ * @param mstr the monster we want to place
+ * @return false if it would be useless to place this monster, else true
+ **/
 bool next_pos_is_viable(game g, int pos, content mstr){
 	int x = pos%game_width(g), y=pos/game_width(g);
 	if(get_content(g, x, y) != EMPTY){
@@ -139,6 +148,13 @@ bool next_pos_is_viable(game g, int pos, content mstr){
 	return true;
 }
 
+
+/**
+ * @brief copy a string, and put it on another char* variable (like strcopy to be short)
+ * @param target the string where we want to paste
+ * @param source the string where we want to copy
+ * @return void
+ **/
 void copy_string(char *target, char *source) {
    while (*source) {
       *target = *source;
@@ -148,6 +164,12 @@ void copy_string(char *target, char *source) {
    *target = '\0';
 }
 
+/**
+ * @brief check if the board as parameters is already saved on the game array
+ * @param g the game board to compare with
+ * @param array an array with all already saved game board from sovler
+ * @return true if alreade saved, else false
+ **/
 bool board_already_saved_as_solution(game g1, game * array){
 	for(unsigned int i = 0; i < 50; i ++){	//Arbitrary value (50) to change
 		int nb_identical_cells=0;
@@ -175,6 +197,11 @@ bool board_already_saved_as_solution(game g1, game * array){
 }
 
 
+/**
+ * @brief check some things on the parameters, like the difference between current and required nb seen, etc
+ * @param g the game board to analyse
+ * @return true if this game would be not solved this way, else true
+ **/
 bool potential_invalid_game(game g){
 	for(int x = 0; x < game_width(g);x++){
 		if(required_nb_seen(g, N, x) - current_nb_seen(g,N,x) < 0)
@@ -195,6 +222,12 @@ bool potential_invalid_game(game g){
 }
 
 
+/**
+ * @brief add a solving game to the solve array
+ * @param g the game board to analyse
+ * @param res the game result array where we want to append the first parameters
+ * @return void
+ **/
 void append_game_array(game g, game * res){
 	for(unsigned int i = 0; i < 25; i++){
 		if(res[i] == NULL){
@@ -205,11 +238,21 @@ void append_game_array(game g, game * res){
 }
 
 
+/**
+ * @brief init the game_board res array with null value for each cells just to be sure
+ * @param res the result array of game board
+ * @return char* void
+ **/
 void result_array_init(game * res){
 	for(unsigned int i = 0; i < 25; i++)	//5 parce qu'après c chiant pour les files
 		res[i] = NULL;
 }
 
+/**
+ * @brief convert the string as launch parameters and convert it to a solve_mode value
+ * @param argv a string from launch parameters
+ * @return solve_mode equals to NB_SOL, FIND_ONE or FIND_ALL
+ **/
 solve_mode get_which_solve_mode_is_asked (char * argv){
 	if(strcmp(argv, "FIND_ONE") == 0) {
 		//printf("Solver will only return one solution !\n");
@@ -228,6 +271,13 @@ solve_mode get_which_solve_mode_is_asked (char * argv){
 }
 
 
+/**
+ * @brief called if the solve mode is FIND_ONE, and will save only ONE file
+ * @param resArray the result array containing all game_board which solve the one as parameters
+ * @param prefix the name of the file before the extension
+ * @param n unused parameters
+ * @return void
+ **/
 void save_one_solution (game * resArray, char * prefix, int n){
   char * savePrefix = (char*) malloc(sizeof(char) * (strlen(prefix)+strlen(".sol") +strlen("\n")) );
 
@@ -246,6 +296,14 @@ void save_one_solution (game * resArray, char * prefix, int n){
 }
 
 
+
+/**
+ * @brief called if the solve mode is FIND_ALL, and will save only ALL board with one file per solution
+ * @param res the result array containing all game_board which solve the one as parameters
+ * @param prefix the name of the file before the extension
+ * @param nbSol the numbers of solution to save on file
+ * @return void
+ **/
 void save_all_solutions(game * res, char*prefix, int nbSol){
 	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")) *100);
 
@@ -279,11 +337,26 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 		free(savePrefix);
 		free(filename_res);
 	}
-	
+
 	free(suffix);
 }
 
 
+
+/**
+ * @brief called if the solve mode is NB_SOL, will save a file which will containt the number of solution for a board
+ * @param nbSol the int value to print on the file
+
+ /**
+  * @brief called if the solve mode is FIND_ONE, and will save only ONE file
+  * @param resArray the result array containing all game_board which solve the one as parameters
+  * @param prefix the name of the file before the extension
+  * @param n unused parameters
+  * @return void
+  **/
+ * @param prefix the name of the file before the extension
+ * @return void
+ **/
 void save_nb_sol(int nbSol, char * prefix){
 	char suffix[]=".nbsol";
 
@@ -297,6 +370,15 @@ void save_nb_sol(int nbSol, char * prefix){
 }
 
 
+
+/**
+ * @brief called to save the file, work a bit like a crossroad. For each solve_mode will call the required function
+ * @param s the wanted solved_mode (ie. NB_SOL, FIND_ONE or FIND_ALL)
+ * @param nbSol an integer with the number of solutions which has been find
+ * @param res an array which contain all the board which save the original one
+ * @param prefix the name of the file to save before the extension
+ * @return void
+ **/
 void saving_data_from_the_solver (solve_mode s, int nbSol, game * res, char * prefix){
 	switch(s){
 		case FIND_ONE:

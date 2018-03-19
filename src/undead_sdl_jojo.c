@@ -11,7 +11,7 @@
 #include "model.h"
 
 #include "./game_sdl.c"
-#include "./undead_generation.c"
+//#include "./undead_generation.c"
 #include "../header/game.h"
 #include "../header/game_io.h"
 /* **************************************************************** */
@@ -267,7 +267,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   if(is_game_over(env->game)){
     display_on_win(window, ren, env);
     sleep(1);
-    env->game = new_game_generation();
+    //env->game = new_game_generation();
   }
 
 }
