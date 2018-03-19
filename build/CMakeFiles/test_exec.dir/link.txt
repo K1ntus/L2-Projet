@@ -1,1 +1,0 @@
-/usr/bin/cc  -std=c99 -g -Wall -Werror   CMakeFiles/test_exec.dir/src/test.c.o  -o test_exec -rdynamic libgame.a 

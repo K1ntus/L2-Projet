@@ -1,1 +1,0 @@
-/usr/bin/cc  -std=c99 -g -Wall -Werror   CMakeFiles/undead_sdl.dir/src/main_sdl.c.o CMakeFiles/undead_sdl.dir/src/undead_sdl_jojo.c.o  -o undead_sdl -rdynamic -lSDL2 -lSDL2_image -lSDL2 -lSDL2_ttf -lSDL2 -lm libgame.a -lSDL2_image -lSDL2_ttf -lm 
