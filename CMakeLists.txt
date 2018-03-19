@@ -50,8 +50,14 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-add_library(game src/game.c src/game_io.c src/game_display.c src/game_util.c src/game_solver_lib.c src/game_io_util.c)
+option(LIBGAME_TEACHER "teacher version of libgame" ON)
+if(LIBGAME_TEACHER)
+	add_library(game src/teacher/game.o src/teacher/game_io.o src/game_display.c src/game_util.c src/game_solver_lib.c src/game_io_util.c)
+else()
+	add_library(game src/game.c src/game_io.c src/game_display.c src/game_util.c src/game_solver_lib.c src/game_io_util.c)
+endif()
 SET_TARGET_PROPERTIES(game PROPERTIES LINKER_LANGUAGE C)
+
 
 
 #creation de l executable nom + fichiers dependants
