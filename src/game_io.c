@@ -36,7 +36,7 @@
  * @return the loaded game
  **/
 game load_game(char* filename){
-	//chdir("executable/saves");
+	chdir("executable/saves");
 	FILE* file = fopen(filename, "r");
 	if(file == NULL){
 		fprintf(stderr, "Error1 opening the file\n");
@@ -169,7 +169,7 @@ void save_game(cgame g, char* filename){
 	int width = game_width(g);
 
 	//printf("INFO: Creating save file\n");
-	//chdir("executable/saves");
+	chdir("executable/saves");
 	FILE* file = fopen(filename,"w");
 	if(file == NULL){
 		fprintf(stderr, "Error2 opening the file \n");
