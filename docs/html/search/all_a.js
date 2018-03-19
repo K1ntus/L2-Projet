@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['required_5fnb_5fmonsters',['required_nb_monsters',['../game_8h.html#aca77e7a985fd0151b886d1269881be06',1,'game.c']]],
-  ['required_5fnb_5fseen',['required_nb_seen',['../game_8h.html#a2d1e79173e2a907dba55ec253d627184',1,'game.c']]],
-  ['restart_5fgame',['restart_game',['../game_8h.html#a40f53e850b410ed69485680714bdf50f',1,'game.c']]]
+  ['projet_20licence_202_20informatique_20_2d_20université_20bordeaux_20i',['Projet Licence 2 Informatique - Université Bordeaux I',['../md__home_jordan_espaces_Travail_L2_Semestre_Projet_workspace_README.html',1,'']]],
+  ['potential_5finvalid_5fgame',['potential_invalid_game',['../game__fun_8h.html#ae91ae258c4098ed3279c4c5791d38ad0',1,'game_solver_lib.c']]]
 ];

@@ -133,8 +133,8 @@ Functions</h2></td></tr>
 <tr class="memitem:aa60f57c84e732ea41aa493eace3e15bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#aa60f57c84e732ea41aa493eace3e15bd">append_game_array</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> g, <a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res)</td></tr>
 <tr class="memdesc:aa60f57c84e732ea41aa493eace3e15bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: Add a solved board to a game * variable.  <a href="#aa60f57c84e732ea41aa493eace3e15bd">More...</a><br /></td></tr>
 <tr class="separator:aa60f57c84e732ea41aa493eace3e15bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7e80c93fe2eac2a584f0812779ce11b5"><td class="memItemLeft" align="right" valign="top"><a class="anchor" id="a7e80c93fe2eac2a584f0812779ce11b5"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res)</td></tr>
+<tr class="memitem:a7e80c93fe2eac2a584f0812779ce11b5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a7e80c93fe2eac2a584f0812779ce11b5">result_array_init</a> (<a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *res)</td></tr>
+<tr class="memdesc:a7e80c93fe2eac2a584f0812779ce11b5"><td class="mdescLeft">&#160;</td><td class="mdescRight">init the game_board res array with null value for each cells just to be sure  <a href="#a7e80c93fe2eac2a584f0812779ce11b5">More...</a><br /></td></tr>
 <tr class="separator:a7e80c93fe2eac2a584f0812779ce11b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a48c49a6509e71ed33d27ed2b95c56cb4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="game__fun_8h.html#a244f4c8caa07af915d9abcb3980bfef6">solve_mode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="game__fun_8h.html#a48c49a6509e71ed33d27ed2b95c56cb4">get_which_solve_mode_is_asked</a> (char *argv)</td></tr>
 <tr class="memdesc:a48c49a6509e71ed33d27ed2b95c56cb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solver: return the wanted solve mode from input string.  <a href="#a48c49a6509e71ed33d27ed2b95c56cb4">More...</a><br /></td></tr>
@@ -202,6 +202,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>add a char at the end of a string</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>the string which will contain string </td></tr>
+    <tr><td class="paramname">c</td><td>the char variable to append to the end of string </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -238,7 +247,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>add the game to the vector at the first NULL value (and if there's less than 5 solutions) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>add the game to the vector at the first NULL value (and if there's less than 5 solutions)</dd></dl>
+<p>Solver: Add a solved board to a game * variable.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game board to analyse </td></tr>
+    <tr><td class="paramname">res</td><td>the game result array where we want to append the first parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
 </div>
@@ -274,7 +292,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if already saved, false sinon </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if already saved, false sinon</dd></dl>
+<p>Solver: verify if the solution to compare already exist.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game board to compare with </td></tr>
+    <tr><td class="paramname">array</td><td>an array with all already saved game board from sovler </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if alreade saved, else false </dd></dl>
 
 </div>
 </div>
@@ -299,7 +326,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if the board doesnt have any EMPTY cell, else false </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the board doesnt have any EMPTY cell, else false</dd></dl>
+<p>verify if every cells aren't EMPTY</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game board </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if the board is full, either false </dd></dl>
 
 </div>
 </div>
@@ -335,7 +370,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a string with the result </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a string with the result</dd></dl>
+<p>concat s1 with s2</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s1</td><td>the first part of the result string </td></tr>
+    <tr><td class="paramname">s2</td><td>the second part of the result string </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a string </dd></dl>
 
 </div>
 </div>
@@ -360,7 +404,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>a monster type (ZOMBIE; GHOST; SPIRIT; VAMPIRE) </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>a monster type (ZOMBIE; GHOST; SPIRIT; VAMPIRE)</dd></dl>
+<p>convert a char c to a content type</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">c</td><td>the char entry parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>the correspondant content_type, or EMPTY if dont understand the char </dd></dl>
 
 </div>
 </div>
@@ -427,7 +479,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>'"FIND_ONE, FIND_ALL or NB_SOL"' </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>'"FIND_ONE, FIND_ALL or NB_SOL"'</dd></dl>
+<p>Solver: return the wanted solve mode from input string.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">argv</td><td>a string from launch parameters </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>solve_mode equals to NB_SOL, FIND_ONE or FIND_ALL </dd></dl>
 
 </div>
 </div>
@@ -452,7 +512,40 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
-<dl class="section return"><dt>Returns</dt><dd>true if invalid game </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>true if invalid game</dd></dl>
+<p>Solver: working on, check if its worth to continue on this board.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">g</td><td>the game board to analyse </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true if this game would be not solved this way, else true </dd></dl>
+
+</div>
+</div>
+<a class="anchor" id="a7e80c93fe2eac2a584f0812779ce11b5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void result_array_init </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="game_8h.html#a6506ae481babb520162987a6cc2e10ed">game</a> *&#160;</td>
+          <td class="paramname"><em>res</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>init the game_board res array with null value for each cells just to be sure </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">res</td><td>the result array of game board </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>char* void </dd></dl>
 
 </div>
 </div>
@@ -495,6 +588,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Solver: save all (max.5) game board which resolve the one as parameters.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">res</td><td>the result array containing all game_board which solve the one as parameters </td></tr>
+    <tr><td class="paramname">prefix</td><td>the name of the file before the extension </td></tr>
+    <tr><td class="paramname">nbSol</td><td>the numbers of solution to save on file </td></tr>
+  </table>
+  </dd>
+</dl>
 <dl class="section return"><dt>Returns</dt><dd>void </dd></dl>
 
 </div>
@@ -530,6 +633,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
     <tr><td class="paramname">res</td><td>an array with all available solutions </td></tr>
     <tr><td class="paramname">nbSol</td><td>the numbers of solutions </td></tr>
     <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Solver: save the number of solution on a file.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">nbSol</td><td>the int value to print on the file </td></tr>
+    <tr><td class="paramname">prefix</td><td>the name of the file before the extension </td></tr>
   </table>
   </dd>
 </dl>
@@ -573,6 +685,16 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
     <tr><td class="paramname">resArray</td><td>an array with all available solutions </td></tr>
     <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
     <tr><td class="paramname">n</td><td>should be set at 0 ! REALLY </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Solver: save one game board which resolve the one as parameters.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">resArray</td><td>the result array containing all game_board which solve the one as parameters </td></tr>
+    <tr><td class="paramname">prefix</td><td>the name of the file before the extension </td></tr>
+    <tr><td class="paramname">n</td><td>unused parameters </td></tr>
   </table>
   </dd>
 </dl>
@@ -623,6 +745,17 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>result_array_init</b>
     <tr><td class="paramname">nbSol</td><td>the numbers of solutions </td></tr>
     <tr><td class="paramname">res</td><td>an array with all available solutions </td></tr>
     <tr><td class="paramname">prefix</td><td>the string for the beginning of the file </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>void</dd></dl>
+<p>Solver: save the data from solver depending of the solving mode.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">s</td><td>the wanted solved_mode (ie. NB_SOL, FIND_ONE or FIND_ALL) </td></tr>
+    <tr><td class="paramname">nbSol</td><td>an integer with the number of solutions which has been find </td></tr>
+    <tr><td class="paramname">res</td><td>an array which contain all the board which save the original one </td></tr>
+    <tr><td class="paramname">prefix</td><td>the name of the file to save before the extension </td></tr>
   </table>
   </dd>
 </dl>
