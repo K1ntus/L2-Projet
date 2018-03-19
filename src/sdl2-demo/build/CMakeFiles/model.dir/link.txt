@@ -1,1 +1,0 @@
-/usr/bin/cc  -std=c99 -g -Wall   CMakeFiles/model.dir/main.c.o CMakeFiles/model.dir/model.c.o  -o model -rdynamic -lSDL2 -lSDL2_image -lSDL2 -lSDL2_ttf -lSDL2 -lm -lSDL2_image -lSDL2_ttf -lm 

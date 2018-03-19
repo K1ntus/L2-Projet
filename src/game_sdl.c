@@ -38,12 +38,12 @@ typedef struct mirror_type{
   SDL_Texture * hmirror;
 } * s_mirror_type;
 
-typedef struct {
+typedef struct s_top_corner {
   int x;
   int y;
 } s_top_corner;
 
-typedef struct{
+typedef struct s_cell_selected{
   int x;
   int y;
 } s_cell_selected;
