@@ -11,7 +11,7 @@
 #include "model.h"
 
 #include "./game_sdl.c"
-//#include "./undead_generation.c"
+#include "./game_generation.c"
 #include "../header/game.h"
 #include "../header/game_io.h"
 /* **************************************************************** */
@@ -57,7 +57,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   Env * env = malloc(sizeof(struct Env_t));
   env-> mirror_type = malloc(sizeof(struct mirror_type));
   env-> monster_type = malloc(sizeof(struct monster_type));
-  env-> game = load_game("../executable/saves/exemple1.txt");
+  env-> game = new_game_generation();
   env->top_corner.x = 0;
   env->top_corner.y = 0;
   env->cell_selected.x = 0;
@@ -267,7 +267,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   if(is_game_over(env->game)){
     display_on_win(window, ren, env);
     sleep(1);
-    //env->game = new_game_generation();
+    env->game = new_game_generation();
   }
 
 }

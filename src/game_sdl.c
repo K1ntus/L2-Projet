@@ -4,6 +4,8 @@
 #include <stdbool.h>
 #include <math.h>
 
+#include "./game_content_converter.c"
+
 #include "../header/game_display.h"
 #include "../header/game_io.h"
 #include "../header/game.h"
@@ -15,13 +17,14 @@
 #define FONT "../ressources/Arial.ttf"
 #define FONTSIZE 36
 
-
+/*
 typedef struct required_nb_seen{
   SDL_Texture * west;
   SDL_Texture * east;
   SDL_Texture * south;
   SDL_Texture * north;
 } * s_required_nb_seen;
+*/
 
 typedef struct monster_type{
   SDL_Texture * zombie;
@@ -84,13 +87,7 @@ typedef struct Env_t {
 }Env;
 
 
-#ifndef _CONVERT_
-char* convert_int_to_string(char*str, int val){
-	char * res = (char *) malloc(sizeof(char) * (strlen(str)+val/10) );
-	sprintf(res, "%s%d",str,val);
-	return res;
-}
-#endif //	CONVERT
+
 
 SDL_Surface * sdl_text_from_string(char * str){
 	SDL_Color color = { 0, 0, 255, 255 };//Blue color in RBG
@@ -136,50 +133,14 @@ SDL_Surface * sdl_text_from_string_required_nb_monsters(Env * env, char * str){
 void get_required_nb_monsters(game g, content monster, char* res){
 	int val = required_nb_monsters(g, monster);
 	convert_int_to_string(res, val);
+  return;
 }
 
 void get_required_nb_seen(game g, unsigned int pos, direction dir, char* res){
 	int val = required_nb_seen(g, dir, pos);
 	convert_int_to_string(res,val);
+  return;
 }
-
-char convert_int_to_content(int mstr){
-	switch(mstr){
-		case 0:	return VAMPIRE; break;
-		case 1:	return ZOMBIE; break;
-		case 2:	return GHOST; break;
-		case 3:	return SPIRIT; break;
-		case 4:	return EMPTY; break;
-		default:	return EMPTY; break;
-	}
-	return MIRROR;//Error case ?
-}
-
-
-char convert_content_to_char(content mstr){
-	switch(mstr){
-		case VAMPIRE:	return 'V'; break;
-		case ZOMBIE:	return 'Z'; break;
-		case GHOST:	return 'G'; break;
-		case SPIRIT:	return 'S'; break;
-		case EMPTY:	return 'E'; break;
-		default:	return 'E'; break;
-	}
-	return '0';
-}
-
-content convert_char_to_content(char mstr){
-	switch(mstr){
-		case 'V':	return VAMPIRE; break;
-		case 'Z':	return ZOMBIE; break;
-		case 'G':	return GHOST; break;
-		case 'S':	return SPIRIT; break;
-		case 'E':	return EMPTY; break;
-		default:	return EMPTY; break;
-	}
-	return MIRROR;//Error case ?
-}
-
 
 //Position de la souris, ou entrée clavier pour choisir un monstre, je ne sais pas encore
 void convert_sdl_input_to_position(unsigned int pos_src, unsigned int * x, unsigned int * y){

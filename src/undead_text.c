@@ -41,7 +41,7 @@ Pour l'affichage, vous devez respecter la convention suivante :
 #include "../header/game_fun.h"
 #include "../header/game.h"
 
-
+#include "./game_content_converter.c"
 
 #define clear() printf("\033[H\033[y")
 

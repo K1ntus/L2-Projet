@@ -124,9 +124,9 @@ char* concat(const char *s1, const char *s2);
  * @brief convert an integer to a string and append it at the end of a char* variable
  * @param str a string
  * @param val the integer to convert
- * @return char* output
+ * @return char*
  **/
-char* convert_int_to_string(char* output, char*str, int val);
+char* convert_int_to_string(char*str, int val);
 
 
 /**

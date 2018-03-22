@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <time.h>
 
 #include "../header/game.h"
 #include "../header/game_io.h"
@@ -48,53 +49,4 @@ char* concat(const char *s1, const char *s2){
 		strcpy(result, s1);
 		strcat(result, s2);
 		return result;
-}
-
-
-
-
-/**
- * @brief convert the int parameters to a string variable, concat it to a string and return it
- * @param str the string where the integer will be add (note: could be "");
- * @param val the integer to convert
- * @return char* str@val
- **/
-char* convert_int_to_string(char*str, int val){
-	char * res = (char *) malloc(sizeof(char) * (strlen(str)+val/10) );
-	sprintf(res, "%s%d",str,val);
-	return res;
-}
-
-
-
-
-/**
- * @brief convert a char to a content_type
- * @param c the char entry parameters
- * @return the correspondant content_type, or EMPTY if dont understand the char
- **/
-content convert_char_to_content(char c){
-	switch(c){
-		case 'G':
-			return GHOST;
-		case 'g':
-			return GHOST;
-		case 'S':
-			return SPIRIT;
-		case 's':
-			return SPIRIT;
-		case 'V':
-			return VAMPIRE;
-		case 'v':
-			return VAMPIRE;
-		case 'z':
-			return ZOMBIE;
-		case 'Z':
-			return ZOMBIE;
-		case 'e':
-			return EMPTY;
-		case 'E':
-			return EMPTY;
-	}
-	return EMPTY;
 }

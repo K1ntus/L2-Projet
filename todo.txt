@@ -10,7 +10,7 @@ ITS OK:
 	* Sélection du mob
 	* Placement/Supression du mob
 	* Display si 'is_game_over'
-	* Menu ? (ie. options (fullscreen, son, ... ?), générer new bord, générer la solution, etc) => VRAIMENT LATER J'PENSE
+
 
 
 
@@ -19,6 +19,7 @@ ITS OK:
 Amir -> fuite mémoire solver !
 Athman -> optimiser le solver
 Sarah -> Rajouter des tests
+Sarah -> Boutons restart game, new game, solve game
 Amir -> Corriger solver si width != height
 Jojo -> Redondance de code entre undead_text.c et undead_sdl.c
 				->Créer un toolbox
@@ -36,6 +37,8 @@ Jojo -> Redondance de code entre undead_text.c et undead_sdl.c
 -> Passer certaines functions en static dans les libs
 -> Finir la doc des sous-libs
 -> fct. pour la génération aléatoire du board
+-> bouton solve, restart, new board
+		* Menu ? (ie. options (fullscreen, son, ... ?), générer new bord, générer la solution, etc) => VRAIMENT LATER J'PENSE
 
 
 
