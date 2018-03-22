@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 
 #include "../header/game.h"
 #include "../header/game_io.h"
@@ -280,6 +281,7 @@ solve_mode get_which_solve_mode_is_asked (char * argv){
  **/
 void save_one_solution (game * resArray, char * prefix, int n){
   char * savePrefix = (char*) malloc(sizeof(char) * (strlen(prefix)+strlen(".sol") +strlen("\n")) );
+	assert(savePrefix);
 
 	copy_string(savePrefix, prefix);
 	strcat(savePrefix, ".sol");
@@ -288,6 +290,10 @@ void save_one_solution (game * resArray, char * prefix, int n){
 		save_game(resArray[n], savePrefix);
 	else{
 		FILE * f = fopen(prefix, "w");
+		if (f == NULL){
+			fprintf(stderr,"Error Openning the file in fct save_one_solution\n");
+			exit(EXIT_FAILURE);
+		}
 		fprintf(f,"NO SOLUTION\n");
 		fclose(f);
 	}
@@ -306,6 +312,7 @@ void save_one_solution (game * resArray, char * prefix, int n){
  **/
 void save_all_solutions(game * res, char*prefix, int nbSol){
 	char * suffix = (char*) malloc(sizeof(char) * (strlen(".sol")) *100);
+	assert(suffix);
 
 	for(int i = 0; i < 50; i++){
 		if(res[i] == NULL){
@@ -316,6 +323,9 @@ void save_all_solutions(game * res, char*prefix, int nbSol){
 		char * savePrefix = (char*) malloc(sizeof(char) * strlen(prefix)*100);
 		char * suffixRes = (char*) malloc(sizeof(char) * (strlen(".sol") + 10)*5);
 		char * filename_res = (char*) malloc(sizeof(char) * (strlen(prefix) + 10 + strlen(".sol") +1) * 25);
+		assert(savePrefix);
+		assert(suffixRes);
+		assert(filename_res);
 
 		strcpy(savePrefix,prefix);
 
@@ -355,6 +365,10 @@ void save_nb_sol(int nbSol, char * prefix){
 	strcat(prefix, suffix);
 	printf("%s !\n", prefix);
 	FILE * f = fopen(prefix, "w");
+	if(f == NULL){
+		fprintf(stderr, "Error Openning the file in fct save_nb_sol\n");
+		exit(EXIT_FAILURE);
+	}
 
 	fprintf(f,"NB_SOL = %d\n",nbSol);
 
