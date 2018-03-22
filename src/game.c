@@ -367,7 +367,7 @@ bool add_monster(game game, content monster, int col, int line){
 																|| game->matrice[col][line] == VMIRROR
 																|| game->matrice[col][line] == HMIRROR){
 		return false;
-	} else if(required_nb_monsters(game,monster)-current_nb_monsters(game, monster) == 0){
+	} else if(required_nb_monsters(game,monster)-current_nb_monsters(game, monster) <= 0){
 
 		return false;
 

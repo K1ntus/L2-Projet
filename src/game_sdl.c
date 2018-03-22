@@ -175,7 +175,7 @@ void get_which_cells_is_selected(int posX, int posY, Env* env){
   else
     env->cell_selected.x = 0;
 
-  if(valY >=0 && valY< game_width(env->game))
+  if(valY >=0 && valY< game_height(env->game))
     env->cell_selected.y = valY;
   else
     env->cell_selected.y = 0;
@@ -190,24 +190,66 @@ void place_assets(int x, int y, content mstr, SDL_Window* window, SDL_Renderer* 
 	switch(mstr){
 		case ZOMBIE:
 			SDL_QueryTexture(env->monster_type->zombie, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->monster_type->zombie, NULL, &rect);
 			return;
 			break;
 		case VAMPIRE:
 			SDL_QueryTexture(env->monster_type->vampire, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->monster_type->vampire, NULL, &rect);
 			return;
 			break;
 		case GHOST:
 			SDL_QueryTexture(env->monster_type->ghost, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->monster_type->ghost, NULL, &rect);
 			return;
 			break;
 		case SPIRIT:
 			SDL_QueryTexture(env->monster_type->spirit, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->monster_type->spirit, NULL, &rect);
 			return;
@@ -216,24 +258,64 @@ void place_assets(int x, int y, content mstr, SDL_Window* window, SDL_Renderer* 
 
 		case MIRROR:
 			SDL_QueryTexture(env->mirror_type->mirror, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->mirror_type->mirror, NULL, &rect);
 			return;
 			break;
 		case ANTIMIRROR:
 			SDL_QueryTexture(env->mirror_type->antimirror, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->mirror_type->antimirror, NULL, &rect);
 			return;
 			break;
 		case HMIRROR:
 			SDL_QueryTexture(env->mirror_type->hmirror, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->mirror_type->hmirror, NULL, &rect);
 			return;
 			break;
 		case VMIRROR:
 			SDL_QueryTexture(env->mirror_type->vmirror, NULL, NULL, &rect.w, &rect.h);
+
+      while(rect.w > env->cell_size.width)
+        rect.w -=1;
+      while(rect.w < env->cell_size.width)
+        rect.w +=1;
+      while(rect.h > env->cell_size.height)
+        rect.h -=1;
+      while(rect.h < env->cell_size.height)
+        rect.h +=1;
+
 			rect.x = x+1/2*rect.w; rect.y = y+1/2*rect.h;
 			SDL_RenderCopy(ren, env->mirror_type->vmirror, NULL, &rect);
 			return;
