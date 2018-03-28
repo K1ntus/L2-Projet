@@ -38,7 +38,14 @@ option(NSX_TIDY "Add clang-tidy custom target" OFF)
 enable_testing()
 
 #Mode debug
-option(ENABLE_DEBUG ON)
+
+option(ENABLE_DEBUG "debug options" ON)
+if(ENABLE_DEBUG)
+set(CMAKE_C_FLAGS "-std=c99 -g -fprofile-arcs -ftest-coverage -Wall")
+set(CMAKE_LD_FLAGS "-fprofile-arcs -ftest-coverage")
+else()
+set(CMAKE_C_FLAGS "-std=c99 -O3 -Wall")
+endif()
 
 #initialisation variable -> parametre de compilation
 set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")

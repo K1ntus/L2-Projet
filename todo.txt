@@ -16,13 +16,13 @@ ITS OK:
 
 
 	FOR NOW:
-Amir -> fuite mémoire solver !
-Athman -> optimiser le solver
-Sarah -> Rajouter des tests
-Sarah -> Boutons restart game, new game, solve game
-Amir -> Corriger solver si width != height
-Jojo -> Redondance de code entre undead_text.c et undead_sdl.c
-				->Créer un toolbox
+Amir 		-> fuite mémoire solver !
+Athman 	-> optimiser le solver
+Sarah 	-> Rajouter des tests
+Sarah 	-> Boutons restart game, new game, solve game
+Amir 		-> Corriger solver si width != height
+Jojo 		-> Redondance de code entre undead_text.c et undead_sdl.c
+						->Créer un toolbox
 
 
 

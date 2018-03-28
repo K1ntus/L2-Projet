@@ -5,6 +5,7 @@
 #include <math.h>
 
 #include "./game_content_converter.c"
+#include "./game_generation.c"
 
 #include "../header/game_display.h"
 #include "../header/game_io.h"
@@ -51,6 +52,18 @@ typedef struct s_cell_selected{
   int y;
 } s_cell_selected;
 
+typedef struct s_new_game{
+  SDL_Texture * img;
+  int top_x, top_y;
+  int height,width;
+} s_new_game;
+
+typedef struct s_restart{
+  SDL_Texture * img;
+  int top_x, top_y;
+  int height,width;
+} s_restart;
+
 typedef struct{
   int width;
   int height;
@@ -73,10 +86,15 @@ typedef struct{
 typedef struct Env_t {
 	game game;
 
+  int windowWidth,windowHeight;
+
   SDL_Texture * background;
 
   s_mirror_type mirror_type;
   s_monster_type monster_type;
+
+  s_restart restart_button;
+  s_new_game new_game_button;
 
   SDL_Texture * text;
 
@@ -85,7 +103,6 @@ typedef struct Env_t {
   content monster_selected;	//Save the last pos when we
 	s_cell_selected cell_selected;	//Save the cell pointed by a position with the mouse, use convert_sdl_input_to_position(pos_src,x,y) on game_sdl.c
 }Env;
-
 
 
 
@@ -162,7 +179,23 @@ bool toggle_fullscreen(SDL_Window* window,unsigned int flags){
 }
 
 
+bool press_on_button(int posX, int posY, Env * env){
+  if (posX <  env->new_game_button.width + env->new_game_button.top_x){
+    if(posY >env->restart_button.top_y && posY < env->restart_button.top_y+env->restart_button.width*2){
+      printf("New game generation !\n");
+      env->game = new_game_generation();
+      return true;
+    }else if(posY >env->new_game_button.top_y && posY < env->new_game_button.top_y+env->new_game_button.width*2){
+      printf("Restart game !\n");
+      restart_game(env->game);
+      return true;
+    }
+  }
+  return false;
+}
 void get_which_cells_is_selected(int posX, int posY, Env* env){
+  if(press_on_button(posX, posY, env))
+    return;
   int topCorner_x=env->top_corner.x;
   int topCorner_y=env->top_corner.y;
   int cell_width=env->cell_size.width;
@@ -181,6 +214,7 @@ void get_which_cells_is_selected(int posX, int posY, Env* env){
     env->cell_selected.y = 0;
 
   printf("DEBUG: pos selected is: (%d;%d)\n", env->cell_selected.x,env->cell_selected.y);
+  printf("DEBUG: required - Zombie:%d, Ghost: %d, Spirit:%d, Vampire:%d -\n", required_nb_monsters(env->game, ZOMBIE), required_nb_monsters(env->game, GHOST), required_nb_monsters(env->game, SPIRIT), required_nb_monsters(env->game, VAMPIRE));
 
 }
 

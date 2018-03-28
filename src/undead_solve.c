@@ -16,6 +16,19 @@
 content monster[4] = {ZOMBIE, GHOST, VAMPIRE,SPIRIT};
 //int nb_iterations = 0;
 
+
+typedef struct {
+	game * res;
+	int size;
+} result_array;
+
+void realloc_game_solve_array(result_array s_solve){
+	if(s_solve.res != NULL){
+		s_solve.res = realloc(s_solve.res, sizeof(s_solve.res)*2);
+		s_solve.size *=2;
+	}
+}
+
 bool cell_is_mirror(game g, int x, int y){
 	content cell = get_content(g, x, y);
 	if(cell == MIRROR || cell == ANTIMIRROR || cell == VMIRROR || cell == HMIRROR)

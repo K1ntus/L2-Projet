@@ -11,7 +11,6 @@
 #include "model.h"
 
 #include "./game_sdl.c"
-#include "./game_generation.c"
 #include "../header/game.h"
 #include "../header/game_io.h"
 /* **************************************************************** */
@@ -30,6 +29,8 @@
 #define NB_MONSTERS 4
 
 #define BACKGROUND "../ressources/background.png"
+#define NEW_GAME "../ressources/restart.png"
+#define RESTART_GAME "../ressources/new_game.png"
 
 #define EMPTY "../ressources/empty.png"
 
@@ -105,6 +106,11 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   env->monster_type->vampire = IMG_LoadTexture(ren, VAMPIRE);
   if(!env->monster_type->vampire) ERROR("IMG_LoadTexture: %s\n", VAMPIRE);
 
+  env->new_game_button.img = IMG_LoadTexture(ren, NEW_GAME);
+  if(!env->new_game_button.img) ERROR("IMG_LoadTexture: %s\n", NEW_GAME);
+
+  env->restart_button.img = IMG_LoadTexture(ren, RESTART_GAME);
+  if(!env->restart_button.img) ERROR("IMG_LoadTexture: %s\n", RESTART_GAME);
 
   /* init text texture using Arial font */
     //If required_nb_monster-current_nb_monster == 0 couleur = rouge sinon couleur = noir
@@ -141,6 +147,7 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   /* get current window size */
   int windowWidth, windowHeight;
   SDL_GetWindowSize(window, &windowWidth, &windowHeight);
+  env->windowHeight = windowHeight, env->windowWidth = windowWidth;
 
 	//int y_upset = windowHeight/10;
 	//int x_upset = windowHeight/5;
@@ -204,7 +211,8 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 		label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x = posX-(last_img_width) - windowWidth/20; rect.y = windowHeight - rect.h; //Monster have a height of 64px
+		//rect.x = posX-(last_img_width) - windowWidth/20; rect.y = windowHeight - rect.h; //Monster have a height of 64px
+		rect.x = posX-(last_img_width) - windowWidth/20; rect.y = cell_height*(game_height(env->game)+1) + rect.h*2; //Monster have a height of 64px
 		SDL_RenderCopy(ren, label, NULL, &rect);
 	}
 
@@ -218,8 +226,9 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
 
 		SDL_Texture * label = SDL_CreateTextureFromSurface(ren, label_value);
 		SDL_QueryTexture(label, NULL, NULL, &rect.w, &rect.h);
-		rect.x = windowWidth - windowWidth/10; rect.y =  windowHeight/6 + rect.h + cell_height*x; //Monster have a height of 64px
-		SDL_RenderCopy(ren, label, NULL, &rect);
+    //rect.x = windowWidth - windowWidth/10; rect.y =  windowHeight/6 + rect.h + cell_height*x; //Monster have a height of 64px
+    rect.x = cell_width*(game_width(env->game)+1) + rect.w*2; rect.y =  windowHeight/6 + rect.h + cell_height*x; //Monster have a height of 64px
+    SDL_RenderCopy(ren, label, NULL, &rect);
 
 
 		//WEST
@@ -262,6 +271,28 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   env->top_corner.x = topCorner_x;
   env->top_corner.y=topCorner_y;
   display_monsters_on_board(topCorner_x, topCorner_y,  window,  ren, env, cell_width, cell_height);
+
+
+  //Display new game button
+  SDL_QueryTexture(env->new_game_button.img, NULL, NULL, &rect.w, &rect.h);
+  rect.w /=2, rect.h /=2;
+  rect.x =  0; rect.y = windowHeight-rect.h;
+  env->new_game_button.top_x = rect.x;
+  env->new_game_button.top_y = rect.y;
+  env->new_game_button.width = rect.w;
+  env->new_game_button.height = rect.h;
+  SDL_RenderCopy(ren, env->new_game_button.img, NULL, &rect);
+
+  //Display restart button
+  SDL_QueryTexture(env->restart_button.img, NULL, NULL, &rect.w, &rect.h);
+  rect.w /=2, rect.h /=2;
+  rect.x = 0; rect.y = windowHeight-(2*rect.h);
+  env->restart_button.top_x = rect.x;
+  env->restart_button.top_y = rect.y;
+  env->restart_button.width = rect.w;
+  env->restart_button.height = rect.h;
+  SDL_RenderCopy(ren, env->restart_button.img, NULL, &rect);
+
 
 
   if(is_game_over(env->game)){
@@ -359,6 +390,9 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env){
   SDL_DestroyTexture(env->background);
   SDL_DestroyTexture(env->text);
 
+  SDL_DestroyTexture(env->restart_button.img);
+  SDL_DestroyTexture(env->new_game_button.img);
+  
 	delete_game(env->game);
 
   free(env);
