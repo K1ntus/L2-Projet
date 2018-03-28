@@ -21,33 +21,33 @@
 #define INIT_WIDTH_REQ_MSTRS 100
 #define INIT_HEIGHT 100
 
-#define FONT "../ressources/Arial.ttf"
+#define FONT_SRC "../ressources/Arial.ttf"
 #define FONTSIZE 36
 #define WIDTH_SHIFT 100
 #define HEIGHT_SHIFT 250
 
 #define NB_MONSTERS 4
 
-#define BACKGROUND "../ressources/background.png"
-#define NEW_GAME "../ressources/restart.png"
-#define RESTART_GAME "../ressources/new_game.png"
-#define SOLUTION "../ressources/solution.png"
+#define BACKGROUND_SRC "../ressources/background.png"
+#define NEW_GAME_SRC "../ressources/restart.png"
+#define RESTART_GAME_SRC "../ressources/new_game.png"
+#define SOLUTION_SRC "../ressources/solution.png"
 
-#define EMPTY "../ressources/empty.png"
+#define EMPTY_SRC "../ressources/empty.png"
 
-#define MIRROR "../ressources/mirror.png"
-#define ANTIMIRROR "../ressources/antimirror.png"
-#define VMIRROR "../ressources/vmirror.png"
-#define HMIRROR "../ressources/hmirror.png"
+#define MIRROR_SRC "../ressources/mirror.png"
+#define ANTIMIRROR_SRC "../ressources/antimirror.png"
+#define VMIRROR_SRC "../ressources/vmirror.png"
+#define HMIRROR_SRC "../ressources/hmirror.png"
 
-#define VAMPIRE "../ressources/vampire.gif"
-#define GHOST "../ressources/ghost.gif"
-#define SPIRIT "../ressources/spirit.png"
-#define ZOMBIE "../ressources/zombie.png"
+#define VAMPIRE_SRC "../ressources/vampire.gif"
+#define GHOST_SRC "../ressources/ghost.gif"
+#define SPIRIT_SRC "../ressources/spirit.png"
+#define ZOMBIE_SRC "../ressources/zombie.png"
 
-#define QUIT "../ressources/exit.png"
-#define OPTIONS "../ressources/settings.png"
-#define SOLVE "../ressources/solver.png"
+#define QUIT_SRC "../ressources/exit.png"
+#define OPTIONS_SRC "../ressources/settings.png"
+#define SOLVE_SRC "../ressources/solver.png"
 
 /* **************************************************************** */
 
@@ -68,53 +68,53 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   env->monster_selected = (content) EMPTY;
 
   /* init background texture from PNG image */
-  env->background = IMG_LoadTexture(ren, BACKGROUND);
-  if(!env->background) ERROR("IMG_LoadTexture: %s\n", BACKGROUND);
+  env->background = IMG_LoadTexture(ren, BACKGROUND_SRC);
+  if(!env->background) ERROR("IMG_LoadTexture: %s\n", BACKGROUND_SRC);
 
   /* init empty cell texture from PNG image */
-  env->monster_type->empty = IMG_LoadTexture(ren, EMPTY);
-  if(!env->monster_type->empty) ERROR("IMG_LoadTexture: %s\n", EMPTY);
+  env->monster_type->empty = IMG_LoadTexture(ren, EMPTY_SRC);
+  if(!env->monster_type->empty) ERROR("IMG_LoadTexture: %s\n", EMPTY_SRC);
 
   /* init mirrors texture from PNG image */
-  env->mirror_type->mirror = IMG_LoadTexture(ren, MIRROR);
-  if(!env->mirror_type->mirror) ERROR("IMG_LoadTexture: %s\n", MIRROR);
+  env->mirror_type->mirror = IMG_LoadTexture(ren, MIRROR_SRC);
+  if(!env->mirror_type->mirror) ERROR("IMG_LoadTexture: %s\n", MIRROR_SRC);
 
   /* init antimirrors texture from PNG image */
-  env->mirror_type->antimirror = IMG_LoadTexture(ren, ANTIMIRROR);
-  if(!env->mirror_type->antimirror) ERROR("IMG_LoadTexture: %s\n", ANTIMIRROR);
+  env->mirror_type->antimirror = IMG_LoadTexture(ren, ANTIMIRROR_SRC);
+  if(!env->mirror_type->antimirror) ERROR("IMG_LoadTexture: %s\n", ANTIMIRROR_SRC);
 
   /* init vmirrors texture from PNG image */
-  env->mirror_type->vmirror = IMG_LoadTexture(ren, VMIRROR);
-  if(!env->mirror_type->vmirror) ERROR("IMG_LoadTexture: %s\n", VMIRROR);
+  env->mirror_type->vmirror = IMG_LoadTexture(ren, VMIRROR_SRC);
+  if(!env->mirror_type->vmirror) ERROR("IMG_LoadTexture: %s\n", VMIRROR_SRC);
 
   /* init hmirrors texture from PNG image */
-  env->mirror_type->hmirror = IMG_LoadTexture(ren, HMIRROR);
-  if(!env->mirror_type->hmirror) ERROR("IMG_LoadTexture: %s\n", HMIRROR);
+  env->mirror_type->hmirror = IMG_LoadTexture(ren, HMIRROR_SRC);
+  if(!env->mirror_type->hmirror) ERROR("IMG_LoadTexture: %s\n", HMIRROR_SRC);
 
   /* init zombie texture from PNG image */
-  env->monster_type->zombie = IMG_LoadTexture(ren, ZOMBIE);
-  if(!env->monster_type->zombie) ERROR("IMG_LoadTexture: %s\n", ZOMBIE);
+  env->monster_type->zombie = IMG_LoadTexture(ren, ZOMBIE_SRC);
+  if(!env->monster_type->zombie) ERROR("IMG_LoadTexture: %s\n", ZOMBIE_SRC);
 
   /* init spirit texture from PNG image */
-  env->monster_type->spirit = IMG_LoadTexture(ren, SPIRIT);
-  if(!env->monster_type->spirit) ERROR("IMG_LoadTexture: %s\n", SPIRIT);
+  env->monster_type->spirit = IMG_LoadTexture(ren, SPIRIT_SRC);
+  if(!env->monster_type->spirit) ERROR("IMG_LoadTexture: %s\n", SPIRIT_SRC);
 
   /* init ghost texture from PNG image */
-  env->monster_type->ghost = IMG_LoadTexture(ren, GHOST);
-  if(!env->monster_type->ghost) ERROR("IMG_LoadTexture: %s\n", GHOST);
+  env->monster_type->ghost = IMG_LoadTexture(ren, GHOST_SRC);
+  if(!env->monster_type->ghost) ERROR("IMG_LoadTexture: %s\n", GHOST_SRC);
 
   /* init vampire texture from PNG image */
-  env->monster_type->vampire = IMG_LoadTexture(ren, VAMPIRE);
-  if(!env->monster_type->vampire) ERROR("IMG_LoadTexture: %s\n", VAMPIRE);
+  env->monster_type->vampire = IMG_LoadTexture(ren, VAMPIRE_SRC);
+  if(!env->monster_type->vampire) ERROR("IMG_LoadTexture: %s\n", VAMPIRE_SRC);
 
-  env->new_game_button.img = IMG_LoadTexture(ren, NEW_GAME);
-  if(!env->new_game_button.img) ERROR("IMG_LoadTexture: %s\n", NEW_GAME);
+  env->new_game_button.img = IMG_LoadTexture(ren, NEW_GAME_SRC);
+  if(!env->new_game_button.img) ERROR("IMG_LoadTexture: %s\n", NEW_GAME_SRC);
 
-  env->restart_button.img = IMG_LoadTexture(ren, RESTART_GAME);
-  if(!env->restart_button.img) ERROR("IMG_LoadTexture: %s\n", RESTART_GAME);
+  env->restart_button.img = IMG_LoadTexture(ren, RESTART_GAME_SRC);
+  if(!env->restart_button.img) ERROR("IMG_LoadTexture: %s\n", RESTART_GAME_SRC);
 
-  env->solution.img = IMG_LoadTexture(ren, SOLUTION);
-  if(!env->solution.img) ERROR("IMG_LoadTexture: %s\n", SOLUTION);
+  env->solution.img = IMG_LoadTexture(ren, SOLUTION_SRC);
+  if(!env->solution.img) ERROR("IMG_LoadTexture: %s\n", SOLUTION_SRC);
 
   /* init text texture using Arial font */
     //If required_nb_monster-current_nb_monster == 0 couleur = rouge sinon couleur = noir
@@ -126,7 +126,7 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
   if(!font) ERROR("TTF_OpenFont: %s\n", FONT);
   TTF_SetFontStyle(font, TTF_STYLE_BOLD); // TTF_STYLE_ITALIC | TTF_STYLE_NORMAL
 
-  SDL_Surface * surf = TTF_RenderText_Blended(font, "0", color); // blended rendering for ultra nice text
+  SDL_Surface * surf = TTF_RenderText_Blended(font,"0", color); // blended rendering for ultra nice text
   env->required_nb_seen->west = SDL_CreateTextureFromSurface(ren, surf);
   SDL_FreeSurface(surf);
 
@@ -191,8 +191,31 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   int cell_width = (windowWidth - ((windowWidth/10 + last_img_width))) / (game_width(env->game)+1);
   int cell_height = (windowHeight - ((windowHeight/10+last_img_width))) / (game_height(env->game)+1);
   int last_img_y_position;
-
-
+  SDL_Surface * name;
+    for(unsigned int x = 1; x < NB_MONSTERS+1; x++){
+      content c = convert_int_to_content(x-1);
+  		switch (c){
+        case VAMPIRE:
+           name =  sdl_text_from_string("Vampire :");
+          break;
+        case GHOST:
+          name = sdl_text_from_string("Ghost :");
+          break;
+        case ZOMBIE:
+          name =  sdl_text_from_string("Zombie :");
+          break;
+        case SPIRIT:
+          name = sdl_text_from_string("Spirit :");
+          break;
+        default:
+          break;
+      }
+  		SDL_Texture * monster_name = SDL_CreateTextureFromSurface(ren, name);
+      SDL_QueryTexture(monster_name, NULL, NULL, &rect.w, &rect.h);
+      rect.w/=2;
+      rect.x = 25+ ((x-1)*windowWidth/4); rect.y = rect.h/2; //Monster are 64*64px, so print at half way
+      SDL_RenderCopy(ren, monster_name, NULL, &rect);
+    }
 
 	/* labels value north (and south)*/
 	for(unsigned int x = 0; x < game_width(env->game); x++){
