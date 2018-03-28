@@ -31,6 +31,7 @@
 #define BACKGROUND "../ressources/background.png"
 #define NEW_GAME "../ressources/restart.png"
 #define RESTART_GAME "../ressources/new_game.png"
+#define SOLUTION "../ressources/solution.png"
 
 #define EMPTY "../ressources/empty.png"
 
@@ -111,6 +112,9 @@ Env * init(SDL_Window* win, SDL_Renderer* ren, int argc, char* argv[]){
 
   env->restart_button.img = IMG_LoadTexture(ren, RESTART_GAME);
   if(!env->restart_button.img) ERROR("IMG_LoadTexture: %s\n", RESTART_GAME);
+
+  env->solution.img = IMG_LoadTexture(ren, SOLUTION);
+  if(!env->solution.img) ERROR("IMG_LoadTexture: %s\n", SOLUTION);
 
   /* init text texture using Arial font */
     //If required_nb_monster-current_nb_monster == 0 couleur = rouge sinon couleur = noir
@@ -293,6 +297,16 @@ void render(SDL_Window* window, SDL_Renderer* ren, Env * env){
   env->restart_button.height = rect.h;
   SDL_RenderCopy(ren, env->restart_button.img, NULL, &rect);
 
+  //Display solution button
+  SDL_QueryTexture(env->solution.img, NULL, NULL, &rect.w, &rect.h);
+  rect.w /=2, rect.h /=2;
+  rect.x = windowWidth-rect.w; rect.y = windowHeight-(rect.h);
+  env->solution.top_x = rect.x;
+  env->solution.top_y = rect.y;
+  env->solution.width = rect.w;
+  env->solution.height = rect.h;
+  SDL_RenderCopy(ren, env->solution.img, NULL, &rect);
+
 
 
   if(is_game_over(env->game)){
@@ -392,7 +406,7 @@ void clean(SDL_Window* win, SDL_Renderer* ren, Env * env){
 
   SDL_DestroyTexture(env->restart_button.img);
   SDL_DestroyTexture(env->new_game_button.img);
-  
+
 	delete_game(env->game);
 
   free(env);

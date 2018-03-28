@@ -6,11 +6,14 @@
 
 #include "./game_content_converter.c"
 #include "./game_generation.c"
+#include "./undead_solve_sdl.c"
 
 #include "../header/game_display.h"
 #include "../header/game_io.h"
 #include "../header/game.h"
 #include "../header/model.h"
+#include "../header/game_fun.h"
+
 
 #define INIT_WIDTH_REQ_MSTRS 100
 #define INIT_HEIGHT 100
@@ -65,6 +68,12 @@ typedef struct s_restart{
 } s_restart;
 
 typedef struct{
+  SDL_Texture * img;
+  int top_x, top_y;
+  int height,width;
+} s_solution;
+
+typedef struct{
   int width;
   int height;
 } s_cell_size;
@@ -95,6 +104,7 @@ typedef struct Env_t {
 
   s_restart restart_button;
   s_new_game new_game_button;
+  s_solution solution;
 
   SDL_Texture * text;
 
@@ -179,6 +189,26 @@ bool toggle_fullscreen(SDL_Window* window,unsigned int flags){
 }
 
 
+
+void solve_board_sdl(Env * env){
+    game g1 = env->game;
+  	int nb_solution = 0;	//Integer which will contain the number of solution board find by the prog.
+
+    game * res= (game*) malloc(sizeof(game)*5);	//We create an array which will contain (maximum) 50 solution board
+
+    is_valid(g1, 0, res, &nb_solution, FIND_ONE);
+
+    if(res[0] != 0){
+      printf("find at least one solution!\n");
+      env->game = res[0];
+    }
+
+  	delete_game(g1);	//We dont need anymore the game_board
+    free(res);
+}
+
+
+
 bool press_on_button(int posX, int posY, Env * env){
   if (posX <  env->new_game_button.width + env->new_game_button.top_x){
     if(posY >env->restart_button.top_y && posY < env->restart_button.top_y+env->restart_button.width*2){
@@ -190,9 +220,17 @@ bool press_on_button(int posX, int posY, Env * env){
       restart_game(env->game);
       return true;
     }
+  }else if (posX > env->solution.top_x){
+    if(posY>env->solution.top_y){
+      printf("solving ...\n");
+      solve_board_sdl(env);
+      return true;
+    }
   }
   return false;
 }
+
+
 void get_which_cells_is_selected(int posX, int posY, Env* env){
   if(press_on_button(posX, posY, env))
     return;
@@ -217,6 +255,7 @@ void get_which_cells_is_selected(int posX, int posY, Env* env){
   printf("DEBUG: required - Zombie:%d, Ghost: %d, Spirit:%d, Vampire:%d -\n", required_nb_monsters(env->game, ZOMBIE), required_nb_monsters(env->game, GHOST), required_nb_monsters(env->game, SPIRIT), required_nb_monsters(env->game, VAMPIRE));
 
 }
+
 
 void place_assets(int x, int y, content mstr, SDL_Window* window, SDL_Renderer* ren, Env * env, int cell_width, int cell_height){
   SDL_Rect rect;
