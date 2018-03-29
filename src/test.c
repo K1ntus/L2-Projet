@@ -209,7 +209,8 @@ bool test_add_monster(){
 	sum += current_nb_monsters(g, GHOST);
 	sum += current_nb_monsters(g, ZOMBIE);
 
-
+	if (sum != 1)
+		return false;
 	//Test if there's not another monster adding himself to the board when it should not have
 	for(unsigned int x = 0; x < game_width(g); x++){
 		for(unsigned int y = 0; y < game_height(g); y++){
@@ -284,6 +285,7 @@ bool test_current_nb_seen_advanced(){
 
 bool test_current_nb_seen(){
 	bool res=true;
+	
 	res = test_current_nb_seen_advanced();
 	game g = new_game_ext(4,4);
 	assert(g);

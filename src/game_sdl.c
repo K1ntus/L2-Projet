@@ -159,25 +159,28 @@ SDL_Surface * sdl_text_from_string_required_nb_monsters(Env * env, char * str){
 
 void get_required_nb_monsters(game g, content monster, char* res){
 	int val = required_nb_monsters(g, monster);
-	convert_int_to_string(res, val);
+	char *buffer = convert_int_to_string(res,val);
+  free(buffer);
   return;
 }
 
 void get_required_nb_seen(game g, unsigned int pos, direction dir, char* res){
 	int val = required_nb_seen(g, dir, pos);
-	convert_int_to_string(res,val);
+	char *buffer = convert_int_to_string(res,val);
+  free(buffer);
   return;
 }
 
+/* //unused yet
 //Position de la souris, ou entrée clavier pour choisir un monstre, je ne sais pas encore
 void convert_sdl_input_to_position(unsigned int pos_src, unsigned int * x, unsigned int * y){
 	*y = 0;//(pos - [decalage a gauche])/taille d'une cellule
 	*x = 0;//(pos - [decalage a gauche])%taille d'une cellule
 }
-
 content get_which_mob_is_select(unsigned int pos_src){	//pas sur de la maniere encore pour le glisser deposer
 	return EMPTY;
 }
+*/
 
 void add_monster_sdl(char mstr, Env* env){
   if(required_nb_monsters(env->game, convert_char_to_content(mstr)) - current_nb_monsters(env->game, convert_char_to_content(mstr)) <= 0)
