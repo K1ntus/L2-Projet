@@ -94,7 +94,10 @@ target_link_libraries(undead_sdl game)
 #creation executable test
 add_executable(test_exec src/test.c)
 target_link_libraries(test_exec game)
-add_test(test_output test_exec COMMAND valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2  $<TARGET_FILE:test_exec>)
+#add_test(test_output test_exec COMMAND valgrind --tool=memcheck --log-file=log.txt --leak-check=full --show-reachable=yes --error-exitcode=2  $<TARGET_FILE:test_exec>)
+add_test(test_output0 test_exec COMMAND gcov  $<TARGET_FILE:test_exec>)
+add_test(test_output1 undead_text COMMAND gcov  $<TARGET_FILE:undead_text>)
+add_test(test_output2 undead_solve COMMAND gcov  $<TARGET_FILE:undead_solve>)
 
 
 

@@ -52,9 +52,7 @@ game is_valid(game g, int pos, game * res, int * nb_sol, solve_mode solve_type){
 
 
 	if(is_game_over(g)){
-		res[*nb_sol] = copy_game(g);
-		*nb_sol +=1;
-		return NULL;
+		return g;
 	}
 
 	if(potential_invalid_game(g))
