@@ -285,7 +285,7 @@ bool test_current_nb_seen_advanced(){
 
 bool test_current_nb_seen(){
 	bool res=true;
-	
+
 	res = test_current_nb_seen_advanced();
 	game g = new_game_ext(4,4);
 	assert(g);

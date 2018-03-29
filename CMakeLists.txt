@@ -34,21 +34,23 @@ option(NSX_VALGRIND "Run tests with valgrind" ON)
 option(NSX_SANITIZE "Compile with clang's -fsanitize (must also set NSX_SANITIZER variable)" OFF)
 option(NSX_TIDY "Add clang-tidy custom target" OFF)
 
+
+option(ENABLE_DEBUG "debug options" ON)
+
+
 #activation des tests
 enable_testing()
 
 #Mode debug
 
-option(ENABLE_DEBUG "debug options" ON)
 if(ENABLE_DEBUG)
-set(CMAKE_C_FLAGS "-std=c99 -g -fprofile-arcs -ftest-coverage -Wall")
-set(CMAKE_LD_FLAGS "-fprofile-arcs -ftest-coverage")
+	set(CMAKE_C_FLAGS "-std=c99 -g -fprofile-arcs -ftest-coverage -Wall")
+	set(CMAKE_LD_FLAGS "-fprofile-arcs -ftest-coverage")
 else()
-set(CMAKE_C_FLAGS "-std=c99 -O3 -Wall")
+	set(CMAKE_C_FLAGS "-std=c99 -03 -Wall -Werror")
 endif()
 
 #initialisation variable -> parametre de compilation
-set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 ###########################################################################
@@ -57,7 +59,7 @@ set(CMAKE_C_FLAGS "-std=c99 -g -Wall -Werror")
 
 
 #ajout de la librairie et indique qu on utilise des fichiers .o
-option(LIBGAME_TEACHER "teacher version of libgame" OFF)
+option(LIBGAME_TEACHER "teacher version of libgame" ON)
 if(LIBGAME_TEACHER)
 	add_library(game src/teacher/game.o src/teacher/game_io.o src/game_display.c src/game_util.c src/game_solver_lib.c src/game_io_util.c src/game_generation.c)
 else()
