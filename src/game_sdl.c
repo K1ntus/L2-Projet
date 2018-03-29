@@ -175,16 +175,18 @@ void convert_sdl_input_to_position(unsigned int pos_src, unsigned int * x, unsig
 	*x = 0;//(pos - [decalage a gauche])%taille d'une cellule
 }
 
-content get_which_mob_is_select(unsigned int pos_src){	//pas sur de la maniere encore
+content get_which_mob_is_select(unsigned int pos_src){	//pas sur de la maniere encore pour le glisser deposer
 	return EMPTY;
 }
 
 void add_monster_sdl(char mstr, Env* env){
+  if(required_nb_monsters(env->game, convert_char_to_content(mstr)) - current_nb_monsters(env->game, convert_char_to_content(mstr)) <= 0)
+    return;
   add_monster(env->game, convert_char_to_content(mstr), env->cell_selected.x,env->cell_selected.y);
+
 }
 
 bool toggle_fullscreen(SDL_Window* window,unsigned int flags){
-
 	return true;
 }
 
@@ -211,13 +213,13 @@ void solve_board_sdl(Env * env){
 
 bool press_on_button(int posX, int posY, Env * env){
   if (posX <  env->new_game_button.width + env->new_game_button.top_x){
-    if(posY >env->restart_button.top_y && posY < env->restart_button.top_y+env->restart_button.width*2){
-      printf("New game generation !\n");
-      env->game = new_game_generation();
-      return true;
-    }else if(posY >env->new_game_button.top_y && posY < env->new_game_button.top_y+env->new_game_button.width*2){
+    if(posY >env->new_game_button.top_y && posY < env->new_game_button.top_y+env->new_game_button.width*2){
       printf("Restart game !\n");
       restart_game(env->game);
+      return true;
+    }else if(posY >env->restart_button.top_y && posY < env->restart_button.top_y+env->restart_button.width*2){
+      printf("New game generation !\n");
+      env->game = new_game_generation();
       return true;
     }
   }else if (posX > env->solution.top_x){
@@ -259,7 +261,6 @@ void get_which_cells_is_selected(int posX, int posY, Env* env){
 
 void place_assets(int x, int y, content mstr, SDL_Window* window, SDL_Renderer* ren, Env * env, int cell_width, int cell_height){
   SDL_Rect rect;
-
 	switch(mstr){
 		case ZOMBIE:
 			SDL_QueryTexture(env->monster_type->zombie, NULL, NULL, &rect.w, &rect.h);
